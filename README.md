@@ -1,4 +1,4 @@
-# HOLA LMS
+# Image Storage
 
 ## Project Setup
 
