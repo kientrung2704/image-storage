@@ -1,0 +1,284 @@
+@use '../abstracts/colors'as *;
+
+.content {
+  flex: 1 1 0%;
+
+  .wrapper {
+    // display: flex;
+    // height: 100%;
+    border-radius: 7px;
+    background-color: $WHITE;
+
+    .welcome {
+      flex: 1;
+      // background: url('@/assets/images/crop.png');
+
+      &-header {
+        line-height: 1;
+        font-size: 24px;
+        color: #060F27;
+        font-weight: 600;
+      }
+
+      &-content {
+        font-size: 16px;
+        color: #060F27;
+        font-weight: 500;
+      }
+    }
+
+    .recommend {
+      flex: 1;
+
+      .recommend-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+
+        &__content {
+          font-size: 24px;
+          color: $BLACK_06;
+          font-weight: 600;
+          line-height: 1.5;
+        }
+
+        &__view {
+          color: $GRAY_63;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .lesson-progress {
+      flex: 1;
+
+      .ls-top {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 12px;
+        column-gap: 24px;
+        align-items: flex-start;
+
+        .left {
+          height: 60px;
+          min-width: 60px;
+          border-radius: 50%;
+          background-color: $GRAY_F0;
+        }
+
+        .right {
+          .lesson-name {
+            font-size: 16px;
+            font-weight: 600;
+          }
+
+          .lesson-date {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+
+            .time {
+              // font-family: 'Inter Light';
+              font-size: 12px;
+              font-weight: 600;
+              line-height: 1;
+            }
+          }
+
+          .lesson-lecturer {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+        }
+      }
+    }
+
+    .my-progress {
+      flex: 1;
+
+      &__header {
+        font-size: 21px;
+        color: #060F27;
+        font-weight: 600;
+        line-height: 1;
+      }
+    }
+
+    .continue-lesson {
+      flex: 1;
+
+      &__header {
+        font-size: 21px;
+        color: #060F27;
+        font-weight: 600;
+        line-height: 1;
+      }
+
+      .content {
+
+        &-lesson {
+          cursor: pointer;
+
+          .continue-wrapper {
+            flex: 1;
+
+            .course-name {
+              line-height: 1;
+              font-size: 18px;
+              font-weight: 600;
+            }
+
+            .lesson-name {
+              line-height: 1;
+              color: #63647f;
+            }
+
+            .time-watch {
+              span {
+                line-height: 1;
+                font-size: 12px;
+                font-weight: 600;
+              }
+            }
+          }
+        }
+
+        .hover {
+          border-radius: 10px;
+          background-color: #f0f3ff;
+        }
+      }
+    }
+
+    .goal {
+      flex: 1;
+      position: relative;
+
+      &-right {
+        position: absolute;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+      }
+
+      &-left {
+        flex-wrap: wrap;
+        gap: 12px;
+
+        .goal-content {
+          flex: 1;
+
+          .goal-target {
+            .target-content {
+              &__text {
+                font-size: 21px;
+                font-weight: 600;
+              }
+
+              &__goal {
+                font-family: 'Inter Light';
+                font-size: 18px;
+                font-weight: 600;
+              }
+            }
+
+            .image {
+              cursor: pointer;
+              background: #f0f3ff;
+              border-radius: 8px;
+              padding: 4px;
+
+            }
+          }
+
+          .day-target {
+            flex-wrap: wrap;
+            gap: 12px;
+
+            .box {
+              border-radius: 50%;
+              padding: 12px;
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-weight: 600;
+              background-color: #e5eaec;
+              color: #ffffff;
+              cursor: pointer;
+              -webkit-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+            }
+
+            .current-day {
+              background-color: #f0f3ff;
+              color: #63647f;
+            }
+
+            .active {
+              background-color: #f0f3ff;
+              color: #63647f;
+              border: 2px solid #f9c220;
+            }
+          }
+
+          .day-info {
+
+            .info-data {
+              flex-wrap: wrap;
+              row-gap: 24px;
+              column-gap: 12px;
+
+              .info-data-content {
+                gap: 12px;
+
+                .box {
+                  display: flex;
+                  align-items: center;
+                  border-radius: 50%;
+                  padding: 12px;
+                  min-width: 80px;
+                  height: 80px;
+                  text-align: center;
+                  background-color: #f0f3ff;
+
+
+                  .inline-box {
+                    flex: 1;
+                    font-size: 24px;
+                    color: #060F27;
+                  }
+                }
+
+                .info-text {
+                  line-height: 1.5;
+                  width: 100px;
+                  font-weight: 600;
+                  color: #060F27;
+                  font-size: 16px;
+                }
+              }
+            }
+          }
+        }
+
+        .goal-chart {
+          flex: 1;
+          min-width: 360px;
+
+          .echarts {
+            width: 100%;
+            min-width: 0;
+            height: 363px;
+          }
+
+        }
+
+      }
+    }
+  }
+}

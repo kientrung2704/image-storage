@@ -1,0 +1,87 @@
+@use '../abstracts/mediaQuery'as *;
+@use '../abstracts/colors'as *;
+
+.padding-footer {
+  .l-footer {
+    @include mq('md') {
+      padding-bottom: 140px !important;
+    }
+  }
+}
+
+.l-footer {
+  margin-top: 30px;
+  // background: $WHITE_F7 0 0 no-repeat padding-box;
+  padding-bottom: 18px;
+
+  @include mq('xxl') {
+    padding: 0 20px;
+    max-width: unset;
+  }
+
+  @include mq('sm') {
+    padding: 0 10px;
+  }
+
+  @include mq('md') {
+    margin-top: 0px;
+  }
+
+  a:focus-visible {
+    // outline: 1px solid $BLUE_04;
+  }
+
+
+  .f-top_page {
+    flex-basis: 100%;
+    text-align: center;
+  }
+
+  @include mq('md') {
+    &_ctn {
+      padding: 13px 28px;
+      flex-flow: wrap;
+      height: auto;
+      margin: 0 auto;
+      align-items: center;
+
+      .link_blue {
+        flex-basis: 32%;
+        margin-bottom: 8px;
+      }
+
+      .f-top_page {
+        flex-basis: 100%;
+      }
+    }
+  }
+
+  &_text {
+    text-align: center;
+    font-size: 12px;
+    line-height: 18px;
+
+    @include mq('sm') {
+      font-size: 11px;
+    }
+  }
+
+  &_copyright {
+    text-align: center;
+    font-size: 12px;
+    line-height: 18px;
+    padding-bottom: 40px;
+
+    @include mq('sm') {
+      padding-bottom: 20px;
+    }
+  }
+}
+
+@include mq('xs') {
+  .l-footer {
+    &_text {
+      font-size: 11px;
+    }
+  }
+}

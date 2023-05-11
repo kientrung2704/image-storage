@@ -1,0 +1,300 @@
+@use '../abstracts/mediaQuery'as *;
+
+@for $i from 0 through 10 {
+
+    @each $size,
+    $screen in $breakpoints {
+        @include mq($size) {
+
+            // margin-right
+            .mr-#{$size}-#{$i * 6} {
+                margin-right: $i * 6px !important;
+            }
+
+            // margin-left
+            .ml-#{$size}-#{$i * 6} {
+                margin-left: $i * 6px !important;
+            }
+
+            // margin-top
+            .mt-#{$size}-#{$i * 6} {
+                margin-top: $i * 6px !important;
+            }
+
+            // margin-bottom
+            .mb-#{$size}-#{$i * 6} {
+                margin-bottom: $i * 6px !important;
+            }
+
+            // padding
+            .p-#{$size}-#{$i * 6} {
+                padding: $i * 6px !important;
+            }
+
+            // padding top bottom
+            .py-#{$size}-#{$i * 6} {
+                padding-top: $i * 6px !important;
+                padding-bottom: $i * 6px !important;
+            }
+
+            // padding left right
+            .px-#{$size}-#{$i * 6} {
+                padding-left: $i * 6px !important;
+                padding-right: $i * 6px !important;
+            }
+
+            //padding-top
+            .pt-#{$size}-#{$i * 6} {
+                padding-top: $i * 6px !important;
+            }
+
+            //padding-bottom
+            .pb-#{$size}-#{$i * 6} {
+                padding-bottom: $i * 6px !important;
+            }
+
+            //padding-left
+            .pl-#{$size}-#{$i * 6} {
+                padding-left: $i * 6px !important;
+            }
+
+            //padding-right
+            .pr-#{$size}-#{$i * 6} {
+                padding-right: $i * 6px !important;
+            }
+        }
+    }
+
+    .gap-#{$i} {
+        row-gap: $i * 1px;
+    }
+
+    // margin-right
+    .mr-#{$i * 6} {
+        margin-right: $i * 6px !important;
+    }
+
+    // margin-left
+    .ml-#{$i * 6} {
+        margin-left: $i * 6px !important;
+    }
+
+    // margin-top
+    .mt-#{$i * 6} {
+        margin-top: $i * 6px !important;
+    }
+
+    // margin-bottom
+    .mb-#{$i * 6} {
+        margin-bottom: $i * 6px !important;
+    }
+
+    // padding
+    .p-#{$i * 6} {
+        padding: $i * 6px !important;
+    }
+
+    // padding top bottom
+    .py-#{$i * 6} {
+        padding-top: $i * 6px !important;
+        padding-bottom: $i * 6px !important;
+    }
+
+    // padding left right
+    .px-#{$i * 6} {
+        padding-left: $i * 6px !important;
+        padding-right: $i * 6px !important;
+    }
+
+    //padding-top
+    .pt-#{$i * 6} {
+        padding-top: $i * 6px !important;
+    }
+
+    //padding-bottom
+    .pb-#{$i * 6} {
+        padding-bottom: $i * 6px !important;
+    }
+
+    //padding-left
+    .pl-#{$i * 6} {
+        padding-left: $i * 6px !important;
+    }
+
+    //padding-right
+    .pr-#{$i * 6} {
+        padding-right: $i * 6px !important;
+    }
+
+    // 5px
+    // margin-right
+    .mr-#{$i * 5} {
+        margin-right: $i * 6px !important;
+    }
+
+    // margin-left
+    .ml-#{$i * 5} {
+        margin-left: $i * 6px !important;
+    }
+
+    // margin-top
+    .mt-#{$i * 5} {
+        margin-top: $i * 5px !important;
+    }
+
+    // margin-bottom
+    .mb-#{$i * 5} {
+        margin-bottom: $i * 5px !important;
+    }
+
+    // padding
+    .p-#{$i * 5} {
+        padding: $i * 5px !important;
+    }
+
+    // padding top bottom
+    .py-#{$i * 5} {
+        padding-top: $i * 5px !important;
+        padding-bottom: $i * 5px !important;
+    }
+
+    // padding left right
+    .px-#{$i * 5} {
+        padding-left: $i * 5px !important;
+        padding-right: $i * 5px !important;
+    }
+
+    //padding-top
+    .pt-#{$i * 5} {
+        padding-top: $i * 5px !important;
+    }
+
+    //padding-bottom
+    .pb-#{$i * 5} {
+        padding-bottom: $i * 5px !important;
+    }
+
+    //padding-left
+    .pl-#{$i * 5} {
+        padding-left: $i * 5px !important;
+    }
+
+    //padding-right
+    .pr-#{$i * 5} {
+        padding-right: $i * 5px !important;
+    }
+}
+
+$displays: (block, flex);
+
+@each $display in $displays {
+    .#{$display} {
+        display: $display;
+    }
+
+    .inline-#{$display} {
+        display: inline-#{$display};
+    }
+}
+
+.justify {
+    &-center {
+        justify-content: center;
+    }
+
+    &-between {
+        justify-content: space-between;
+    }
+
+    &-end {
+        justify-content: flex-end;
+    }
+}
+
+.align {
+    &-center {
+        align-items: center;
+    }
+
+    &-start {
+        align-items: flex-start;
+    }
+}
+
+.flex {
+    &-wrap {
+        flex-wrap: wrap;
+    }
+
+    &-column {
+        flex-direction: column;
+    }
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+$directions: ('row', 'column');
+$alignItems: ('center', 'start', 'between', 'end');
+
+@each $size,
+$screen in $breakpoints {
+    @each $direction in $directions {
+        @include mq($size) {
+            .r-flex-#{$size}-#{$direction} {
+                flex-direction: #{$direction};
+            }
+        }
+    }
+
+    @each $align in $alignItems {
+        @include mq($size) {
+            @if $align=='between' {
+                .align-#{$size}-#{$align} {
+                    align-items: #{ 'space-' + $align};
+                }
+
+                .justify-#{$size}-#{$align} {
+                    justify-content: #{'space-' + $align};
+                }
+            }
+
+            @else if $align=='start' {
+                .align-#{$size}-#{$align} {
+                    align-items: #{'flex-' + $align};
+                }
+
+                .justify-#{$size}-#{$align} {
+                    justify-content: #{'flex-' + $align};
+                }
+            }
+
+            @else if $align=='end' {
+                .align-#{$size}-#{$align} {
+                    align-items: #{'flex-' + $align};
+                }
+
+                .justify-#{$size}-#{$align} {
+                    justify-content: #{'flex-' + $align};
+                }
+            }
+        }
+    }
+
+    @include mq($size) {
+        .hidden-#{$size} {
+            display: none !important;
+        }
+    }
+}
+
+@for $i from 1 through 9 {
+    .f-#{$i * 100} {
+        font-weight: $i * 100 !important;
+    }
+}
+
+.color-dark-gray {
+    color: #63647f;
+}

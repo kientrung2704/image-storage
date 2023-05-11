@@ -1,0 +1,45 @@
+@use '../abstracts/colors'as *;
+@use '../abstracts/mediaQuery'as *;
+
+.content {
+  flex: 1 1 0%;
+
+  .content-container {
+    height: 100%;
+    border-radius: 10px;
+    background-color: #ffffff;
+
+    .profile {
+      gap: 30px;
+      flex-direction: column;
+
+      @include mq('min-md') {
+        flex-direction: row;
+      }
+
+      &-info {
+        flex: 1;
+
+        .cus-input {
+          font-weight: 600;
+        }
+
+        .form-label {
+          font-size: 16px;
+        }
+
+        .social {
+          &-icon {
+            display: flex;
+            min-width: 38px;
+            height: 38px;
+            background-color: #f0f3ff;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }
+}

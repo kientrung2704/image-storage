@@ -1,0 +1,55 @@
+@use '../abstracts/colors'as *;
+
+@font-face {
+    font-family: 'Inter';
+    src: url('@/assets/fonts/inter.otf');
+}
+
+@font-face {
+    font-family: 'Inter Bold';
+    src: url('@/assets/fonts/Inter-Bold.otf');
+}
+
+@font-face {
+    font-family: 'Inter Medium';
+    src: url('@/assets/fonts/Inter-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Inter Light';
+    src: url('@/assets/fonts/Inter-Light.ttf');
+}
+
+@font-face {
+    font-family: 'Inter Extra Light';
+    src: url('@/assets/fonts/Inter-ExtraLight.ttf');
+}
+
+@font-face {
+    font-family: 'Inter SemiBold';
+    src: url('@/assets/fonts/Inter-SemiBold.ttf');
+}
+
+.limit-line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+.word-break {
+    word-break: break-all;
+}
+
+$lines: ('one': 1,
+    'two': 2,
+    'four': 4);
+
+@each $lineName,
+$lineNum in $lines {
+    .#{$lineName}-line {
+        @extend .limit-line;
+        -webkit-line-clamp: $lineNum;
+        line-clamp: $lineNum;
+    }
+}

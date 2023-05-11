@@ -1,0 +1,21 @@
+@use '../abstracts/mediaQuery' as *;
+
+.r-container {
+  margin: 0 auto;
+  clear: both;
+  width: 100%;
+  max-width: 1400px;
+
+  @include mq('xl') {
+    max-width: 1200px;
+    padding: 10px;
+  }
+
+  @include mq('md') {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  @include mq() {
+    padding: 10px;
+  }
+}

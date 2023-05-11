@@ -1,0 +1,30 @@
+$breakpoints: ('xxl': 'screen and (max-width: 1401px)',
+    'xl': 'screen and (max-width: 1280px)',
+    'xl-boostrap': 'screen and (max-width: 1140px)',
+    'lg': 'screen and (max-width: 1279px)',
+    'mlg': 'screen and (max-width: 1200px)',
+    'lm': 'screen and (max-width: 1024px)',
+    'md': 'screen and (max-width: 769px)',
+    'sm': 'screen and (max-width: 480px)',
+    'xs': 'screen and (max-width: 375px)',
+    'min-sm': 'screen and (min-width: 480px)',
+    'min-md': 'screen and (min-width: 800px)',
+    'max-lg': 'screen and (max-width: 1080px)',
+    'min-lg': 'screen and (min-width: 1080px)',
+    'min-sd': 'screen and (min-width: 600px)',
+    'min-xl': 'screen and (min-width: 1200px)',
+    'bw-sm-tp': 'screen and (min-width: 481px) and (max-width: 1024px)',
+    'bw-md-tp': 'screen and (min-width: 534px) and (max-width: 1024px)'
+);
+
+@mixin mq($breakpoint: 'sm') {
+    @media #{map-get($breakpoints, $breakpoint)} {
+        @content;
+    }
+}
+
+@mixin mqCustom($screen) {
+    @media #{$screen} {
+        @content;
+    }
+}

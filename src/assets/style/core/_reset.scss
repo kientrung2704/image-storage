@@ -1,0 +1,50 @@
+html {
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover,
+a:link,
+a:visited,
+a:active {
+    text-decoration: none;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+input,
+select,
+textarea,
+button {
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
