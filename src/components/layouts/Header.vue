@@ -1,6 +1,6 @@
 <template>
   <div class="header-item-container">
-    <a-space size="middle">
+    <a-space size="large">
       <!-- <div class="header-item">
         <a href="https://github.com/zhangbo0921/vue-antd-admin" target="_blank">
           <a-tooltip placement="bottom">

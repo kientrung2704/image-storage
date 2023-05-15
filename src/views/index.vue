@@ -1,4 +1,5 @@
 <template>
+  <AppBreadcrumb />
   <div>2312312</div>
   <div>2312312</div>
   <div>2312312</div>

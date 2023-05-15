@@ -3,22 +3,6 @@
 //   return () => import(`@/views/${path}.vue`).then((m) => m.default || m)
 // }
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'home',
-  //   meta: {
-  //     title: 'Home'
-  //   },
-  //   component: views('HomeView')
-  // },
-  // {
-  //   path: '/about',
-  //   meta: {
-  //     title: 'About'
-  //   },
-  //   name: 'about',
-  //   component: views('AboutView')
-  // }
   {
     path: '/dashboard',
     component: () => import('@/layouts/Layout.vue'),
@@ -29,8 +13,17 @@ const routes = [
     },
     children: [
       {
-        path: '/test',
-        name: 'Dashboard',
+        path: 'test',
+        name: 'image',
+        component: () => import('@/views/dashboard/index.vue'),
+        meta: {
+          title: 'Dashboard',
+          requireAuth: false
+        }
+      },
+      {
+        path: 'test1',
+        name: 'explore',
         component: () => import('@/views/index.vue'),
         meta: {
           title: 'Dashboard',
@@ -38,16 +31,7 @@ const routes = [
         }
       },
       {
-        path: '/test1',
-        name: 'Dashboard1',
-        component: () => import('@/views/index.vue'),
-        meta: {
-          title: 'Dashboard',
-          requireAuth: false
-        }
-      },
-      {
-        path: '/test2',
+        path: 'test2',
         name: 'Dashboard2',
         component: () => import('@/views/index.vue'),
         meta: {

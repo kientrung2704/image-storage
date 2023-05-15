@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '@/router/routes'
-
+import NProgress from 'nprogress'
+NProgress.configure({ showSpinner: false })
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -23,7 +24,8 @@ const router = createRouter({
 
 // eslint-disable-next-line
 router.beforeEach(async (to, from, next) => {
-  window.$loadingBar?.start()
+  // window.$loadingBar?.start()
+  NProgress.start()
   document.title = to.meta?.title ?? import.meta.env.VUE_APP_NAME ?? ''
 
   // let middleware = null;
@@ -53,11 +55,13 @@ router.beforeEach(async (to, from, next) => {
 })
 router.afterEach(() => {
   setTimeout(() => {
-    window.$loadingBar?.finish()
+    NProgress.done()
+    // window.$loadingBar?.finish()
   }, 200)
 })
-
+//
 router.onError(() => {
-  window.$loadingBar?.error()
+  NProgress.done()
+  // window.$loadingBar?.error()
 })
 export default router

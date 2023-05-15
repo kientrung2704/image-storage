@@ -165,6 +165,7 @@ const toggleCollapsed = () => {
     padding: 0 24px;
     transition: all 0.2s;
     justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     .unvue-header-left {
       display: flex;
       align-items: center;
@@ -220,7 +221,7 @@ const toggleCollapsed = () => {
     color: #fff;
   }
   .unvue-content {
-    padding: 8px;
+    background-color: #fff;
     height: 100%;
     overflow: scroll;
   }
@@ -229,12 +230,12 @@ const toggleCollapsed = () => {
 :deep(.ant-menu-item) {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
-  height: 50px !important;
+  height: 45px !important;
 }
 
 :deep(.ant-menu) {
   padding-right: 15px;
-  height: 50px !important;
+  height: 45px !important;
 }
 
 :deep(.ant-menu-item::after, .ant-menu-item::after) {
