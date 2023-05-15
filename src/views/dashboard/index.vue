@@ -1,9 +1,17 @@
 <template>
   <div class="main">
-    <div class="breadcrumb-header">
-      <AppBreadcrumb />
-      <div class="breadcrumb-right">
-        <a-button>1</a-button>
+    <AppBreadcrumb>
+      <template #content>
+        <div>1111</div>
+      </template>
+    </AppBreadcrumb>
+
+    <div class="content">
+      <div v-for="(months, index) in images" :key="index">
+        {{ index }}
+        <div class="image-container">
+          <img v-for="(image, i) in months" :key="i" class="image" :src="image.src" />
+        </div>
       </div>
     </div>
   </div>
@@ -13,8 +21,50 @@
 import AppBreadcrumb from '../../components/AppBreadcrumb.vue'
 
 export default {
+  components: { AppBreadcrumb },
   data() {
-    return {}
+    return {
+      images: {
+        '05/2023': [
+          {
+            id: 1,
+            src: new URL(`/src/assets/images/${1}.png`, import.meta.url).href
+          },
+          {
+            id: 1,
+            src: new URL(`/src/assets/images/${1}.png`, import.meta.url).href
+          },
+          {
+            id: 1,
+            src: new URL(`/src/assets/images/${1}.png`, import.meta.url).href
+          },
+          {
+            id: 1,
+            src: new URL(`/src/assets/images/${1}.png`, import.meta.url).href
+          }
+        ],
+        '04/2023': [
+          {
+            id: 1,
+            src: new URL(`/src/assets/images/${1}.png`, import.meta.url).href
+          },
+          {
+            id: 1,
+            src: new URL(`/src/assets/images/${1}.png`, import.meta.url).href
+          }
+        ],
+        '03/2023': [
+          {
+            id: 1,
+            src: new URL(`/src/assets/images/${1}.png`, import.meta.url).href
+          },
+          {
+            id: 1,
+            src: new URL(`/src/assets/images/${1}.png`, import.meta.url).href
+          }
+        ]
+      }
+    }
   },
   computed: {},
   created() {
@@ -23,19 +73,21 @@ export default {
       this.$root.$refs.loading.finish()
     }, 500)
   },
-  methods: {},
-  components: { AppBreadcrumb }
+  methods: {}
 }
 </script>
 
 <style lang="scss" scoped>
 .main {
-  .breadcrumb-header {
-    padding: 12px 24px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .content {
+    .image-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      .image {
+        height: 220px;
+      }
+    }
   }
 }
 </style>

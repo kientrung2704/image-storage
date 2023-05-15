@@ -6,6 +6,7 @@
     :theme="siderTheme"
     :inline-collapsed="collapsed"
     width="250"
+    class="cust-sider"
   >
     <a-menu
       v-model:openKeys="openKeys"
@@ -14,7 +15,7 @@
       theme="light"
       @select="onSelect"
     >
-      <div class="my-12 pl-15" v-if="!collapsed">
+      <div class="mt-18 mb-12 pl-15" v-if="!collapsed">
         <a-button @click="openModal" size="large" shape="round" block>
           <template #icon>
             <UploadOutlined />
@@ -169,11 +170,48 @@ export default {
 
 :deep(.menu-item-hover) {
   background-color: rgb(241, 243, 244) !important;
+
+  .ant-menu-title-content {
+    color: #000000d9 !important;
+  }
+
+  svg {
+    fill: #000000d9 !important;
+  }
+}
+
+.cust-sider {
+  border-right: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+:deep(.ant-menu) {
+  border: none !important;
+}
+
+:deep(.ant-menu-item:first-child) {
+  margin-top: 15px !important;
+}
+
+:deep(.ant-menu-light) {
+  border: none !important;
+}
+
+:deep(.ant-menu-root) {
+  border: none !important;
+}
+
+:deep(.ant-menu-vertical) {
+  border: none !important;
+}
+
+:deep(.ant-menu-inline-collapsed) {
+  border: none !important;
 }
 
 :deep(.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left) {
-  border-right: none !important;
+  border: none !important;
 }
+
 :deep(
     .ant-menu.ant-menu-inline-collapsed > .ant-menu-item .ant-menu-item-icon,
     .ant-menu.ant-menu-inline-collapsed
