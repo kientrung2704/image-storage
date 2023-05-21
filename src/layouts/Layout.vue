@@ -74,6 +74,7 @@
 
 <script>
 import { MenuOutlined } from '@ant-design/icons-vue'
+
 export default {
   components: {
     MenuOutlined
