@@ -14,7 +14,7 @@ import './assets/style/style.scss'
 import { vMaska } from 'maska'
 import mask from '@/utils/mask'
 import 'viewerjs/dist/viewer.css'
-import VueViewer from 'v-viewer'
+// import VueViewer from 'v-viewer'
 import VueZoomer from 'vue-zoomer'
 import App from './App.vue'
 const app = createApp(App)
@@ -24,7 +24,7 @@ app.config.globalProperties.$cookie = Cookie
 app
   .use(store)
   .use(router)
-  .use(VueViewer)
+  // .use(VueViewer)
   .use(VueZoomer)
   // .use(naive)
   .use(Antd)
