@@ -7,5 +7,8 @@ export default {
   share: 'Chia sẻ',
   libary: 'Thư viện',
   like: 'Yêu thích',
-  trash: 'Thùng rác'
+  trash: 'Thùng rác',
+  infomation: 'Thông tin',
+  description_placeholder: 'Thêm mô tả',
+  detail: 'Chi tiết'
 }

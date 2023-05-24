@@ -48,13 +48,22 @@ export default {
       myServer: {
         process: async (fieldName, file, metadata, load) => {
           const formData = new FormData()
+          console.log(file)
           const buffer = await exifr.parse(file)
-          const longitude = buffer.longitude ?? null
-          const latitude = buffer.latitude ?? null
+          console.log(buffer)
+          // EXIF.getData(file, function () {
+          //   var make = EXIF.getTag(this, 'Make')
+          //   var model = EXIF.getTag(this, 'Model')
+          //   console.log(make, model)
+          // })
 
+          // const longitude = buffer.longitude ?? null
+          // const latitude = buffer.latitude ?? null
+
+          // console.log(buffer)
           formData.append('file', file)
-          formData.append('longitude', longitude)
-          formData.append('latitude', latitude)
+          // formData.append('longitude', longitude)
+          // formData.append('latitude', latitude)
           load()
           // request('http://localhost:8000/api/file-save', {
           //   method: 'post',

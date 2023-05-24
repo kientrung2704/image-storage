@@ -34,7 +34,7 @@
           </div>
           <Transition class="img-slider" :name="transition">
             <div :key="currentPhoto?.photo.id" :id="currentPhoto?.photo.id">
-              <img class="img-display" :src="currentPhoto?.photo.src" />
+              <img class="img-display" :src="currentPhoto?.photo.src" v-if="currentPhoto" />
             </div>
           </Transition>
           <div
@@ -57,9 +57,128 @@
         <!-- </transition-group> -->
       </div>
       <Transition class="img-slider" name="category">
-        <div key="3" class="info-content" v-show="info">
+        <div key="3" class="info" v-show="info">
           <!-- <div> -->
-          <div class="scroller" v-if="info">{{ slide }}</div>
+          <div class="scroller" v-if="info">
+            <div class="info-header">
+              <!-- <div class="close-btn"> -->
+              <div class="infomation">
+                {{ $i18n.t('infomation') }}
+              </div>
+              <div class="btn-close" @click="viewInfo">
+                <CloseOutlined :style="{ fontSize: '20px' }" />
+              </div>
+              <!-- </div> -->
+            </div>
+            <div class="info-content" v-if="currentPhoto">
+              <!-- {{ currentPhoto.photo }} -->
+              <!-- <div class="content-infomation"></div> -->
+
+              <div class="detail">
+                <!-- <div class="detail-header mb-12">{{ $i18n.t('detail') }}</div> -->
+                <div class="detail-content">
+                  <div class="content-box align-center">
+                    <div class="icon">
+                      <CalendarOutlined :style="{ fontSize: '24px' }" />
+                    </div>
+                    <div class="content-detail">
+                      <a-textarea
+                        auto-size
+                        @blur="handleFocusout"
+                        v-model:value="currentPhoto.photo.description"
+                        :placeholder="$i18n.t('description_placeholder')"
+                      />
+                    </div>
+                  </div>
+                  <div class="content-box">
+                    <div class="icon">
+                      <CalendarOutlined :style="{ fontSize: '24px' }" />
+                    </div>
+                    <div class="content-detail">
+                      {{ formatUnix(currentPhoto?.photo?.modified_at) }}
+                    </div>
+                  </div>
+                  <div class="content-box">
+                    <div class="icon">
+                      <PictureOutlined :style="{ fontSize: '24px' }" />
+                    </div>
+                    <div class="content-detail">
+                      <div class="file-name">
+                        {{ currentPhoto?.photo?.name }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content-box">
+                    <div class="icon">
+                      <PictureOutlined :style="{ fontSize: '24px' }" />
+                    </div>
+                    <div class="content-detail">
+                      <div class="file-name">Size Info</div>
+                      <div class="file-detail">
+                        <a-space size="middle">
+                          <span class="sub" v-if="currentPhoto.photo.exif.ImageSize">
+                            {{ currentPhoto?.photo?.exif?.ImageSize }}
+                          </span>
+                          <span class="sub">{{ getFileSize(currentPhoto?.photo?.size) }} MB</span>
+                        </a-space>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content-box">
+                    <div class="icon">
+                      <CameraOutlined :style="{ fontSize: '24px' }" />
+                    </div>
+                    <div class="content-detail">
+                      <div class="file-name">Device Info</div>
+                      <div class="device-info">
+                        <a-space size="middle" class="wrap">
+                          <span class="sub">
+                            {{ currentPhoto?.photo?.exif?.Make }}
+                          </span>
+                          <span class="sub">
+                            {{ currentPhoto?.photo?.exif?.Model }}
+                          </span>
+                          <span class="sub">
+                            {{ currentPhoto?.photo?.exif?.FocalLength }}
+                          </span>
+                          <span class="sub" v-if="currentPhoto?.photo?.exif?.Aperture">
+                            f/{{ currentPhoto?.photo?.exif?.Aperture }}
+                          </span>
+                          <span class="sub" v-if="currentPhoto?.photo?.exif?.ShutterSpeed">
+                            {{ currentPhoto?.photo?.exif?.ShutterSpeed }} sec
+                          </span>
+                          <span class="sub" v-if="currentPhoto?.photo?.exif?.ISO">
+                            ISO {{ currentPhoto?.photo?.exif?.ISO }}
+                          </span>
+                          <span class="sub">
+                            {{ currentPhoto?.photo?.exif?.Flash }}
+                          </span>
+                        </a-space>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="map"
+                    v-if="
+                      currentPhoto.photo.exif &&
+                      currentPhoto.photo.exif.GPSLongitude &&
+                      currentPhoto.photo.exif.GPSLatitude
+                    "
+                  >
+                    <MapboxMap
+                      style="height: 400px"
+                      access-token="pk.eyJ1Ijoia2llbnRydW5nMjcwNCIsImEiOiJja3dyc256Nmcwem5qMzBvMjU4YWdxMTJhIn0.dUbrpFF2lLAISz6hVyBPNw"
+                      map-style="mapbox://styles/mapbox/streets-v11"
+                      :center="getPosition(currentPhoto)"
+                      :zoom="16"
+                    >
+                      <MapboxMarker :lng-lat="getPosition(currentPhoto)" />
+                    </MapboxMap>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- </div> -->
         </div>
       </Transition>
@@ -76,8 +195,14 @@ import {
   MoreOutlined,
   DeleteOutlined,
   StarOutlined,
-  ShareAltOutlined
+  ShareAltOutlined,
+  CloseOutlined,
+  CalendarOutlined,
+  PictureOutlined,
+  CameraOutlined
 } from '@ant-design/icons-vue'
+import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
 export default {
   components: {
     LeftOutlined,
@@ -87,7 +212,13 @@ export default {
     MoreOutlined,
     DeleteOutlined,
     StarOutlined,
-    ShareAltOutlined
+    ShareAltOutlined,
+    CloseOutlined,
+    CalendarOutlined,
+    PictureOutlined,
+    CameraOutlined,
+    MapboxMap,
+    MapboxMarker
   },
   props: {
     direction: {
@@ -109,7 +240,12 @@ export default {
     return {
       mousemove: false,
       info: false,
-      slide: ''
+      slide: '',
+      description: '',
+      center: { lat: 40.689247, lng: -74.044502 },
+      mapCenter: [105.7842749, 21.0268378],
+      pos: [105.7842749, 21.0268378],
+      defaultDate: this.$dayjs('00:00:00', 'HH:mm:ss')
     }
   },
   computed: {
@@ -120,6 +256,16 @@ export default {
     }
   },
   methods: {
+    getPosition() {
+      console.log(this.removeString(this.currentPhoto.photo.exif.GPSLongitude))
+      return [
+        parseFloat(this.removeString(this.currentPhoto.photo.exif.GPSLongitude)),
+        parseFloat(this.removeString(this.currentPhoto.photo.exif.GPSLatitude))
+      ]
+    },
+    removeString(string) {
+      return string.replace(/[^\d.-]/g, '')
+    },
     // photoUrl() {
     // if (photo)
     //   if (photo.asset_type == "mp4" || photo.asset_type == "mov")
@@ -129,6 +275,10 @@ export default {
     //   else return encodeURI(this.$basePath + "/assets/full/" + photo.path);
     // return new URL(`/src/assets/images/${1}.jpeg`, import.meta.url).href
     // },
+    handleDescription() {
+      this.description = this.currentPhoto.photo.description
+      console.log(this.currentPhoto.photo)
+    },
     mouseMove() {
       if (this.timedFunction) clearInterval(this.timedFunction)
       this.mousemove = true
@@ -159,6 +309,27 @@ export default {
       } else if (this.info === false) {
         this.slide = 'slideback'
       }
+    },
+
+    handleFocusout() {
+      console.log(this.currentPhoto.photo)
+      // Todo Call API save Description
+    },
+
+    formatUnix(time) {
+      if (time) {
+        return this.$dayjs(time).format('DD/MM/YYYY HH:mm:ss')
+      }
+      return ''
+    },
+
+    getFileSize(size) {
+      if (size) {
+        let sizeMb = size / 1024 / 1024
+
+        return Math.round(sizeMb * 100) / 100
+      }
+      return ''
     }
   }
 }
@@ -199,9 +370,71 @@ export default {
   right: 0px;
   bottom: 0px;
   overflow: auto;
+  .info-header {
+    padding: 0 16px;
+    // margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .infomation {
+      font-size: 18px;
+    }
+  }
+
+  .info-content {
+    // padding: 0 12px;
+    .content-infomation {
+      padding: 0 16px;
+    }
+    .detail {
+      &-header {
+        padding: 0 16px;
+        font-size: 16px;
+      }
+
+      &-content {
+        .content-box {
+          padding: 12px 16px;
+          display: flex;
+          // align-items: flex-start;
+
+          .icon {
+            width: 40px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+          }
+
+          .content-detail {
+            flex: 1;
+            display: flex;
+            // align-items: center;
+            flex-direction: column;
+            justify-content: center;
+
+            .wrap {
+              flex-wrap: wrap;
+            }
+          }
+        }
+        .content-box:hover {
+          background-color: rgb(241, 243, 244);
+        }
+      }
+    }
+  }
 }
 .btn-category {
   width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.btn-close {
+  // width: 48px;
   height: 48px;
   border-radius: 50%;
   display: flex;
@@ -219,11 +452,12 @@ export default {
   // overflow: hidden;
   background: #000;
 
-  .info-content {
+  .info {
     position: relative;
-    width: 360px;
+    width: 380px;
     min-height: 100vh;
     background-color: #fff;
+    z-index: 1200;
   }
 }
 
@@ -309,5 +543,15 @@ export default {
 .component-fade-enter, .component-fade-leave-to
 /* .component-fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.textarea {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  min-height: 24px;
+  // line-height: 20px;
+  padding: 5px;
 }
 </style>

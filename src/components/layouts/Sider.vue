@@ -111,7 +111,6 @@
 <script>
 import {
   PictureOutlined,
-  SettingOutlined,
   UploadOutlined,
   SearchOutlined,
   PieChartOutlined,
@@ -122,7 +121,6 @@ import {
 export default {
   components: {
     PictureOutlined,
-    SettingOutlined,
     UploadOutlined,
     SearchOutlined,
     PieChartOutlined,

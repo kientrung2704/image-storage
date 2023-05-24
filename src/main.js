@@ -13,9 +13,9 @@ import i18n from '@/plugins/i18n'
 import './assets/style/style.scss'
 import { vMaska } from 'maska'
 import mask from '@/utils/mask'
-import 'viewerjs/dist/viewer.css'
+// import 'viewerjs/dist/viewer.css'
 // import VueViewer from 'v-viewer'
-import VueZoomer from 'vue-zoomer'
+// import VueZoomer from 'vue-zoomer'
 import App from './App.vue'
 const app = createApp(App)
 app.config.globalProperties.$dayjs = dayjs
@@ -25,7 +25,7 @@ app
   .use(store)
   .use(router)
   // .use(VueViewer)
-  .use(VueZoomer)
+  // .use(VueZoomer)
   // .use(naive)
   .use(Antd)
   .use(component)
