@@ -723,6 +723,7 @@ export default {
   computed: {},
   created() {
     this.$root.$refs.loading.start()
+    console.log(import.meta.env.VITE_MAPBOX_API)
     for (const property in this.images) {
       // console.log(this.images[property])
       this.images[property].forEach((element) => {

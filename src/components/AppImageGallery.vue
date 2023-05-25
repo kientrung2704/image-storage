@@ -66,7 +66,7 @@
                 {{ $i18n.t('infomation') }}
               </div>
               <div class="btn-close" @click="viewInfo">
-                <CloseOutlined :style="{ fontSize: '20px' }" />
+                <IconX stroke-width="1.25" />
               </div>
               <!-- </div> -->
             </div>
@@ -79,7 +79,7 @@
                 <div class="detail-content">
                   <div class="content-box align-center">
                     <div class="icon">
-                      <CalendarOutlined :style="{ fontSize: '24px' }" />
+                      <IconFileDescription stroke-width="1.25" />
                     </div>
                     <div class="content-detail">
                       <a-textarea
@@ -92,7 +92,7 @@
                   </div>
                   <div class="content-box">
                     <div class="icon">
-                      <CalendarOutlined :style="{ fontSize: '24px' }" />
+                      <IconCalendarTime stroke-width="1.25" />
                     </div>
                     <div class="content-detail">
                       {{ formatUnix(currentPhoto?.photo?.modified_at) }}
@@ -100,7 +100,7 @@
                   </div>
                   <div class="content-box">
                     <div class="icon">
-                      <PictureOutlined :style="{ fontSize: '24px' }" />
+                      <IconPhoto stroke-width="1.25" />
                     </div>
                     <div class="content-detail">
                       <div class="file-name">
@@ -110,7 +110,7 @@
                   </div>
                   <div class="content-box">
                     <div class="icon">
-                      <PictureOutlined :style="{ fontSize: '24px' }" />
+                      <IconPhotoExclamation stroke-width="1.25" />
                     </div>
                     <div class="content-detail">
                       <div class="file-name">Size Info</div>
@@ -126,7 +126,8 @@
                   </div>
                   <div class="content-box">
                     <div class="icon">
-                      <CameraOutlined :style="{ fontSize: '24px' }" />
+                      <IconCameraCog stroke-width="1.25" />
+                      <!-- <CameraOutlined :style="{ fontSize: '24px' }" /> -->
                     </div>
                     <div class="content-detail">
                       <div class="file-name">Device Info</div>
@@ -165,15 +166,7 @@
                       currentPhoto.photo.exif.GPSLatitude
                     "
                   >
-                    <MapboxMap
-                      style="height: 400px"
-                      access-token="pk.eyJ1Ijoia2llbnRydW5nMjcwNCIsImEiOiJja3dyc256Nmcwem5qMzBvMjU4YWdxMTJhIn0.dUbrpFF2lLAISz6hVyBPNw"
-                      map-style="mapbox://styles/mapbox/streets-v11"
-                      :center="getPosition(currentPhoto)"
-                      :zoom="16"
-                    >
-                      <MapboxMarker :lng-lat="getPosition(currentPhoto)" />
-                    </MapboxMap>
+                    <AppMapBox :height="200" :latLong="getPosition(currentPhoto)" :zoom="16" />
                   </div>
                 </div>
               </div>
@@ -201,6 +194,14 @@ import {
   PictureOutlined,
   CameraOutlined
 } from '@ant-design/icons-vue'
+import {
+  IconCameraCog,
+  IconPhotoExclamation,
+  IconPhoto,
+  IconCalendarTime,
+  IconX,
+  IconFileDescription
+} from '@tabler/icons-vue'
 import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 export default {
@@ -218,7 +219,13 @@ export default {
     PictureOutlined,
     CameraOutlined,
     MapboxMap,
-    MapboxMarker
+    MapboxMarker,
+    IconCameraCog,
+    IconPhotoExclamation,
+    IconPhoto,
+    IconCalendarTime,
+    IconX,
+    IconFileDescription
   },
   props: {
     direction: {
@@ -257,7 +264,6 @@ export default {
   },
   methods: {
     getPosition() {
-      console.log(this.removeString(this.currentPhoto.photo.exif.GPSLongitude))
       return [
         parseFloat(this.removeString(this.currentPhoto.photo.exif.GPSLongitude)),
         parseFloat(this.removeString(this.currentPhoto.photo.exif.GPSLatitude))
