@@ -2,6 +2,7 @@
   <a-card class="cust-card" :bordered="false" ref="viewer" @mousemove="mouseMove">
     <div style="min-height: 100vh; display: flex">
       <div style="position: relative; flex: 1">
+        {{ test }}
         <!-- <transition-group tag="div" class="img-slider" :name="transition"> -->
         <div class="img-cont">
           <div class="category" v-if="mousemove">
@@ -66,7 +67,7 @@
                 {{ $i18n.t('infomation') }}
               </div>
               <div class="btn-close" @click="viewInfo">
-                <IconX stroke-width="1.25" />
+                <IconX stroke-width="1.25" :size="24" />
               </div>
               <!-- </div> -->
             </div>
@@ -79,7 +80,7 @@
                 <div class="detail-content">
                   <div class="content-box align-center">
                     <div class="icon">
-                      <IconFileDescription stroke-width="1.25" />
+                      <IconFileDescription stroke-width="1.25" :size="24" />
                     </div>
                     <div class="content-detail">
                       <a-textarea
@@ -92,15 +93,26 @@
                   </div>
                   <div class="content-box">
                     <div class="icon">
-                      <IconCalendarTime stroke-width="1.25" />
+                      <IconCalendarTime stroke-width="1.25" :size="24" />
                     </div>
                     <div class="content-detail">
-                      {{ formatUnix(currentPhoto?.photo?.modified_at) }}
+                      <div class="date-create">
+                        {{ unixToDateTime.date }}
+                      </div>
+                      <div class="date-create" @click="datepicker = !datepicker">
+                        {{ unixToDateTime.weekdaysShort }}, {{ unixToDateTime.time }}
+                      </div>
+                      <!-- {{ formatUnix(currentPhoto?.photo?.modified_at) }} -->
+                      <!-- <a-date-picker
+                        v-model:value="currentPhoto.photo.modified_at"
+                        format="DD-MM-YYYY HH:mm:ss"
+                        :show-time="{ defaultValue: defaultDateTime }"
+                      /> -->
                     </div>
                   </div>
                   <div class="content-box">
                     <div class="icon">
-                      <IconPhoto stroke-width="1.25" />
+                      <IconPhoto stroke-width="1.25" :size="24" />
                     </div>
                     <div class="content-detail">
                       <div class="file-name">
@@ -110,7 +122,7 @@
                   </div>
                   <div class="content-box">
                     <div class="icon">
-                      <IconPhotoExclamation stroke-width="1.25" />
+                      <IconPhotoExclamation stroke-width="1.25" :size="24" />
                     </div>
                     <div class="content-detail">
                       <div class="file-name">Size Info</div>
@@ -126,7 +138,7 @@
                   </div>
                   <div class="content-box">
                     <div class="icon">
-                      <IconCameraCog stroke-width="1.25" />
+                      <IconCameraCog stroke-width="1.25" :size="24" />
                       <!-- <CameraOutlined :style="{ fontSize: '24px' }" /> -->
                     </div>
                     <div class="content-detail">
@@ -188,11 +200,11 @@ import {
   MoreOutlined,
   DeleteOutlined,
   StarOutlined,
-  ShareAltOutlined,
-  CloseOutlined,
-  CalendarOutlined,
-  PictureOutlined,
-  CameraOutlined
+  ShareAltOutlined
+  // CloseOutlined,
+  // CalendarOutlined,
+  // PictureOutlined,
+  // CameraOutlined
 } from '@ant-design/icons-vue'
 import {
   IconCameraCog,
@@ -202,7 +214,7 @@ import {
   IconX,
   IconFileDescription
 } from '@tabler/icons-vue'
-import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl'
+// import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 export default {
   components: {
@@ -214,12 +226,12 @@ export default {
     DeleteOutlined,
     StarOutlined,
     ShareAltOutlined,
-    CloseOutlined,
-    CalendarOutlined,
-    PictureOutlined,
-    CameraOutlined,
-    MapboxMap,
-    MapboxMarker,
+    // CloseOutlined,
+    // CalendarOutlined,
+    // PictureOutlined,
+    // CameraOutlined,
+    // MapboxMap,
+    // MapboxMarker,
     IconCameraCog,
     IconPhotoExclamation,
     IconPhoto,
@@ -233,10 +245,10 @@ export default {
       default: 0
     },
     currentPhoto: {
-      type: Object,
-      default() {
-        return {}
-      }
+      type: Object
+      // default() {
+      //   return {}
+      // }
     },
     totalPhoto: {
       type: Number,
@@ -252,7 +264,7 @@ export default {
       center: { lat: 40.689247, lng: -74.044502 },
       mapCenter: [105.7842749, 21.0268378],
       pos: [105.7842749, 21.0268378],
-      defaultDate: this.$dayjs('00:00:00', 'HH:mm:ss')
+      defaultDateTime: this.$dayjs('00:00:00', 'HH:mm:ss')
     }
   },
   computed: {
@@ -260,6 +272,17 @@ export default {
       if (this.direction === 1) return 'slide'
       else if (this.direction === -1) return 'slideback'
       else return 'fade-transition'
+    },
+    unixToDateTime() {
+      let time = this.currentPhoto?.photo?.modified_at
+      if (time) {
+        return {
+          date: this.$dayjs(time).format('DD-MM-YYYY'),
+          weekdaysShort: this.$dayjs(time).format('dddd'),
+          time: this.$dayjs(time).format('HH:mm')
+        }
+      }
+      return {}
     }
   },
   methods: {
@@ -281,10 +304,9 @@ export default {
     //   else return encodeURI(this.$basePath + "/assets/full/" + photo.path);
     // return new URL(`/src/assets/images/${1}.jpeg`, import.meta.url).href
     // },
-    handleDescription() {
-      this.description = this.currentPhoto.photo.description
-      console.log(this.currentPhoto.photo)
-    },
+    // handleDescription() {
+    //   this.description = this.currentPhoto.photo.description
+    // },
     mouseMove() {
       if (this.timedFunction) clearInterval(this.timedFunction)
       this.mousemove = true

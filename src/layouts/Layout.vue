@@ -28,43 +28,14 @@
         <Sider ref="sider" />
       </a-drawer>
       <a-layout-content>
-        <!-- <a-layout-header
-          v-if="isSider"
-          class="unvue-header"
-          :class="isHeaderLight ? 'unvue-header-light' : 'unvue-header-dark'"
+        <div
+          class="unvue-content"
+          @dragenter.prevent="toggleActive"
+          @dragleave.prevent="toggleActive"
+          @drop.prevent="drop"
+          @dragover.prevent
         >
-          Header
-        </a-layout-header> -->
-        <div class="unvue-content">
-          <!-- Layout：
-          <a-radio-group v-model:value="layout">
-            <a-radio-button value="top">top</a-radio-button>
-            <a-radio-button value="mix">mix</a-radio-button>
-            <a-radio-button value="sider">sider</a-radio-button>
-          </a-radio-group>
-          <br />
-          Header Theme：
-          <a-radio-group v-model:value="headerTheme">
-            <a-radio-button value="light">light</a-radio-button>
-            <a-radio-button value="dark">dark</a-radio-button>
-          </a-radio-group>
-          <br />
-          <template v-if="!isTop">
-            Sider Theme：
-            <a-radio-group v-model:value="siderTheme">
-              <a-radio-button value="light">light</a-radio-button>
-              <a-radio-button value="dark">dark</a-radio-button>
-            </a-radio-group>
-            <br />
-          </template>
-          链接：
-          <a-space>
-            <RouterLink to="/dashboard/analysis">Analysis</RouterLink>
-            <RouterLink to="/dashboard/settings">Settings</RouterLink>
-          </a-space>
-          <br />
-          <br />
-          <br /> -->
+          {{ files }}
           <RouterView />
         </div>
       </a-layout-content>
@@ -74,6 +45,7 @@
 
 <script>
 import { MenuOutlined } from '@ant-design/icons-vue'
+import axios from '@/plugins/axios'
 
 export default {
   components: {
@@ -82,7 +54,9 @@ export default {
   data() {
     return {
       collapsed: false,
-      isMobile: false
+      isMobile: false,
+      files: [],
+      uploadedFiles: []
     }
   },
   mounted() {
@@ -130,6 +104,51 @@ export default {
     toggleCollapsed() {
       // this.$refs.sider.toggleCollapsed()
       this.collapsed = !this.collapsed
+    },
+    toggleActive() {
+      this.$root.$refs.dropzone.toggleActive()
+    },
+    drop(e) {
+      // console.log(e.dataTransfer.files)
+      let files = e.dataTransfer.files
+
+      // this.files = files
+      // const formData = new FormData()
+      for (let index = 0; index < files.length; index++) {
+        this.files.push({ file: files[index], loading: 0 })
+      }
+      // files.forEach((file) => {
+      //   this.files.push({ file: file, loading: 0 })
+      //   // formData.append('files', file)
+      // })
+      // console.log(this.files)
+      let vm = this
+      this.files.forEach((file, index) => {
+        vm.handleUpload(index, file)
+      })
+      // axios.post('upload', formData, {
+      //   onUploadProgress: ({loaded, total}) => {
+
+      //   }
+      // })
+      // this.$root.$refs.dropzone.toggleActive()
+    },
+
+    handleUpload(index, file) {
+      const formData = new FormData()
+      formData.append('file', file.file)
+      axios.post('upload', formData, {
+        onUploadProgress: ({ loaded, total }) => {
+          file.loading = Math.floor((loaded / total) * 100)
+          if (loaded === total) {
+            const fileSize =
+              total < 1024 ? (total = ' KB') : (loaded / (1024 * 1024)).toFixed(2) + ' MB'
+            this.uploadedFiles.push({ name: file.file.name, size: fileSize })
+            // this.files.splice(index, 1)
+            // To do: remove file when 100% (find index loading 100 => remove)
+          }
+        }
+      })
     }
   }
 }

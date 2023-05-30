@@ -30,7 +30,7 @@
         @right="navigate(1)"
         :nextPhoto="nextPhoto"
         :prevPhoto="prevPhoto"
-        :current-photo="currentPhoto"
+        :currentPhoto="currentPhoto"
         :direction="imageViewerDirection"
         :total-photo="totalPhoto"
         @close="close()"
@@ -723,7 +723,7 @@ export default {
   computed: {},
   created() {
     this.$root.$refs.loading.start()
-    console.log(import.meta.env.VITE_MAPBOX_API)
+    // console.log(import.meta.env.VITE_MAPBOX_API)
     for (const property in this.images) {
       // console.log(this.images[property])
       this.images[property].forEach((element) => {
@@ -780,7 +780,7 @@ export default {
         this.prevPhoto = this.getNextSectionSegmentAsset(this.currentPhoto, -1)
       }
       // console.log(this.imageViewerDirection)
-      this.$refs.viewer.handleDescription()
+      // this.$refs.viewer.handleDescription()
     },
     keyboardActionDialog(event) {
       if (event.code == 'ArrowLeft') {

@@ -1,4 +1,4 @@
-@use '../abstracts/colors' as *;
+@use '../abstracts/colors'as *;
 
 @font-face {
   font-family: 'Inter';
@@ -35,6 +35,16 @@
   src: url('@/assets/fonts/SF-Pro-Display-Regular.otf');
 }
 
+@font-face {
+  font-family: 'Segoe';
+  src: url('@/assets/fonts/Segoe UI.ttf');
+}
+
+@font-face {
+  font-family: 'Helvetica';
+  src: url('@/assets/fonts/Helvetica.ttf');
+}
+
 .limit-line {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -46,13 +56,12 @@
   word-break: break-all;
 }
 
-$lines: (
-  'one': 1,
+$lines: ('one': 1,
   'two': 2,
-  'four': 4
-);
+  'four': 4);
 
-@each $lineName, $lineNum in $lines {
+@each $lineName,
+$lineNum in $lines {
   .#{$lineName}-line {
     @extend .limit-line;
     -webkit-line-clamp: $lineNum;

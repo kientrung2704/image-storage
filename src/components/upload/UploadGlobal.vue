@@ -13,7 +13,6 @@
       ref="pond"
       label-idle="Drop files here..."
       v-bind:allow-multiple="true"
-      accepted-file-types="image/jpeg, image/png"
       :server="myServer"
       v-bind:files="myFiles"
       v-on:init="handleFilePondInit"
@@ -24,7 +23,7 @@
 </template>
 
 <script>
-import * as exifr from 'exifr'
+// import * as exifr from 'exifr'
 import vueFilePond from 'vue-filepond'
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
@@ -47,10 +46,10 @@ export default {
       myFiles: [],
       myServer: {
         process: async (fieldName, file, metadata, load) => {
-          const formData = new FormData()
+          // const formData = new FormData()
           console.log(file)
-          const buffer = await exifr.parse(file)
-          console.log(buffer)
+          // const buffer = await exifr.parse(file)
+          // console.log(buffer)
           // EXIF.getData(file, function () {
           //   var make = EXIF.getTag(this, 'Make')
           //   var model = EXIF.getTag(this, 'Model')
@@ -61,7 +60,7 @@ export default {
           // const latitude = buffer.latitude ?? null
 
           // console.log(buffer)
-          formData.append('file', file)
+          // formData.append('file', file)
           // formData.append('longitude', longitude)
           // formData.append('latitude', latitude)
           load()
