@@ -1,36 +1,11 @@
 <template>
   <div class="main">
-    <!-- <AppBreadcrumb>
+    <AppBreadcrumb>
       <template #content>
         <div>1111</div>
       </template>
-    </AppBreadcrumb> -->
-    <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
-      <h3>Drop files to upload</h3>
-    </div>
-
-    <UploadProgress ref="progress" :files="files" @close="clearFile()" />
-
-    <file-upload
-      class="btn btn-primary dropdown-toggle"
-      :post-action="postAction"
-      :extensions="extensions"
-      :accept="accept"
-      :multiple="multiple"
-      :directory="directory"
-      :create-directory="createDirectory"
-      :size="size || 0"
-      :thread="thread < 1 ? 1 : thread > 5 ? 5 : thread"
-      :drop="drop"
-      :drop-directory="dropDirectory"
-      :add-index="addIndex"
-      v-model="files"
-      @input-filter="inputFilter"
-      @input-file="inputFile"
-      ref="upload"
-    >
-    </file-upload>
-    <!-- <div class="content">
+    </AppBreadcrumb>
+    <div class="content">
       <div v-for="(months, index) in images" :key="index">
         {{ index }}
         <div class="content-image">
@@ -55,28 +30,23 @@
         @right="navigate(1)"
         :nextPhoto="nextPhoto"
         :prevPhoto="prevPhoto"
-        :current-photo="currentPhoto"
+        :currentPhoto="currentPhoto"
         :direction="imageViewerDirection"
         :total-photo="totalPhoto"
         @close="close()"
       />
-    </a-modal> -->
+    </a-modal>
   </div>
 </template>
 
 <script>
 import { message } from 'ant-design-vue'
-import FileUpload from 'vue-upload-component'
-// import request from 'umi-request'
-import axios from '@/plugins/axios'
-
 // import AppBreadcrumb from '../../components/AppBreadcrumb.vue'
 // import AppImageGallery from '../../components/AppBreadcrumb.vue'
 export default {
   components: {
     // AppBreadcrumb,
     // AppImageGallery
-    FileUpload
   },
   data() {
     return {
@@ -747,30 +717,13 @@ export default {
       imagesList: [],
       currentPhoto: null,
       prevPhoto: null,
-      nextPhoto: null,
-      files: [],
-      postAction: 'http://bveats-api.test/upload',
-      accept: 'image/png,image/gif,image/jpeg,image/webp,video/mp4,audio/mp4,application/mp4',
-      extensions: 'gif,jpg,jpeg,png,webp,mp4',
-      // extensions: ['gif', 'jpg', 'jpeg','png', 'webp'],
-      // extensions: /\.(gif|jpe?g|png|webp)$/i,
-      minSize: 1024,
-      size: 1024 * 1024 * 1000,
-      multiple: true,
-      directory: false,
-      drop: true,
-      dropDirectory: true,
-      createDirectory: false,
-      addIndex: false,
-      thread: 2,
-      name: 'file',
-      putAction: '/upload/put',
-      uploadAuto: true
+      nextPhoto: null
     }
   },
   computed: {},
   created() {
     this.$root.$refs.loading.start()
+    // console.log(import.meta.env.VITE_MAPBOX_API)
     for (const property in this.images) {
       // console.log(this.images[property])
       this.images[property].forEach((element) => {
@@ -783,139 +736,6 @@ export default {
     }, 500)
   },
   methods: {
-    clearFile() {
-      this.files = []
-    },
-    async customAction(file, component) {
-      // return await component.uploadPut(file)
-      console.log(file.file)
-      const fileUpload = file.file
-      const formData = new FormData()
-      formData.append('file', fileUpload)
-      axios.post('upload', formData)
-      // request('http://localhost:8000/api/file-save', {
-      //   method: 'post',
-      //   data: formData
-      // })
-      // return await component.uploadHtml4(file)
-    },
-    // add, update, remove File Event
-    inputFile(newFile, oldFile) {
-      this.$refs.progress.changeVisble()
-      if (newFile && oldFile) {
-        // update
-
-        if (newFile.active && !oldFile.active) {
-          // beforeSend
-          // min size
-          if (
-            newFile.size >= 0 &&
-            this.minSize > 0 &&
-            newFile.size < this.minSize &&
-            newFile.type !== 'text/directory'
-          ) {
-            this.$refs.upload.update(newFile, { error: 'size' })
-          }
-        }
-
-        if (newFile.progress !== oldFile.progress) {
-          // progress
-        }
-
-        if (newFile.error && !oldFile.error) {
-          // error
-        }
-
-        if (newFile.success && !oldFile.success) {
-          // success
-        }
-      }
-
-      if (!newFile && oldFile) {
-        // remove
-        if (oldFile.success && oldFile.response.id) {
-          // $.ajax({
-          //   type: 'DELETE',
-          //   url: '/upload/delete?id=' + oldFile.response.id,
-          // })
-        }
-      }
-
-      // Automatically activate upload
-      if (Boolean(newFile) !== Boolean(oldFile) || oldFile.error !== newFile.error) {
-        if (this.uploadAuto && !this.$refs.upload.active) {
-          this.$refs.upload.active = true
-        }
-      }
-      // console.log(this.$refs.upload.uploaded, newFile.xhr)
-      if (this.$refs.upload.uploaded) {
-        if (newFile.xhr) {
-          // Todo
-          // Get id response, get date create file => update file by id
-          // console.log(newFile.response)
-        }
-      }
-    },
-    inputFilter(newFile, oldFile, prevent) {
-      if (newFile && !oldFile) {
-        // Before adding a file
-        // 添加文件前
-
-        // Filter system files or hide files
-        // 过滤系统文件 和隐藏文件
-        if (/(\/|^)(Thumbs\.db|desktop\.ini|\..+)$/.test(newFile.name)) {
-          return prevent()
-        }
-
-        // Filter php html js file
-        // 过滤 php html js 文件
-        if (/\.(php5?|html?|jsx?)$/i.test(newFile.name) && newFile.type !== 'text/directory') {
-          return prevent()
-        }
-
-        if (
-          newFile &&
-          newFile.error === '' &&
-          newFile.file &&
-          (!oldFile || newFile.file !== oldFile.file)
-        ) {
-          // Create a blob field
-          // 创建 blob 字段
-          newFile.blob = ''
-          let URL = window.URL || window.webkitURL
-          if (URL) {
-            newFile.blob = URL.createObjectURL(newFile.file)
-          }
-
-          // Thumbnails
-          // 缩略图
-          newFile.thumb = ''
-          if (newFile.blob && newFile.type.substr(0, 6) === 'image/') {
-            newFile.thumb = newFile.blob
-          }
-        }
-
-        // image size
-        // image 尺寸
-        if (
-          newFile &&
-          newFile.error === '' &&
-          newFile.type.substr(0, 6) === 'image/' &&
-          newFile.blob &&
-          (!oldFile || newFile.blob !== oldFile.blob)
-        ) {
-          newFile.error = 'image parsing'
-          let img = new Image()
-          img.onload = () => {
-            this.$refs.upload.update(newFile, { error: '', height: img.height, width: img.width })
-          }
-          img.οnerrοr = (e) => {
-            this.$refs.upload.update(newFile, { error: 'parsing image size' })
-          }
-          img.src = newFile.blob
-        }
-      }
-    },
     clickPhoto(id) {
       const index = this.imagesList.findIndex((e) => e.id === id)
       if (index >= 0) {
@@ -960,7 +780,7 @@ export default {
         this.prevPhoto = this.getNextSectionSegmentAsset(this.currentPhoto, -1)
       }
       // console.log(this.imageViewerDirection)
-      this.$refs.viewer.handleDescription()
+      // this.$refs.viewer.handleDescription()
     },
     keyboardActionDialog(event) {
       if (event.code == 'ArrowLeft') {
@@ -1032,83 +852,5 @@ export default {
     padding: 0;
     flex: 1;
   }
-}
-</style>
-<style>
-.example-full .btn-group .dropdown-menu {
-  display: block;
-  visibility: hidden;
-  transition: all 0.2s;
-}
-.example-full .btn-group:hover > .dropdown-menu {
-  visibility: visible;
-}
-
-.example-full label.dropdown-item {
-  margin-bottom: 0;
-}
-
-.example-full .btn-group .dropdown-toggle {
-  margin-right: 0.6rem;
-}
-
-.td-image-thumb {
-  max-width: 4em;
-  max-height: 4em;
-}
-
-.example-full .filename {
-  margin-bottom: 0.3rem;
-}
-
-.example-full .btn-is-option {
-  margin-top: 0.25rem;
-}
-.example-full .example-foorer {
-  padding: 0.5rem 0;
-  border-top: 1px solid #e9ecef;
-  border-bottom: 1px solid #e9ecef;
-}
-
-.example-full .edit-image img {
-  max-width: 100%;
-}
-
-.example-full .edit-image-tool {
-  margin-top: 0.6rem;
-}
-
-.example-full .edit-image-tool .btn-group {
-  margin-right: 0.6rem;
-}
-
-.example-full .footer-status {
-  padding-top: 0.4rem;
-}
-
-.drop-active {
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  position: fixed;
-  z-index: 9999;
-  opacity: 0.6;
-  text-align: center;
-  background: #000;
-}
-
-.drop-active h3 {
-  margin: -0.5em 0 0;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  font-size: 40px;
-  color: #fff;
-  padding: 0;
 }
 </style>

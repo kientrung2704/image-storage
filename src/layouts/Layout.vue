@@ -28,14 +28,7 @@
         <Sider ref="sider" />
       </a-drawer>
       <a-layout-content>
-        <div
-          class="unvue-content"
-          @dragenter.prevent="toggleActive"
-          @dragleave.prevent="toggleActive"
-          @drop.prevent="drop"
-          @dragover.prevent
-        >
-          {{ files }}
+        <div class="unvue-content">
           <RouterView />
         </div>
       </a-layout-content>

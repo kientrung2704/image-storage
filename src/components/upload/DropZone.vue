@@ -4,6 +4,15 @@
       <div class="box">
         <div class="inside-box">
           <div class="image"></div>
+          <input
+            ref="input"
+            type="file"
+            @change="inputOnChange"
+            :webkitdirectory="true"
+            :allowdirs="true"
+            :directory="true"
+            :multiple="true"
+          />
           <p><strong>Drag & drop</strong> files anywhere</p>
           <p>to upload them</p>
         </div>
