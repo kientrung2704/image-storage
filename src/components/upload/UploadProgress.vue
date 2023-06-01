@@ -4,27 +4,58 @@
       <div v-show="modalActive" class="modal">
         <transition name="modal-animation-inner">
           <div v-show="modalActive" class="modal-inner">
-            <div class="modal-header">
+            <div class="modal-header mb-18">
               <div class="title">Uploading files</div>
-              <div class="close">x</div>
+              <div class="header-right">
+                <div class="total-percentage">{{ totalPercentage }}%</div>
+                <div
+                  class="close"
+                  v-if="totalPercentage === 100 && activeKey === ''"
+                  @click="close"
+                >
+                  <IconX stroke-width="3" :size="16" />
+                </div>
+                <div class="close" v-else @click="collapse">
+                  <IconChevronDown stroke-width="3" :size="16" />
+                </div>
+              </div>
             </div>
-            <!-- {{ files }} - -->
-            <div class="modal-body">{{ files.length }} Files / {{ getFileSize(totalSize) }} MB</div>
+
+            <div class="file-group">
+              <span class="file-total"> {{ files.length }} Files </span> /
+              {{ getFileSize(currentUploadSize) }} MB of {{ getFileSize(totalSize) }} MB /
+              {{ getFileSize(currentUploadSize) === getFileSize(totalSize) ? 'done' : '' }}
+            </div>
+
             <!-- <div>
               {{ totalPercentage }}
             </div> -->
-            <a-progress :percent="totalPercentage" :show-info="false" />
-
-            <div class="file-detail" v-for="(file, index) in files" :key="index">
-              <img class="td-image-thumb" v-if="file.thumb" :src="file.thumb" />
-              <div class="file-content">
-                <div>{{ getFileSize(file.size) }} MB</div>
-                <div class="filename">
-                  {{ file.name }}
-                </div>
-                <a-progress :percent="file.progress" :show-info="false" />
-              </div>
+            <div>
+              <a-progress
+                size="small"
+                :stroke-color="getColor(totalPercentage)"
+                :percent="totalPercentage"
+                :show-info="false"
+              />
             </div>
+            <!-- {{ files }} - -->
+            <a-collapse v-model:activeKey="activeKey" ghost>
+              <a-collapse-panel key="1" header="" :show-arrow="false">
+                <div class="modal-body mt-18">
+                  <div class="file-detail" v-for="(file, index) in files" :key="index">
+                    <img class="image-thumb" v-if="file.thumb" :src="file.thumb" />
+                    <div class="file-content">
+                      <!-- <div> -->
+                      <span class="file-name">{{ file.name }}</span>
+                      <!-- </div> -->
+                      <div class="file-size">{{ getFileSize(file.size) }} MB</div>
+
+                      <a-progress size="small" :percent="file.progress" :show-info="false" />
+                    </div>
+                  </div>
+                </div>
+              </a-collapse-panel>
+            </a-collapse>
           </div>
         </transition>
       </div>
@@ -58,7 +89,12 @@
 </template>
 
 <script>
+import { IconX, IconChevronDown } from '@tabler/icons-vue'
 export default {
+  components: {
+    IconX,
+    IconChevronDown
+  },
   props: {
     files: {
       type: Array,
@@ -71,7 +107,8 @@ export default {
   data() {
     return {
       visiable: false,
-      modalActive: true
+      modalActive: false,
+      activeKey: 1
     }
   },
 
@@ -80,6 +117,17 @@ export default {
       const size = 0
       const total = this.files.reduce(
         (accumulator, currentValue) => accumulator + currentValue.size,
+        size
+      )
+
+      return total
+    },
+
+    currentUploadSize() {
+      const size = 0
+      const total = this.files.reduce(
+        (accumulator, currentValue) =>
+          accumulator + (currentValue.size * +currentValue.progress) / 100,
         size
       )
 
@@ -97,12 +145,32 @@ export default {
     }
   },
 
+  watch: {
+    totalPercentage(newValue) {
+      if (newValue === 100) {
+        console.log(123)
+        this.activeKey = ''
+      }
+    }
+  },
+
   methods: {
     changeVisble() {
-      this.visiable = true
+      this.activeKey = 1
+      this.modalActive = true
     },
+
     close() {
+      this.modalActive = false
+      this.activeKey = 1
       this.$emit('close')
+    },
+    collapse() {
+      if (this.activeKey === 1) {
+        this.activeKey = ''
+      } else {
+        this.activeKey = 1
+      }
     },
     getFileSize(size) {
       if (size) {
@@ -111,12 +179,20 @@ export default {
         return Math.round(sizeMb * 100) / 100
       }
       return ''
+    },
+
+    getColor(size) {
+      if (size < 100) {
+        return '#0451F9'
+      } else {
+        return '#65CB69'
+      }
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .modal {
   // display: flex;
   // justify-content: center;
@@ -141,12 +217,96 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      .title {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        .close {
+          background-color: #e8eef2;
+          border-radius: 50%;
+          // padding: 2px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 24px;
+          height: 24px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .modal-body {
+      .file-group {
+        .file-total {
+          font-family: 'Satoshi Medium';
+          font-size: 14px;
+        }
+      }
+      .file-detail {
+        display: flex;
+        gap: 12px;
+        border: 1px solid #e6ebef;
+        align-items: center;
+        padding: 12px;
+        border-radius: 5px;
+        margin-bottom: 8px;
+
+        .image-thumb {
+          width: 36px;
+          height: 36px;
+          border-radius: 5px;
+          object-fit: cover;
+          box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        }
+
+        .file-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 40px;
+
+          .file-name {
+            font-family: 'Satoshi Medium';
+            font-size: 14px;
+            // font-weight: 600;
+            line-height: 1.25;
+          }
+
+          .file-size {
+            font-size: 12px;
+            color: #939ca4;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .file-detail:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }
 
-.td-image-thumb {
-  max-width: 16px;
-  max-height: 16px;
+:deep(.ant-progress) {
+  line-height: 0;
+
+  .ant-progress-bg {
+    height: 5px !important;
+  }
+}
+
+:deep(.ant-collapse-header) {
+  display: none !important;
+}
+
+:deep(.ant-collapse-content-box) {
+  padding: 0 !important;
 }
 </style>

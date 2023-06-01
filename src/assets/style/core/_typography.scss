@@ -45,6 +45,17 @@
   src: url('@/assets/fonts/Helvetica.ttf');
 }
 
+@font-face {
+  font-family: 'Satoshi';
+  src: url('@/assets/fonts/Satoshi-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Satoshi Medium';
+  src: url('@/assets/fonts/Satoshi-Medium.otf');
+}
+
+
 .limit-line {
   overflow: hidden;
   text-overflow: ellipsis;

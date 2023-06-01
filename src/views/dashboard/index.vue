@@ -13,6 +13,7 @@
 
     <file-upload
       class="btn btn-primary dropdown-toggle"
+      :custom-action="customAction"
       :post-action="postAction"
       :extensions="extensions"
       :accept="accept"
@@ -762,7 +763,7 @@ export default {
       dropDirectory: true,
       createDirectory: false,
       addIndex: false,
-      thread: 2,
+      thread: 1,
       name: 'file',
       putAction: '/upload/put',
       uploadAuto: true
@@ -787,21 +788,22 @@ export default {
       this.files = []
     },
     async customAction(file, component) {
+      this.$refs.progress.changeVisble()
+
       // return await component.uploadPut(file)
-      console.log(file.file)
-      const fileUpload = file.file
-      const formData = new FormData()
-      formData.append('file', fileUpload)
-      axios.post('upload', formData)
+      // console.log(file.file)
+      // const fileUpload = file.file
+      // const formData = new FormData()
+      // formData.append('file', fileUpload)
+      // axios.post('upload', formData)
       // request('http://localhost:8000/api/file-save', {
       //   method: 'post',
       //   data: formData
       // })
-      // return await component.uploadHtml4(file)
+      return await component.uploadHtml5(file)
     },
     // add, update, remove File Event
     inputFile(newFile, oldFile) {
-      this.$refs.progress.changeVisble()
       if (newFile && oldFile) {
         // update
 
@@ -847,9 +849,10 @@ export default {
           this.$refs.upload.active = true
         }
       }
-      // console.log(this.$refs.upload.uploaded, newFile.xhr)
+
       if (this.$refs.upload.uploaded) {
-        if (newFile.xhr) {
+        if (newFile) {
+          console.log(newFile.response)
           // Todo
           // Get id response, get date create file => update file by id
           // console.log(newFile.response)
