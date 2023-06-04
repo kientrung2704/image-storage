@@ -68,10 +68,7 @@
 <script>
 import { message } from 'ant-design-vue'
 import FileUpload from 'vue-upload-component'
-// import request from 'umi-request'
-import axios from '@/plugins/axios'
-
-// import AppBreadcrumb from '../../components/AppBreadcrumb.vue'
+// import axios from '@/plugins/axios'
 // import AppImageGallery from '../../components/AppBreadcrumb.vue'
 export default {
   components: {

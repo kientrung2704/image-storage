@@ -13,13 +13,60 @@ const routes = [
     },
     children: [
       {
-        path: 'test',
+        path: 'image',
         name: 'image',
         component: () => import('@/views/dashboard/index.vue'),
         meta: {
-          title: 'Dashboard',
+          title: 'Image',
           requireAuth: false
         }
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('@/views/profile/index.vue'),
+        meta: {
+          title: 'Profile',
+          requireAuth: false
+        },
+        children: [
+          {
+            path: 'general',
+            name: 'general',
+            component: () => import('@/views/profile/General.vue'),
+            meta: {
+              title: 'General',
+              requireAuth: false
+            }
+          },
+          {
+            path: 'security',
+            name: 'security',
+            component: () => import('@/views/profile/Security.vue'),
+            meta: {
+              title: 'Security',
+              requireAuth: false
+            }
+          },
+          {
+            path: 'plan',
+            name: 'plan',
+            component: () => import('@/views/profile/Plan.vue'),
+            meta: {
+              title: 'Plan',
+              requireAuth: false
+            }
+          },
+          {
+            path: 'login-history',
+            name: 'login-history',
+            component: () => import('@/views/profile/LoginHistory.vue'),
+            meta: {
+              title: 'LoginHistory',
+              requireAuth: false
+            }
+          }
+        ]
       },
       {
         path: 'test1',

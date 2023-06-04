@@ -10,5 +10,6 @@ export default {
   trash: 'Thùng rác',
   infomation: 'Thông tin',
   description_placeholder: 'Thêm mô tả',
-  detail: 'Chi tiết'
+  detail: 'Chi tiết',
+  profile: 'Thông tin'
 }

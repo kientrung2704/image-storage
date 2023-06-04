@@ -12,39 +12,43 @@
       <div class="header-item">
         <a-tooltip placement="bottom">
           <template #title>{{ $i18n.t('support') }}</template>
-          <question-circle-outlined style="font-size: 20px" />
+          <question-circle-outlined style="font-size: 20px; color: #86909a" />
         </a-tooltip>
       </div>
       <div class="header-item" @click="toggleFullscreen">
         <a-tooltip placement="bottom">
           <template #title>Setting</template>
-          <setting-outlined style="font-size: 20px" />
+          <setting-outlined style="font-size: 20px; color: #86909a" />
         </a-tooltip>
       </div>
       <div class="header-item">
-        <a-dropdown trigger="click">
-          <a-avatar>
-            {{ userName }}
+        <a-dropdown trigger="click" @click.prevent>
+          <a-avatar
+            src="https://joesch.moe/api/v1/random"
+            :style="{ backgroundColor: '#022ec6', verticalAlign: 'middle', cursor: 'pointer' }"
+          >
+            <!-- {{ userName }} -->
           </a-avatar>
           <template #overlay>
-            <a-menu>
-              <a-menu-item>
+            <a-menu class="cust-menu" @click="changeRouter">
+              <a-menu-item key="profile">
                 <template #icon>
-                  <user-outlined />
+                  <IconUser stroke-width="2.5" :size="18" color="#86909A" />
                 </template>
-                我的信息
+                <span class="item-detail"> Profile </span>
               </a-menu-item>
               <a-menu-item>
                 <template #icon>
-                  <user-switch-outlined />
+                  <IconLock stroke-width="2.5" :size="18" color="#86909A" />
                 </template>
-                切换角色
+                <span class="item-detail"> Login history </span>
               </a-menu-item>
+              <a-menu-divider />
               <a-menu-item>
                 <template #icon>
-                  <poweroff-outlined />
+                  <IconLogout stroke-width="2.5" :size="18" color="#86909A" />
                 </template>
-                安全退出
+                <span class="item-detail"> Logout </span>
               </a-menu-item>
             </a-menu>
           </template>
@@ -62,23 +66,39 @@ import {
   UserOutlined,
   SettingOutlined
 } from '@ant-design/icons-vue'
+import { IconUser, IconLock, IconLogout } from '@tabler/icons-vue'
 export default {
   components: {
     QuestionCircleOutlined,
     PoweroffOutlined,
     UserSwitchOutlined,
     UserOutlined,
-    SettingOutlined
+    SettingOutlined,
+    IconUser,
+    IconLock,
+    IconLogout
   },
   data() {
     return {
-      userName: 'NTK'
+      userName: 'NTK',
+      selectedKeys: [],
+      openKeys: []
     }
   },
   methods: {
-    openModal() {
-      this.$root.$refs.upload.showModal()
+    changeRouter(router) {
+      this.$router.push({ name: router.key })
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.cust-menu {
+  min-width: 180px;
+  .item-detail {
+    margin-left: 5px;
+    // font-size: 16px;
+  }
+}
+</style>

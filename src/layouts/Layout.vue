@@ -29,6 +29,7 @@
       </a-drawer>
       <a-layout-content>
         <div class="unvue-content">
+          <AppBreadcrumb />
           <RouterView />
         </div>
       </a-layout-content>
@@ -178,7 +179,7 @@ const toggleCollapsed = () => {
     padding: 0 24px;
     transition: all 0.2s;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid #00000026;
     .unvue-header-left {
       display: flex;
       align-items: center;
@@ -236,7 +237,7 @@ const toggleCollapsed = () => {
   .unvue-content {
     background-color: #fff;
     height: 100%;
-    overflow: scroll;
+    overflow-y: auto;
   }
 }
 

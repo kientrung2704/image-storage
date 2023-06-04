@@ -37,7 +37,6 @@
 
       <a-menu-item
         key="explore"
-        class="test"
         @mouseover="hoverMenu('explore')"
         @mouseleave="hoverMenu"
         :class="canHover('explore')"
@@ -179,7 +178,7 @@ export default {
 }
 
 .cust-sider {
-  border-right: 1px solid rgba(0, 0, 0, 0.06) !important;
+  border-right: 1px solid #00000026 !important;
 }
 
 :deep(.ant-menu) {
