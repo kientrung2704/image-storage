@@ -31,13 +31,13 @@
           </a-avatar>
           <template #overlay>
             <a-menu class="cust-menu" @click="changeRouter">
-              <a-menu-item key="profile">
+              <a-menu-item key="general">
                 <template #icon>
                   <IconUser stroke-width="2.5" :size="18" color="#86909A" />
                 </template>
                 <span class="item-detail"> Profile </span>
               </a-menu-item>
-              <a-menu-item>
+              <a-menu-item key="login-history">
                 <template #icon>
                   <IconLock stroke-width="2.5" :size="18" color="#86909A" />
                 </template>
@@ -87,7 +87,11 @@ export default {
   },
   methods: {
     changeRouter(router) {
-      this.$router.push({ name: router.key })
+      if (!router.key) {
+        this.$router.push({ name: 'main' })
+      } else {
+        this.$router.push({ name: router.key })
+      }
     }
   }
 }

@@ -288,7 +288,7 @@ export default {
         }
       }
 
-      .file-detail:last-child {
+      .file-detail {
         margin-bottom: 0;
       }
     }

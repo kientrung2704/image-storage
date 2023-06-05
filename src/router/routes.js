@@ -115,6 +115,16 @@ const routes = [
         ]
       }
     ]
+  },
+  {
+    path: '/',
+    name: 'main',
+    component: () => import('@/layouts/MainLayout.vue'),
+    // component: () => import('@/layouts/DashboardLayout.vue'),
+    meta: {
+      name: 'Main',
+      requireAuth: false
+    }
   }
 ]
 
