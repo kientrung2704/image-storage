@@ -31,9 +31,10 @@
       ref="upload"
     >
     </file-upload>
-    <!-- <div class="content">
-      <div v-for="(months, index) in images" :key="index">
-        {{ index }}
+    <div class="wrapper-content">
+      <div v-for="(months, index) in images" :key="index" class="content">
+        <div class="content-time">{{ index }}</div>
+
         <div class="content-image">
           <div class="image" v-for="(image, i) in months" :key="i" @click="clickPhoto(image.id)">
             <img class="img-responsive" :src="image.src" alt="image" />
@@ -61,7 +62,7 @@
         :total-photo="totalPhoto"
         @close="close()"
       />
-    </a-modal> -->
+    </a-modal>
   </div>
 </template>
 
@@ -989,20 +990,29 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-  .content {
-    &-image {
-      display: flex;
-    }
-    .content-image {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      .image {
-        height: 220px;
+  .wrapper-content {
+    .content {
+      padding-bottom: 24px;
 
-        .img-responsive {
-          height: 220px;
-          width: 100%;
+      &-time {
+        font-size: 16px;
+        margin-bottom: 18px;
+      }
+
+      &-image {
+        display: flex;
+      }
+      .content-image {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        .image {
+          height: 180px;
+
+          .img-responsive {
+            height: 180px;
+            width: 100%;
+          }
         }
       }
     }

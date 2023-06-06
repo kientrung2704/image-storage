@@ -12,6 +12,8 @@ export default {
   description_placeholder: 'Thêm mô tả',
   detail: 'Chi tiết',
   profile: 'Thông tin',
+  vn: 'Tiếng Việt',
+  en: 'Tiếng Anh',
   message: {
     login: {
       login: 'Login',
@@ -37,6 +39,7 @@ export default {
     },
     title: {
       email: 'Email loi',
+      email_format: 'Email khong dung dinh dang',
       email_confirm: 'メールアドレス(確認用)',
       license_number: '宅建業免許番号',
       representative_name: '代表者氏名',

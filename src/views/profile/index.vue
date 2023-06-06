@@ -47,13 +47,13 @@ export default {
     }
   },
 
-  created() {
-    this.$root.$refs.loading.start()
+  // created() {
+  //   this.$root.$refs.loading.start()
 
-    setInterval(() => {
-      this.$root.$refs.loading.finish()
-    }, 500)
-  },
+  //   setInterval(() => {
+  //     this.$root.$refs.loading.finish()
+  //   }, 500)
+  // },
 
   methods: {
     activeRoute(name) {

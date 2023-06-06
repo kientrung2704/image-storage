@@ -48,11 +48,9 @@
                     :class="{ 'error-border': v$.user.first_name.$errors.length > 0 }"
                     @blur="handleBlurInput('first_name')"
                   />
-                  <template v-for="error of v$.user.first_name.$errors" :key="error.$uid">
-                    <div class="text-error">
-                      {{ error.$params.property }}
-                    </div>
-                  </template>
+                  <div class="text-error" v-if="v$.user.first_name.$error">
+                    {{ v$.user.first_name.$errors[0].$params.property }}
+                  </div>
                 </div>
               </div>
               <div class="profile-input">
@@ -69,12 +67,9 @@
                     v-model="user.last_name"
                     @blur="handleBlurInput('last_name')"
                   />
-
-                  <template v-for="error of v$.user.last_name.$errors" :key="error.$uid">
-                    <div class="text-error">
-                      {{ error.$params.property }}
-                    </div>
-                  </template>
+                  <div class="text-error" v-if="v$.user.last_name.$error">
+                    {{ v$.user.last_name.$errors[0].$params.property }}
+                  </div>
                 </div>
               </div>
               <div class="profile-input">
@@ -91,11 +86,9 @@
                     v-model="user.email"
                     @blur="handleBlurInput('email')"
                   />
-                  <template v-for="error of v$.user.email.$errors" :key="error.$uid">
-                    <div class="text-error">
-                      {{ error.$params.property }}
-                    </div>
-                  </template>
+                  <div class="text-error" v-if="v$.user.email.$error">
+                    {{ v$.user.email.$errors[0].$params.property }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -112,9 +105,9 @@
         <div class="setting">
           <div class="account-type">
             <div class="text">Account type</div>
-            <a-tag color="pink">Free account</a-tag>
+            <a-tag color="default">Free account</a-tag>
           </div>
-          <div class="account-type cust-margin">
+          <div class="account-type mb-24">
             <div class="text">Remain</div>
             <div class="text">128 days left</div>
           </div>
@@ -159,14 +152,36 @@
             </div>
           </div>
           <div class="button-form">
-            <a-button @click.prevent="onSubmit" type="primary" size="large">Change Data</a-button>
+            <router-link class="btn-upgrade" :to="{ name: 'plan' }"> Upgrade Account </router-link>
           </div>
         </div>
       </a-card>
     </a-col>
     <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
-      <a-card title="Card title">
-        <p>card content</p>
+      <a-card title="Language">
+        <div class="setting">
+          <a-select
+            size="large"
+            ref="select"
+            v-model:value="lang"
+            style="width: 100%"
+            @change="handleChange"
+          >
+            <template #suffixIcon><IconChevronDown stroke-width="3" :size="16" /></template>
+            <a-select-option value="viVN">
+              <div class="select-lang">
+                <img src="@/assets/images/vn.svg" class="flag-icon" alt="" srcset="" />
+                <div class="flag-select">{{ $i18n.t('vn') }}</div>
+              </div>
+            </a-select-option>
+            <a-select-option value="enUS">
+              <div class="select-lang">
+                <img src="@/assets/images/us.svg" class="flag-icon" alt="" srcset="" />
+                <div class="flag-select">{{ $i18n.t('en') }}</div>
+              </div>
+            </a-select-option>
+          </a-select>
+        </div>
       </a-card>
     </a-col>
   </a-row>
@@ -178,12 +193,13 @@ import { FILE_IMAGE_TYPE, MAX_SIZE_IMAGE } from '@/constants/dbConstant'
 import useValidate from '@vuelidate/core'
 import { maxLength, required, isNotFormatEmail } from '@/plugins/vuelidate'
 import { helpers } from '@vuelidate/validators'
-import { h } from 'vue'
-import { IconX } from '@tabler/icons-vue'
+import { IconX, IconChevronDown } from '@tabler/icons-vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    IconX
+    IconX,
+    IconChevronDown
   },
   data() {
     return {
@@ -210,7 +226,7 @@ export default {
             maxLength(255)
           ),
           isNotFormatEmail: helpers.withParams(
-            { property: this.$i18n.t('message.title.email') },
+            { property: this.$i18n.t('message.title.email_format') },
             isNotFormatEmail
           )
         },
@@ -242,6 +258,16 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    ...mapGetters({ lang: 'setting/lang' })
+  },
+
+  created() {
+    this.$root.$refs.loading.start()
+    setTimeout(() => {
+      this.$root.$refs.loading.finish()
+    }, 500)
   },
 
   methods: {
@@ -301,6 +327,11 @@ export default {
         formData.append('last_name', this.user.last_name)
         formData.append('email', this.user.email)
       }
+    },
+
+    handleChange(e) {
+      this.$store.dispatch('setting/changeLanguage', e)
+      location.reload()
     }
   }
 }
@@ -315,38 +346,6 @@ export default {
   }
 
   .profile {
-    &-input {
-      margin-bottom: 12px;
-
-      .form-label {
-        font-size: 12px;
-      }
-      .form-control {
-        margin-top: 6px;
-
-        .form-input {
-          width: 100%;
-          padding: 6px 12px;
-          background: 0 0;
-          border: none;
-          border-radius: 4px;
-          color: #000000de;
-          font-weight: 400;
-          letter-spacing: 0.00937em;
-          line-height: 28px;
-          outline: 0;
-          text-decoration: inherit;
-          text-transform: inherit;
-          // background-color: #f2f6f8;
-          border: 1px solid #00000026;
-          height: 40px;
-        }
-
-        .error-border {
-          border: 1px solid #c10015;
-        }
-      }
-    }
   }
 
   .button-form {
@@ -367,10 +366,35 @@ export default {
     :deep(.ant-btn-primary:hover) {
       opacity: 0.8;
     }
+
+    .btn-upgrade:hover {
+      background-color: #dde3e8;
+      border: 2px solid #c5d1db;
+    }
+    .btn-upgrade {
+      height: 35px;
+      border: 2px solid #dde3e8;
+      border-radius: 4px;
+      align-items: stretch;
+      background: #0000;
+      cursor: pointer;
+      display: inline-flex;
+      flex-direction: column;
+      font-size: 14px;
+      font-family: 'Sarabun Med';
+      height: auto;
+      line-height: 1.35;
+      outline: 0;
+      padding: 6px 16px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      vertical-align: middle;
+      width: auto;
+    }
   }
 
   .account-type {
-    margin-bottom: 12px;
     padding: 12px 0;
     display: flex;
     justify-content: space-between;
@@ -383,10 +407,6 @@ export default {
     :deep(.ant-tag) {
       margin-right: 0;
     }
-  }
-
-  .cust-margin {
-    margin-bottom: 52.2px;
   }
   .storage {
     margin-top: 24px;
@@ -427,6 +447,22 @@ export default {
   }
 }
 
+.select-lang {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.flag-icon {
+  height: 18px;
+  margin-right: 12px;
+  // height: 16px;
+}
+
+.flag-select {
+  line-height: 18px;
+}
+
 :deep(.ant-card) {
   height: 100%;
   border-radius: 8px !important;
@@ -455,5 +491,12 @@ export default {
 
 :deep(.progress) {
   line-height: 0;
+}
+
+:deep(
+    .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+      .ant-select-selector
+  ) {
+  box-shadow: none !important;
 }
 </style>
