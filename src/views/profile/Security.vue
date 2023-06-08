@@ -228,7 +228,7 @@ export default {
   :deep(.ant-btn-primary) {
     background-color: #0451f9 !important;
     color: #ffffff !important;
-    font-family: 'Sarabun Med';
+    font-family: 'Satoshi Med';
     border: none;
   }
 
@@ -281,7 +281,7 @@ export default {
 }
 
 :deep(.ant-card-head-title) {
-  font-family: 'Sarabun Med';
+  font-family: 'Satoshi Med';
   font-weight: 500;
 }
 </style>

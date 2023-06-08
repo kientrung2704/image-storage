@@ -2,7 +2,7 @@
 @use '../abstracts/mediaQuery'as *;
 
 body {
-  font-family: 'Sarabun';
+  font-family: 'Satoshi';
 
   &.no-scroll {
     overflow: hidden;
@@ -13,7 +13,7 @@ body {
 
 #app {
   line-height: 1;
-  font-family: 'Sarabun';
+  font-family: 'Satoshi';
   height: 100%;
   box-sizing: border-box;
   color: #222222;

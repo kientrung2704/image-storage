@@ -1,101 +1,166 @@
 <template>
   <div class="plan">
     <a-card title="Upgrade account">
-      <template #extra>
-        <div class="plan-month">
-          <div class="btn-month" :class="{ active: month === 1 }" @click="handleChangeMonth(1)">
-            1 month
-          </div>
-          <div class="btn-month" :class="{ active: month === 3 }" @click="handleChangeMonth(3)">
-            <span class="discount">5% OFF</span>
-            3 months
-          </div>
-          <div class="btn-month" :class="{ active: month === 6 }" @click="handleChangeMonth(6)">
-            <span class="discount">5% OFF</span>
-            6 months
-          </div>
-          <div class="btn-month" :class="{ active: month === 12 }" @click="handleChangeMonth(12)">
-            <span class="discount">5% OFF</span>
-            1 year
-          </div>
-        </div>
-      </template>
       <div class="setting">
-        <a-row
-          :gutter="[
-            { xs: 8, sm: 16, md: 24 },
-            { xs: 8, sm: 16, md: 24 }
-          ]"
-        >
-          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="6" :xxl="6"> 1 </a-col>
-          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="6" :xxl="6"> 1 </a-col>
-          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="6" :xxl="6"> 1 </a-col>
-          <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="6" :xxl="6"> 1 </a-col>
-        </a-row>
+        <div class="container">
+          <div class="plan-title">
+            <h2>Choose your plan</h2>
+            <div class="plan-month mb-30">
+              <div class="btn-month" :class="{ active: month === 1 }" @click="handleChangeMonth(1)">
+                1 month
+              </div>
+              <div class="btn-month" :class="{ active: month === 3 }" @click="handleChangeMonth(3)">
+                <span class="discount">5% OFF</span>
+                3 months
+              </div>
+              <div class="btn-month" :class="{ active: month === 6 }" @click="handleChangeMonth(6)">
+                <span class="discount">10% OFF</span>
+                6 months
+              </div>
+              <div
+                class="btn-month"
+                :class="{ active: month === 12 }"
+                @click="handleChangeMonth(12)"
+              >
+                <span class="discount">15% OFF</span>
+                1 year
+              </div>
+            </div>
+          </div>
+
+          <a-row
+            :gutter="[
+              { xs: 8, sm: 16, md: 24 },
+              { xs: 8, sm: 16, md: 24 }
+            ]"
+          >
+            <a-col
+              v-for="(service, index) in services"
+              :key="index"
+              :xs="24"
+              :sm="24"
+              :md="12"
+              :lg="12"
+              :xl="8"
+              :xxl="6"
+            >
+              <AppPlan :service="service" :month="month" />
+            </a-col>
+          </a-row>
+        </div>
       </div>
     </a-card>
   </div>
 </template>
 
 <script>
+import AppPlan from '../../components/AppPlan.vue'
+
 export default {
   data() {
     return {
-      month: 1
+      month: 1,
+      services: [
+        {
+          id: 1,
+          name: 'Basic',
+          isPopular: 0,
+          price: '50000',
+          limit: '2'
+        },
+        {
+          id: 2,
+          name: 'Standard',
+          isPopular: 1,
+          price: '100000',
+          limit: '10'
+        },
+        {
+          id: 3,
+          name: 'Premium',
+          isPopular: 0,
+          price: '150000',
+          limit: '20'
+        },
+        {
+          id: 4,
+          name: 'Enterprise',
+          isPopular: 0,
+          price: '200000',
+          limit: '40'
+        }
+      ]
     }
   },
-
   methods: {
     handleChangeMonth(month) {
       this.month = month
     }
-  }
+  },
+  components: { AppPlan }
 }
 </script>
 
 <style lang="scss" scoped>
 .plan {
-  &-month {
-    min-width: 350px;
-    width: 100%;
+  .plan-title {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    background-color: #dde3e8;
-    padding: 3px;
-    border-radius: 8px;
 
-    .btn-month {
-      position: relative;
-      flex: 1;
-      text-align: center;
-      cursor: pointer;
-      padding: 4px 0;
-      border-radius: 6px;
+    h2 {
+      font-size: 48px;
+      font-weight: 600;
+    }
+    .plan-month {
+      min-width: 300px;
+      max-width: 300px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      background-color: #dde3e8;
+      padding: 3px;
+      border-radius: 8px;
 
-      .discount {
-        top: -10px;
-        right: 25%;
-        color: #fff;
-        line-height: 1;
-        font-size: 11px;
-        padding: 1px 2px;
-        border-radius: 4px;
-        position: absolute;
-        background-color: #f50;
+      .btn-month {
+        position: relative;
+        flex: 1;
+        text-align: center;
+        cursor: pointer;
+        padding: 4px 0;
+        border-radius: 6px;
+
+        .discount {
+          top: -10px;
+          right: 13%;
+          color: #fff;
+          line-height: 1;
+          font-size: 11px;
+          padding: 1px 2px;
+          border-radius: 4px;
+          width: 55px;
+          position: absolute;
+          background-color: #f50;
+        }
+      }
+
+      .btn-month:hover {
+        background-color: #dde0e2;
+      }
+
+      .active {
+        background-color: #fff;
+      }
+
+      .active:hover {
+        background-color: #fff !important;
       }
     }
+  }
 
-    .btn-month:hover {
-      background-color: #dde0e2;
-    }
-
-    .active {
-      background-color: #fff;
-    }
-
-    .active:hover {
-      background-color: #c5cdd3;
-    }
+  .container {
+    max-width: 1430px;
+    margin: 0 auto;
   }
 }
 
@@ -114,7 +179,7 @@ export default {
 }
 
 :deep(.ant-card-head-title) {
-  font-family: 'Sarabun Med';
+  font-family: 'Satoshi Med';
   font-weight: 500;
 }
 </style>

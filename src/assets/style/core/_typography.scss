@@ -47,12 +47,17 @@
 
 @font-face {
   font-family: 'Satoshi';
-  src: url('@/assets/fonts/Satoshi-Regular.otf');
+  src: url('@/assets/fonts/MJ Satoshi-Regular.otf');
 }
 
 @font-face {
-  font-family: 'Satoshi Medium';
+  font-family: 'Satoshi Med';
   src: url('@/assets/fonts/Satoshi-Medium.otf');
+}
+
+@font-face {
+  font-family: 'Satoshi Bold';
+  src: url('@/assets/fonts/MJ Satoshi-Bold.ttf');
 }
 
 @font-face {
@@ -64,6 +69,12 @@
   font-family: 'Sarabun Med';
   src: url('@/assets/fonts/Sarabun-Medium.ttf');
 }
+
+@font-face {
+  font-family: 'Acumin';
+  src: url('@/assets/fonts/Acumin-RPro.otf');
+}
+
 
 
 .limit-line {

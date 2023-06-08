@@ -2,7 +2,6 @@
   <a-card class="cust-card" :bordered="false" ref="viewer" @mousemove="mouseMove">
     <div style="min-height: 100vh; display: flex">
       <div style="position: relative; flex: 1">
-        {{ test }}
         <!-- <transition-group tag="div" class="img-slider" :name="transition"> -->
         <div class="img-cont">
           <div class="category" v-if="mousemove">

@@ -359,7 +359,7 @@ export default {
     :deep(.ant-btn-primary) {
       background-color: #0451f9 !important;
       color: #ffffff !important;
-      font-family: 'Sarabun Med';
+      font-family: 'Satoshi Med';
       border: none;
     }
 
@@ -381,7 +381,7 @@ export default {
       display: inline-flex;
       flex-direction: column;
       font-size: 14px;
-      font-family: 'Sarabun Med';
+      font-family: 'Satoshi Med';
       height: auto;
       line-height: 1.35;
       outline: 0;
@@ -412,13 +412,13 @@ export default {
     margin-top: 24px;
     margin-bottom: 16px;
     .text {
-      font-family: 'Sarabun Med';
+      font-family: 'Satoshi Med';
       margin-bottom: 8px;
     }
 
     .usage {
       margin-bottom: 12px;
-      font-family: 'Sarabun Med';
+      font-family: 'Satoshi Med';
       font-size: 12px;
       color: #86909a;
       display: flex;
@@ -477,7 +477,7 @@ export default {
 }
 
 :deep(.ant-card-head-title) {
-  font-family: 'Sarabun Med';
+  font-family: 'Satoshi Med';
   font-weight: 500;
 }
 

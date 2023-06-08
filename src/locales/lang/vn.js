@@ -13,6 +13,7 @@ export default {
   detail: 'Chi tiết',
   profile: 'Thông tin',
   vn: 'Tiếng Việt',
+  vi_VN: 'Tiếng Việt',
   en: 'Tiếng Anh',
   message: {
     login: {
