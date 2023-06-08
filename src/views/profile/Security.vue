@@ -101,6 +101,25 @@
         </div>
       </a-card>
     </a-col>
+    <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
+      <a-card title="Two-factor authentication">
+        <div class="setting">
+          <img src="@/assets/images/two-factor.svg" alt="" />
+          <p class="my-18">
+            Turn on two-factor authentication to increase your account's security. You will use both
+            your password and security code sent to your email to log in.
+          </p>
+          <div class="two-factor">
+            <div class="btn-two_factor" :class="{ active: isEnabled }" @click="handleTwoFactor">
+              Enabled
+            </div>
+            <div class="btn-two_factor" :class="{ active: !isEnabled }" @click="handleTwoFactor">
+              Disabled
+            </div>
+          </div>
+        </div>
+      </a-card>
+    </a-col>
   </a-row>
 </template>
 
@@ -122,7 +141,8 @@ export default {
       current_password: '',
       new_password: '',
       repeat_password: '',
-      visible: true
+      visible: true,
+      isEnabled: false
     }
   },
 
@@ -162,6 +182,12 @@ export default {
   methods: {
     handleBlurInput(key) {
       this.v$[key].$touch()
+    },
+
+    handleTwoFactor() {
+      this.isEnabled = !this.isEnabled
+
+      // To do
     }
   }
 }
@@ -210,6 +236,37 @@ export default {
     opacity: 0.8;
   }
 }
+
+.two-factor {
+  width: 180px;
+  display: flex;
+  align-items: center;
+  background-color: #dde3e8;
+  padding: 3px;
+  border-radius: 8px;
+
+  .btn-two_factor {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    padding: 4px 0;
+    border-radius: 6px;
+  }
+
+  .btn-two_factor:hover {
+    background-color: #dde0e2;
+  }
+
+  .active {
+    background-color: #fff;
+  }
+
+  .active:hover {
+    background-color: #c5cdd3;
+  }
+}
+
+// Card
 :deep(.ant-card) {
   height: 100%;
   border-radius: 8px !important;
