@@ -1,51 +1,6 @@
 @use '../abstracts/colors'as *;
 
 @font-face {
-  font-family: 'Inter';
-  src: url('@/assets/fonts/inter.otf');
-}
-
-@font-face {
-  font-family: 'Inter Bold';
-  src: url('@/assets/fonts/Inter-Bold.otf');
-}
-
-@font-face {
-  font-family: 'Inter Medium';
-  src: url('@/assets/fonts/Inter-Medium.ttf');
-}
-
-@font-face {
-  font-family: 'Inter Light';
-  src: url('@/assets/fonts/Inter-Light.ttf');
-}
-
-@font-face {
-  font-family: 'Inter Extra Light';
-  src: url('@/assets/fonts/Inter-ExtraLight.ttf');
-}
-
-@font-face {
-  font-family: 'Inter SemiBold';
-  src: url('@/assets/fonts/Inter-SemiBold.ttf');
-}
-
-@font-face {
-  font-family: 'SF Regular';
-  src: url('@/assets/fonts/SF-Pro-Display-Regular.otf');
-}
-
-@font-face {
-  font-family: 'Segoe';
-  src: url('@/assets/fonts/Segoe UI.ttf');
-}
-
-@font-face {
-  font-family: 'Helvetica';
-  src: url('@/assets/fonts/Helvetica.ttf');
-}
-
-@font-face {
   font-family: 'Satoshi';
   src: url('@/assets/fonts/MJ Satoshi-Regular.otf');
 }
@@ -59,23 +14,6 @@
   font-family: 'Satoshi Bold';
   src: url('@/assets/fonts/MJ Satoshi-Bold.ttf');
 }
-
-@font-face {
-  font-family: 'Sarabun';
-  src: url('@/assets/fonts/Sarabun-Regular.ttf');
-}
-
-@font-face {
-  font-family: 'Sarabun Med';
-  src: url('@/assets/fonts/Sarabun-Medium.ttf');
-}
-
-@font-face {
-  font-family: 'Acumin';
-  src: url('@/assets/fonts/Acumin-RPro.otf');
-}
-
-
 
 .limit-line {
   overflow: hidden;

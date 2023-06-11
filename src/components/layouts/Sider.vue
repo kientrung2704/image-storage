@@ -15,14 +15,14 @@
       theme="light"
       @select="onSelect"
     >
-      <div class="mt-18 mb-12 pl-15" v-if="!collapsed">
+      <!-- <div class="mt-18 mb-12 pl-15" v-if="!collapsed">
         <a-button @click="openModal" size="large" shape="round" block>
           <template #icon>
             <UploadOutlined />
           </template>
           Upload
         </a-button>
-      </div>
+      </div> -->
       <a-menu-item
         key="image"
         @mouseover="hoverMenu('image')"

@@ -314,10 +314,6 @@ export default {
     },
 
     async onSubmit() {
-      this.$notification[TYPE_ERROR]({
-        message: this.$i18n.t('message.update_stamp_image.update'),
-        description: this.$i18n.t('message.update_stamp_image.error')
-      })
       const isValidate = await this.v$.$validate()
       if (isValidate) {
         const formData = new FormData()
@@ -326,6 +322,11 @@ export default {
         formData.append('first_name', this.user.first_name)
         formData.append('last_name', this.user.last_name)
         formData.append('email', this.user.email)
+
+        this.$notification[TYPE_ERROR]({
+          message: this.$i18n.t('message.update_stamp_image.update'),
+          description: this.$i18n.t('message.update_stamp_image.error')
+        })
       }
     },
 
