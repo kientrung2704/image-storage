@@ -1,3 +1,6 @@
 <template>
-  <div>123</div>
+  <MainHeader />
+  <div>
+    <router-view></router-view>
+  </div>
 </template>

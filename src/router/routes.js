@@ -124,7 +124,18 @@ const routes = [
     meta: {
       name: 'Main',
       requireAuth: false
-    }
+    },
+    children: [
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import('@/views/auth/login.vue'),
+        meta: {
+          title: 'Login',
+          requireAuth: false
+        }
+      }
+    ]
   }
 ]
 
