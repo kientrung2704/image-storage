@@ -40,7 +40,8 @@
 <script>
 import { MenuOutlined } from '@ant-design/icons-vue'
 import axios from '@/plugins/axios'
-
+import { ACCESS_TOKEN } from '@/constants/common'
+import { getAccessToken } from '@/utils/token'
 export default {
   components: {
     MenuOutlined
@@ -51,6 +52,15 @@ export default {
       isMobile: false,
       files: [],
       uploadedFiles: []
+    }
+  },
+  async created() {
+    const authCookie = getAccessToken()
+
+    if (authCookie?.length > 0) {
+      await this.$store.commit('auth/SET_IS_LOGIN', true)
+      console.log('123123')
+      // await this.$store.dispatch('user/getUserInfo')
     }
   },
   mounted() {
@@ -223,8 +233,8 @@ const toggleCollapsed = () => {
       }
     }
   }
-  .unvue-layout-content {
-  }
+  // .unvue-layout-content {
+  // }
   .unvue-header-light {
     background: #fff;
   }

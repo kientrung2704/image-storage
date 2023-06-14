@@ -23,10 +23,7 @@
             <a href="http://" target="_blank" class="text-menu">Bảng giá</a>
             <div class="underline"></div>
           </div>
-          <div class="service">
-            <a href="http://" target="_blank" class="text-menu">Bảng giá</a>
-            <div class="underline"></div>
-          </div>
+          <router-link class="service-login" :to="{ name: 'login' }"> Login </router-link>
         </div>
 
         <!-- <div class="l-header_btn-icon">

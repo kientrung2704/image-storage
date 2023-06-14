@@ -68,10 +68,22 @@ a:hover {
 
       .l-header_center {
         display: flex;
-        gap: 20px;
+        align-items: center;
+        gap: 24px;
+
+        .service-login {
+          background: #fff;
+          border-radius: 20px 20px 20px 2px;
+          color: #e20031;
+          padding: 10px 24px;
+          text-align: center;
+          min-width: 100px;
+          font-weight: 600;
+          font-size: 16px;
+        }
 
         .service {
-          margin-top: 0.5rem;
+          margin-top: 0.25rem;
 
           .text-menu {
             font-size: 16px;

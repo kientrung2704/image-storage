@@ -1,0 +1,6 @@
+export const AUTH = {
+  LOGIN: 'LOGIN',
+  SET_IS_LOGIN: 'SET_IS_LOGIN',
+  REGISTER: 'REGISTER',
+  LOGOUT: 'LOGOUT'
+}

@@ -86,8 +86,9 @@ export default {
     }
   },
   methods: {
-    changeRouter(router) {
+    async changeRouter(router) {
       if (!router.key) {
+        await this.$store.dispatch('auth/logOut')
         this.$router.push({ name: 'main' })
       } else {
         this.$router.push({ name: router.key })
