@@ -8,8 +8,7 @@ const routes = [
     component: () => import('@/layouts/Layout.vue'),
     // component: () => import('@/layouts/DashboardLayout.vue'),
     meta: {
-      name: 'Dashboard',
-      requireAuth: false
+      name: 'Dashboard'
     },
     children: [
       {
@@ -17,8 +16,47 @@ const routes = [
         name: 'image',
         component: () => import('@/views/dashboard/index.vue'),
         meta: {
-          title: 'Image',
-          requireAuth: false
+          title: 'Image'
+        }
+      },
+      {
+        path: 'explore',
+        name: 'explore',
+        component: () => import('@/views/dashboard/explore.vue'),
+        meta: {
+          title: 'Explore'
+        }
+      },
+      {
+        path: 'share',
+        name: 'share',
+        component: () => import('@/views/dashboard/explore.vue'),
+        meta: {
+          title: 'Share'
+        }
+      },
+      {
+        path: 'like',
+        name: 'like',
+        component: () => import('@/views/dashboard/like.vue'),
+        meta: {
+          title: 'Like'
+        }
+      },
+      {
+        path: 'trash',
+        name: 'trash',
+        component: () => import('@/views/dashboard/trash.vue'),
+        meta: {
+          title: 'Trash'
+        }
+      },
+      {
+        path: 'order',
+        name: 'order',
+        component: () => import('@/views/cart/order.vue'),
+        meta: {
+          title: 'Order'
         }
       },
       {
@@ -26,8 +64,7 @@ const routes = [
         name: 'profile',
         component: () => import('@/views/profile/index.vue'),
         meta: {
-          title: 'Profile',
-          requireAuth: false
+          title: 'Profile'
         },
         children: [
           {
@@ -35,8 +72,7 @@ const routes = [
             name: 'general',
             component: () => import('@/views/profile/General.vue'),
             meta: {
-              title: 'General',
-              requireAuth: false
+              title: 'General'
             }
           },
           {
@@ -44,8 +80,7 @@ const routes = [
             name: 'security',
             component: () => import('@/views/profile/Security.vue'),
             meta: {
-              title: 'Security',
-              requireAuth: false
+              title: 'Security'
             }
           },
           {
@@ -53,8 +88,7 @@ const routes = [
             name: 'plan',
             component: () => import('@/views/profile/Plan.vue'),
             meta: {
-              title: 'Plan',
-              requireAuth: false
+              title: 'Plan'
             }
           },
           {
@@ -62,54 +96,7 @@ const routes = [
             name: 'login-history',
             component: () => import('@/views/profile/LoginHistory.vue'),
             meta: {
-              title: 'LoginHistory',
-              requireAuth: false
-            }
-          }
-        ]
-      },
-      {
-        path: 'test1',
-        name: 'explore',
-        component: () => import('@/views/index.vue'),
-        meta: {
-          title: 'Dashboard',
-          requireAuth: false
-        }
-      },
-      {
-        path: 'test2',
-        name: 'Dashboard2',
-        component: () => import('@/views/index.vue'),
-        meta: {
-          title: 'Dashboard',
-          requireAuth: false
-        }
-      },
-      {
-        path: 'profile',
-        name: 'Profile',
-        component: () => import('@/views/profile/UserProfile.vue'),
-        meta: {
-          title: 'Profile',
-          requireAuth: false
-        }
-      },
-      {
-        path: 'child',
-        redirect: '/child/test-child',
-        meta: {
-          title: 'Child',
-          requireAuth: false
-        },
-        children: [
-          {
-            path: 'test-child',
-            name: 'Dashboard3',
-            component: () => import('@/views/HomeView.vue'),
-            meta: {
-              title: 'Dashboard3',
-              requireAuth: false
+              title: 'LoginHistory'
             }
           }
         ]
@@ -122,8 +109,7 @@ const routes = [
     component: () => import('@/layouts/MainLayout.vue'),
     // component: () => import('@/layouts/DashboardLayout.vue'),
     meta: {
-      name: 'Main',
-      requireAuth: false
+      name: 'Main'
     },
     children: [
       {
@@ -131,8 +117,15 @@ const routes = [
         name: 'login',
         component: () => import('@/views/auth/login.vue'),
         meta: {
-          title: 'Login',
-          requireAuth: false
+          title: 'Login'
+        }
+      },
+      {
+        path: 'register',
+        name: 'register',
+        component: () => import('@/views/auth/register.vue'),
+        meta: {
+          title: 'Register'
         }
       }
     ]

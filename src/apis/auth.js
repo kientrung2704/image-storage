@@ -1,16 +1,26 @@
 import axios from '@/plugins/axios'
 
 const LOGIN = '/auth/login'
+const REGISTER = '/auth/register'
 const REFRESH_TOKEN = '/auth/refresh-token'
 const ME = '/user'
 
 export async function login(payload) {
   try {
     const { data } = await axios.post(`${LOGIN}`, payload)
-    console.log('data', data)
+
     return data
   } catch (error) {
-    console.log('er', error)
+    return { error }
+  }
+}
+
+export async function register(payload) {
+  try {
+    const { data } = await axios.post(`${REGISTER}`, payload)
+
+    return data
+  } catch (error) {
     return { error }
   }
 }

@@ -23,6 +23,7 @@ const app = createApp(App)
 app.config.globalProperties.$dayjs = dayjs
 app.config.globalProperties.$cookie = Cookie
 notification.config({
+  duration: 2,
   closeIcon: () =>
     h(IconX, { style: 'width: 18px; height: 18px; stroke-width: 3;color: #000000D9' })
 })

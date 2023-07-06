@@ -1,0 +1,68 @@
+@use '../abstracts/mixins'as *;
+@use '../abstracts/colors'as *;
+@use '../abstracts/mediaQuery'as *;
+
+.main {
+  background-color: $WHITE;
+
+  .title {
+    font-family: 'FS Magistral';
+    font-size: 20px;
+    margin-bottom: 32px;
+  }
+
+  .bold {
+    border-left: 2px solid #667085 !important;
+  }
+
+  .order {
+    padding: 0 24px 24px 24px;
+    border-left: 2px solid #E4E7EC;
+
+    &-title {
+      font-family: 'FS Magistral';
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    .relative {
+      position: relative;
+
+      .absolute-label {
+        position: absolute;
+        top: -6px;
+        left: 10px;
+        background: $WHITE;
+        // font-weight: 600;
+        color: #333;
+      }
+
+      .form-input {
+        height: 50px;
+      }
+    }
+
+    .right {
+      font-weight: 600;
+      color: #e03;
+    }
+
+    .payment-type {
+      .img {
+        margin-left: 6px;
+        height: 24px;
+      }
+    }
+  }
+
+  .btn-payment {
+    background-color: #e03;
+    color: $WHITE;
+    padding: 0 72px;
+    height: 54px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+}

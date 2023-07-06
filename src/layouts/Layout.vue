@@ -9,11 +9,8 @@
       <div class="unvue-header-right">
         <Header />
       </div>
-      <!-- <a-button type="text" style="margin-bottom: 16px" @click="toggleCollapsed">
-        <menu-outlined />
-      </a-button> -->
     </a-layout-header>
-    <!-- <a-layout-sider v-if="isSider" :theme="siderTheme">Sider</a-layout-sider> -->
+
     <a-layout class="unvue-layout-content">
       <Sider v-if="!isMobile" ref="sider" :collapsed="collapsed" />
       <a-drawer
@@ -59,8 +56,7 @@ export default {
 
     if (authCookie?.length > 0) {
       await this.$store.commit('auth/SET_IS_LOGIN', true)
-      console.log('123123')
-      // await this.$store.dispatch('user/getUserInfo')
+      await this.$store.dispatch('user/getUserInfo')
     }
   },
   mounted() {
@@ -106,69 +102,12 @@ export default {
       }
     },
     toggleCollapsed() {
-      // this.$refs.sider.toggleCollapsed()
       this.collapsed = !this.collapsed
-    },
-    toggleActive() {
-      this.$root.$refs.dropzone.toggleActive()
-    },
-    drop(e) {
-      // console.log(e.dataTransfer.files)
-      let files = e.dataTransfer.files
-
-      // this.files = files
-      // const formData = new FormData()
-      for (let index = 0; index < files.length; index++) {
-        this.files.push({ file: files[index], loading: 0 })
-      }
-      // files.forEach((file) => {
-      //   this.files.push({ file: file, loading: 0 })
-      //   // formData.append('files', file)
-      // })
-      // console.log(this.files)
-      let vm = this
-      this.files.forEach((file, index) => {
-        vm.handleUpload(index, file)
-      })
-      // axios.post('upload', formData, {
-      //   onUploadProgress: ({loaded, total}) => {
-
-      //   }
-      // })
-      // this.$root.$refs.dropzone.toggleActive()
-    },
-
-    handleUpload(index, file) {
-      const formData = new FormData()
-      formData.append('file', file.file)
-      axios.post('upload', formData, {
-        onUploadProgress: ({ loaded, total }) => {
-          file.loading = Math.floor((loaded / total) * 100)
-          if (loaded === total) {
-            const fileSize =
-              total < 1024 ? (total = ' KB') : (loaded / (1024 * 1024)).toFixed(2) + ' MB'
-            this.uploadedFiles.push({ name: file.file.name, size: fileSize })
-            // this.files.splice(index, 1)
-            // To do: remove file when 100% (find index loading 100 => remove)
-          }
-        }
-      })
     }
   }
 }
 </script>
 
-<!-- <script setup>
-import { ref } from 'vue'
-import { MenuOutlined } from '@ant-design/icons-vue'
-
-const sider = ref(null)
-
-const toggleCollapsed = () => {
-  sider.value.toggleCollapsed()
-  // collapsed.value = !collapsed.value
-}
-</script> -->
 <style lang="scss" scoped>
 .unvue-layout {
   display: flex;

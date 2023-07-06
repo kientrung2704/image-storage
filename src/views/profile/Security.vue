@@ -40,8 +40,6 @@
                     :class="{ 'error-border': v$.new_password.$errors.length > 0 }"
                     @blur="handleBlurInput('new_password')"
                   />
-                  <!-- <div class="gen">
-                    <span class="btn-gen">Generate</span> -->
                   <EyeInvisibleOutlined
                     @click="visible = !visible"
                     v-if="visible"
@@ -64,8 +62,6 @@
                       position: 'absolute'
                     }"
                   />
-
-                  <!-- </div> -->
                 </div>
 
                 <div class="text-error" v-if="v$.new_password.$error">
@@ -79,14 +75,38 @@
                 Repeat Password
               </label>
               <div class="form-control">
-                <input
-                  type="text"
-                  id="repeat_password"
-                  class="form-input"
-                  v-model="repeat_password"
-                  :class="{ 'error-border': v$.repeat_password.$errors.length > 0 }"
-                  @blur="handleBlurInput('repeat_password')"
-                />
+                <div class="password">
+                  <input
+                    :type="visibleRepeat ? 'password' : 'text'"
+                    id="repeat_password"
+                    class="form-input"
+                    v-model="repeat_password"
+                    :class="{ 'error-border': v$.repeat_password.$errors.length > 0 }"
+                    @blur="handleBlurInput('repeat_password')"
+                  />
+                  <EyeInvisibleOutlined
+                    @click="visibleRepeat = !visibleRepeat"
+                    v-if="visibleRepeat"
+                    :style="{
+                      fontSize: '20px',
+                      cursor: 'pointer',
+                      right: '12px',
+                      top: '0',
+                      position: 'absolute'
+                    }"
+                  />
+                  <EyeOutlined
+                    @click="visibleRepeat = !visibleRepeat"
+                    v-else
+                    :style="{
+                      fontSize: '20px',
+                      cursor: 'pointer',
+                      right: '12px',
+                      top: '0',
+                      position: 'absolute'
+                    }"
+                  />
+                </div>
                 <div class="text-error" v-if="v$.repeat_password.$error">
                   {{ v$.repeat_password.$errors[0].$params.property }}
                 </div>
@@ -142,6 +162,7 @@ export default {
       new_password: '',
       repeat_password: '',
       visible: true,
+      visibleRepeat: true,
       isEnabled: false
     }
   },

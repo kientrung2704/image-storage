@@ -22,12 +22,12 @@
         </a-tooltip>
       </div>
       <div class="header-item">
-        <a-dropdown trigger="click" @click.prevent>
+        <a-dropdown trigger="hover">
           <a-avatar
-            src="https://joesch.moe/api/v1/random"
+            :src="user.avatar"
             :style="{ backgroundColor: '#022ec6', verticalAlign: 'middle', cursor: 'pointer' }"
           >
-            <!-- {{ userName }} -->
+            {{ user.firt_name }}
           </a-avatar>
           <template #overlay>
             <a-menu class="cust-menu" @click="changeRouter">
@@ -67,6 +67,7 @@ import {
   SettingOutlined
 } from '@ant-design/icons-vue'
 import { IconUser, IconLock, IconLogout } from '@tabler/icons-vue'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     QuestionCircleOutlined,
@@ -80,10 +81,12 @@ export default {
   },
   data() {
     return {
-      userName: 'NTK',
       selectedKeys: [],
       openKeys: []
     }
+  },
+  computed: {
+    ...mapGetters({ user: 'user/userInfo' })
   },
   methods: {
     async changeRouter(router) {

@@ -1,10 +1,16 @@
+import {
+  getListPhoto,
+  updatePhotoInfo,
+  likePhoto,
+  dislikePhoto,
+  getLikeListPhoto,
+  deletePhoto,
+  getListTrash,
+  removePhoto,
+  undoPhoto
+} from '@/apis/photo'
+
 const state = {
-  /*
-        selectedSegment: Object,
-        selectedSection: Object,
-        selectedIndex: 0,
-        selectedPhoto: Object,
-        */
   selectedPhotos: [],
   selectionAllowed: true,
   selectedAlbum: null,
@@ -109,7 +115,71 @@ const mutations = {
   }
 }
 
-const actions = {}
+const actions = {
+  async update({ commit }, payload) {
+    const res = await updatePhotoInfo(payload)
+    if (res.error) {
+      return res
+    }
+
+    return false
+  },
+
+  async list({ commit }) {
+    const res = await getListPhoto()
+    return res
+  },
+
+  async likeList({ commit }) {
+    const res = await getLikeListPhoto()
+    return res
+  },
+
+  async like({ commit }, id) {
+    const res = await likePhoto(id)
+    if (res.error) {
+      return res
+    }
+
+    return false
+  },
+  async dislike({ commit }, id) {
+    const res = await dislikePhoto(id)
+    if (res.error) {
+      return res
+    }
+
+    return false
+  },
+  async delete({ commit }, id) {
+    const res = await deletePhoto(id)
+    if (res.error) {
+      return res
+    }
+
+    return false
+  },
+  async listTrash({ commit }) {
+    const res = await getListTrash()
+    return res
+  },
+  async remove({ commit }, id) {
+    const res = await removePhoto(id)
+    if (res.error) {
+      return res
+    }
+
+    return false
+  },
+  async undo({ commit }, id) {
+    const res = await undoPhoto(id)
+    if (res.error) {
+      return res
+    }
+
+    return false
+  }
+}
 
 // export const photo = {
 //   state: {

@@ -4,9 +4,15 @@ export const SCREEN_HOME = 'image'
 export const SCREEN_BASIC_INFO = 'Basic Info'
 export const SCREEN_BASIC_INFO_EDIT = 'Basic Info Edit'
 export const SCREEN_BASIC_INFO_EDIT_CONFIRM = 'Basic Info Edit Confirm'
-export const SCREEN_NO_AUTH = ['login']
-export const SCREEN_NO_AUTH_FOOTER = ['login', 'main']
-export const SCREEN_NO_AUTH_AND_AUTH = ['Inquiry', 'Inquiry Confirm', 'Inquiry Complete', 'News']
+export const SCREEN_NO_AUTH = ['login', 'register']
+export const SCREEN_NO_AUTH_FOOTER = ['login', 'main', 'register']
+export const SCREEN_NO_AUTH_AND_AUTH = [
+  'Inquiry',
+  'Inquiry Confirm',
+  'Inquiry Complete',
+  'News',
+  'register'
+]
 export const SCREEN_RESET_PASSWORD_FAILURE = 'Reset password Failure'
 export const REGISTER_TEMPORARY_COMPLETE = 'Register temporary complete'
 export const REGISTER_CONFIRM_MAIL_SEND = 'Register confirm-mail send'

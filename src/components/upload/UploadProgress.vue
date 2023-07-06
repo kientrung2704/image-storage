@@ -148,8 +148,7 @@ export default {
   watch: {
     totalPercentage(newValue) {
       if (newValue === 100) {
-        console.log(123)
-        this.activeKey = ''
+        // this.activeKey = ''
       }
     }
   },
@@ -245,7 +244,7 @@ export default {
     .modal-body {
       .file-group {
         .file-total {
-          font-family: 'Satoshi Medium';
+          font-family: 'Satoshi Med';
           font-size: 14px;
         }
       }
@@ -274,7 +273,7 @@ export default {
           height: 40px;
 
           .file-name {
-            font-family: 'Satoshi Medium';
+            font-family: 'Satoshi Med';
             font-size: 14px;
             // font-weight: 600;
             line-height: 1.25;

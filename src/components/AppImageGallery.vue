@@ -12,20 +12,50 @@
                 </div>
               </div>
               <div class="right">
-                <a-space size="8">
-                  <div class="btn-category">
+                <a-space :size="!currentPhoto?.photo.deleted_at ? 8 : 12">
+                  <div class="btn-category" v-if="!currentPhoto?.photo.deleted_at">
                     <ShareAltOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
+                  </div>
+
+                  <div
+                    class="btn-remove"
+                    v-if="currentPhoto?.photo.deleted_at"
+                    @click="removeFile(currentPhoto?.photo.id, 'delete')"
+                  >
+                    <DeleteOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
+                    <span class="text">Xóa</span>
+                  </div>
+                  <div
+                    class="btn-remove"
+                    v-if="currentPhoto?.photo.deleted_at"
+                    @click="removeFile(currentPhoto?.photo.id, 'undo')"
+                  >
+                    <UndoOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
+                    <span class="text">Khôi phục</span>
                   </div>
                   <div class="btn-category" @click="viewInfo">
                     <InfoCircleOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
                   </div>
-                  <div class="btn-category">
-                    <StarOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
+                  <div
+                    class="btn-category"
+                    v-if="!currentPhoto?.photo.deleted_at"
+                    @click="likeFile(currentPhoto?.photo)"
+                  >
+                    <StarFilled
+                      v-if="currentPhoto?.photo.like === 1"
+                      :style="{ color: '#ffffff', fontSize: '20px' }"
+                    />
+                    <StarOutlined v-else :style="{ color: '#ffffff', fontSize: '20px' }" />
                   </div>
-                  <div class="btn-category">
+                  <div
+                    class="btn-category"
+                    v-if="!currentPhoto?.photo.deleted_at"
+                    @click="deteleFile(currentPhoto?.photo.id)"
+                  >
                     <DeleteOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
                   </div>
-                  <div class="btn-category">
+
+                  <div class="btn-category" v-if="!currentPhoto?.photo.deleted_at">
                     <MoreOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
                   </div>
                 </a-space>
@@ -77,7 +107,7 @@
               <div class="detail">
                 <!-- <div class="detail-header mb-12">{{ $i18n.t('detail') }}</div> -->
                 <div class="detail-content">
-                  <div class="content-box align-center">
+                  <div class="content-box align-center" v-if="!currentPhoto?.photo.deleted_at">
                     <div class="icon">
                       <IconFileDescription stroke-width="1.25" :size="24" />
                     </div>
@@ -145,25 +175,28 @@
                       <div class="device-info">
                         <a-space size="middle" class="wrap">
                           <span class="sub">
-                            {{ currentPhoto?.photo?.exif?.Make }}
+                            {{ JSON.parse(currentPhoto?.photo?.exif)?.Make }}
                           </span>
                           <span class="sub">
-                            {{ currentPhoto?.photo?.exif?.Model }}
+                            {{ JSON.parse(currentPhoto?.photo?.exif)?.Model }}
                           </span>
                           <span class="sub">
-                            {{ currentPhoto?.photo?.exif?.FocalLength }}
+                            {{ JSON.parse(currentPhoto?.photo?.exif)?.FocalLength }}
                           </span>
-                          <span class="sub" v-if="currentPhoto?.photo?.exif?.Aperture">
-                            f/{{ currentPhoto?.photo?.exif?.Aperture }}
+                          <span class="sub" v-if="JSON.parse(currentPhoto?.photo?.exif)?.Aperture">
+                            f/{{ JSON.parse(currentPhoto?.photo?.exif)?.Aperture }}
                           </span>
-                          <span class="sub" v-if="currentPhoto?.photo?.exif?.ShutterSpeed">
-                            {{ currentPhoto?.photo?.exif?.ShutterSpeed }} sec
+                          <span
+                            class="sub"
+                            v-if="JSON.parse(currentPhoto?.photo?.exif)?.ShutterSpeed"
+                          >
+                            {{ JSON.parse(currentPhoto?.photo?.exif)?.ShutterSpeed }} sec
                           </span>
-                          <span class="sub" v-if="currentPhoto?.photo?.exif?.ISO">
-                            ISO {{ currentPhoto?.photo?.exif?.ISO }}
+                          <span class="sub" v-if="JSON.parse(currentPhoto?.photo?.exif)?.ISO">
+                            ISO {{ JSON.parse(currentPhoto?.photo?.exif)?.ISO }}
                           </span>
                           <span class="sub">
-                            {{ currentPhoto?.photo?.exif?.Flash }}
+                            {{ JSON.parse(currentPhoto?.photo?.exif)?.Flash }}
                           </span>
                         </a-space>
                       </div>
@@ -173,8 +206,8 @@
                     class="map"
                     v-if="
                       currentPhoto.photo.exif &&
-                      currentPhoto.photo.exif.GPSLongitude &&
-                      currentPhoto.photo.exif.GPSLatitude
+                      JSON.parse(currentPhoto?.photo?.exif).GPSLongitude &&
+                      JSON.parse(currentPhoto?.photo?.exif).GPSLatitude
                     "
                   >
                     <AppMapBox :height="200" :latLong="getPosition(currentPhoto)" :zoom="16" />
@@ -199,7 +232,9 @@ import {
   MoreOutlined,
   DeleteOutlined,
   StarOutlined,
-  ShareAltOutlined
+  StarFilled,
+  ShareAltOutlined,
+  UndoOutlined
   // CloseOutlined,
   // CalendarOutlined,
   // PictureOutlined,
@@ -224,7 +259,9 @@ export default {
     MoreOutlined,
     DeleteOutlined,
     StarOutlined,
+    StarFilled,
     ShareAltOutlined,
+    UndoOutlined,
     // CloseOutlined,
     // CalendarOutlined,
     // PictureOutlined,
@@ -273,7 +310,7 @@ export default {
       else return 'fade-transition'
     },
     unixToDateTime() {
-      let time = this.currentPhoto?.photo?.modified_at
+      let time = this.currentPhoto?.photo?.modified_date
       if (time) {
         return {
           date: this.$dayjs(time).format('DD-MM-YYYY'),
@@ -285,10 +322,25 @@ export default {
     }
   },
   methods: {
+    deteleFile(id) {
+      if (id) {
+        this.$emit('detele-file', id)
+      }
+    },
+    likeFile(photo) {
+      if (photo.id) {
+        this.$emit('like-file', photo)
+      }
+    },
+    removeFile(id, type) {
+      if (id) {
+        this.$emit('remove-file', id, type)
+      }
+    },
     getPosition() {
       return [
-        parseFloat(this.removeString(this.currentPhoto.photo.exif.GPSLongitude)),
-        parseFloat(this.removeString(this.currentPhoto.photo.exif.GPSLatitude))
+        parseFloat(this.removeString(JSON.parse(this.currentPhoto.photo.exif).GPSLongitude)),
+        parseFloat(this.removeString(JSON.parse(this.currentPhoto.photo.exif).GPSLatitude))
       ]
     },
     removeString(string) {
@@ -314,6 +366,7 @@ export default {
         self.mousemove = false
       }, 2000)
     },
+
     left() {
       if (this.currentPhoto.index === 0) return
       this.$emit('left')
@@ -460,6 +513,22 @@ export default {
   justify-content: center;
   cursor: pointer;
 }
+
+.btn-remove {
+  padding: 0 6px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  .text {
+    margin-left: 12px;
+    color: #fff;
+    font-weight: 600;
+  }
+}
+
 .btn-close {
   // width: 48px;
   height: 48px;
@@ -471,6 +540,10 @@ export default {
 }
 
 .btn-category:hover {
+  background-color: #333;
+}
+
+.btn-remove:hover {
   background-color: #333;
 }
 

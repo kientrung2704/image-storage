@@ -277,7 +277,7 @@ export default {
       $notification[type]({
         content: content,
         meta: meta,
-        duration: 2500,
+        duration: 2.5,
         keepAliveOnHover: true
       })
     }

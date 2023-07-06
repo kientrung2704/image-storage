@@ -10,7 +10,7 @@
       </div>
       <div class="detail">/month</div>
     </div>
-    <button class="choose-plan">Mua</button>
+    <button class="choose-plan" @click.prevent="byPlan">Mua</button>
   </div>
 </template>
 
@@ -33,6 +33,13 @@ export default {
     },
     formatPrice(price) {
       return this.numberWithCommas(price)
+    },
+    byPlan() {
+      this.$router.push({
+        name: 'order',
+        query: { id: this.service.id, month: this.month }
+      })
+      console.log(this.service.id, this.month)
     }
   }
 }

@@ -13,7 +13,7 @@
               <a-avatar
                 @click="selectFile"
                 :size="72"
-                :src="avatar"
+                :src="user.avatar"
                 :style="{ backgroundColor: '#022ec6', verticalAlign: 'middle', cursor: 'pointer' }"
               >
               </a-avatar>
@@ -26,18 +26,12 @@
                 class="d-none"
                 @change="handleUpload"
               />
-              <template v-for="error of v$.user.avatar.$errors" :key="error.$uid">
-                <div class="text-error">
-                  {{ error.$params.property }}
-                </div>
-              </template>
             </div>
 
             <div class="profile">
               <div class="profile-input">
                 <label for="first_name" class="form-label color-dark-gray">
-                  <!-- {{ $i18n.t('user.first_name') }} -->
-                  First name
+                  {{ $i18n.t('user.first_name') }}
                 </label>
                 <div class="form-control">
                   <input
@@ -55,8 +49,7 @@
               </div>
               <div class="profile-input">
                 <label for="last_name" class="form-label color-dark-gray">
-                  <!-- {{ $i18n.t('user.first_name') }} -->
-                  Last name
+                  {{ $i18n.t('user.first_name') }}
                 </label>
                 <div class="form-control">
                   <input
@@ -74,8 +67,7 @@
               </div>
               <div class="profile-input">
                 <label for="email" class="form-label color-dark-gray">
-                  <!-- {{ $i18n.t('user.first_name') }} -->
-                  E-mail address
+                  {{ $i18n.t('user.email') }}
                 </label>
                 <div class="form-control">
                   <input
@@ -204,13 +196,13 @@ export default {
   data() {
     return {
       v$: useValidate({ $autoDirty: true }),
-      avatar: 'https://joesch.moe/api/v1/random',
-      user: {
-        avatar: 'https://joesch.moe/api/v1/random',
-        first_name: '',
-        last_name: '',
-        email: ''
-      },
+      avatar: '',
+      // user: {
+      //   avatar: 'https://joesch.moe/api/v1/random',
+      //   first_name: '',
+      //   last_name: '',
+      //   email: ''
+      // },
       storagePercentage: 10,
       sharePercentage: 100
     }
@@ -249,25 +241,18 @@ export default {
             { property: this.$i18n.t('message.title.email') },
             maxLength(255)
           )
-        },
-        avatar: {
-          required: helpers.withParams(
-            { property: this.$i18n.t('message.title.password') },
-            required
-          )
         }
+        // avatar: {
+        //   required: helpers.withParams(
+        //     { property: this.$i18n.t('message.title.password') },
+        //     required
+        //   )
+        // }
       }
     }
   },
   computed: {
-    ...mapGetters({ lang: 'setting/lang' })
-  },
-
-  created() {
-    this.$root.$refs.loading.start()
-    setTimeout(() => {
-      this.$root.$refs.loading.finish()
-    }, 500)
+    ...mapGetters({ lang: 'setting/lang', user: 'user/userInfo' })
   },
 
   methods: {
@@ -305,8 +290,8 @@ export default {
       }
 
       const url = window.URL.createObjectURL(file)
-      this.user.avatar = file
-      this.avatar = url
+      this.user.avatar = url
+      this.avatar = file
     },
 
     handleBlurInput(key) {
@@ -316,17 +301,31 @@ export default {
     async onSubmit() {
       const isValidate = await this.v$.$validate()
       if (isValidate) {
+        this.$root.$refs.loading.start()
         const formData = new FormData()
 
-        formData.append('avatar', this.avatar)
+        if (this.user.avatar.length > 0) {
+          formData.append('avatar', this.avatar)
+        }
+
         formData.append('first_name', this.user.first_name)
         formData.append('last_name', this.user.last_name)
         formData.append('email', this.user.email)
-
-        this.$notification[TYPE_ERROR]({
-          message: this.$i18n.t('message.update_stamp_image.update'),
-          description: this.$i18n.t('message.update_stamp_image.error')
-        })
+        const res = await this.$store
+          .dispatch('user/update', formData)
+          .catch(this.$root.$refs.loading.finish())
+        if (res.error) {
+          this.$notification[TYPE_ERROR]({
+            message: this.$i18n.t('message.estate.createError'),
+            description: this.$i18n.t('message.estate.createError')
+          })
+        } else {
+          this.$notification[TYPE_SUCCESS]({
+            message: this.$i18n.t('message.estate.createSuccess'),
+            description: this.$i18n.t('message.estate.createSuccess')
+          })
+        }
+        this.$root.$refs.loading.finish()
       }
     },
 

@@ -23,7 +23,6 @@ const processQueue = (error, token = null) => {
 
 axios.interceptors.request.use(
   (request) => {
-    console.log('req', request)
     const token = getAccessToken()
     request.headers['Access-Control-Allow-Origin'] = '*'
     request.headers['Access-Control-Allow-Methods'] = 'GET'
@@ -35,8 +34,8 @@ axios.interceptors.request.use(
     const userAccountId = getUserAccountId()
     if (userAccountId) {
       request.params = {
-        ...request.params,
-        user_auth_id: userAccountId
+        ...request.params
+        // user_auth_id: userAccountId
       }
     }
 
