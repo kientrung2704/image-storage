@@ -9,11 +9,8 @@
       <div class="unvue-header-right">
         <Header />
       </div>
-      <!-- <a-button type="text" style="margin-bottom: 16px" @click="toggleCollapsed">
-        <menu-outlined />
-      </a-button> -->
     </a-layout-header>
-    <!-- <a-layout-sider v-if="isSider" :theme="siderTheme">Sider</a-layout-sider> -->
+
     <a-layout class="unvue-layout-content">
       <Sider v-if="!isMobile" ref="sider" :collapsed="collapsed" />
       <a-drawer
@@ -28,43 +25,8 @@
         <Sider ref="sider" />
       </a-drawer>
       <a-layout-content>
-        <!-- <a-layout-header
-          v-if="isSider"
-          class="unvue-header"
-          :class="isHeaderLight ? 'unvue-header-light' : 'unvue-header-dark'"
-        >
-          Header
-        </a-layout-header> -->
         <div class="unvue-content">
-          <!-- Layout：
-          <a-radio-group v-model:value="layout">
-            <a-radio-button value="top">top</a-radio-button>
-            <a-radio-button value="mix">mix</a-radio-button>
-            <a-radio-button value="sider">sider</a-radio-button>
-          </a-radio-group>
-          <br />
-          Header Theme：
-          <a-radio-group v-model:value="headerTheme">
-            <a-radio-button value="light">light</a-radio-button>
-            <a-radio-button value="dark">dark</a-radio-button>
-          </a-radio-group>
-          <br />
-          <template v-if="!isTop">
-            Sider Theme：
-            <a-radio-group v-model:value="siderTheme">
-              <a-radio-button value="light">light</a-radio-button>
-              <a-radio-button value="dark">dark</a-radio-button>
-            </a-radio-group>
-            <br />
-          </template>
-          链接：
-          <a-space>
-            <RouterLink to="/dashboard/analysis">Analysis</RouterLink>
-            <RouterLink to="/dashboard/settings">Settings</RouterLink>
-          </a-space>
-          <br />
-          <br />
-          <br /> -->
+          <AppBreadcrumb />
           <RouterView />
         </div>
       </a-layout-content>
@@ -74,6 +36,9 @@
 
 <script>
 import { MenuOutlined } from '@ant-design/icons-vue'
+import axios from '@/plugins/axios'
+import { ACCESS_TOKEN } from '@/constants/common'
+import { getAccessToken } from '@/utils/token'
 export default {
   components: {
     MenuOutlined
@@ -81,7 +46,17 @@ export default {
   data() {
     return {
       collapsed: false,
-      isMobile: false
+      isMobile: false,
+      files: [],
+      uploadedFiles: []
+    }
+  },
+  async created() {
+    const authCookie = getAccessToken()
+
+    if (authCookie?.length > 0) {
+      await this.$store.commit('auth/SET_IS_LOGIN', true)
+      await this.$store.dispatch('user/getUserInfo')
     }
   },
   mounted() {
@@ -127,24 +102,12 @@ export default {
       }
     },
     toggleCollapsed() {
-      // this.$refs.sider.toggleCollapsed()
       this.collapsed = !this.collapsed
     }
   }
 }
 </script>
 
-<!-- <script setup>
-import { ref } from 'vue'
-import { MenuOutlined } from '@ant-design/icons-vue'
-
-const sider = ref(null)
-
-const toggleCollapsed = () => {
-  sider.value.toggleCollapsed()
-  // collapsed.value = !collapsed.value
-}
-</script> -->
 <style lang="scss" scoped>
 .unvue-layout {
   display: flex;
@@ -165,6 +128,7 @@ const toggleCollapsed = () => {
     padding: 0 24px;
     transition: all 0.2s;
     justify-content: space-between;
+    border-bottom: 1px solid #00000026;
     .unvue-header-left {
       display: flex;
       align-items: center;
@@ -208,8 +172,8 @@ const toggleCollapsed = () => {
       }
     }
   }
-  .unvue-layout-content {
-  }
+  // .unvue-layout-content {
+  // }
   .unvue-header-light {
     background: #fff;
   }
@@ -220,21 +184,21 @@ const toggleCollapsed = () => {
     color: #fff;
   }
   .unvue-content {
-    padding: 8px;
+    background-color: #fff;
     height: 100%;
-    overflow: scroll;
+    overflow-y: auto;
   }
 }
 
 :deep(.ant-menu-item) {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
-  height: 50px !important;
+  height: 45px !important;
 }
 
 :deep(.ant-menu) {
   padding-right: 15px;
-  height: 50px !important;
+  height: 45px !important;
 }
 
 :deep(.ant-menu-item::after, .ant-menu-item::after) {

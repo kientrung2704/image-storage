@@ -2,52 +2,63 @@
 @use '../abstracts/mediaQuery'as *;
 
 body {
-	font-family: 'Inter';
+  font-family: 'Satoshi';
 
-	&.no-scroll {
-		overflow: hidden;
-		height: 100vh;
-		width: 100%;
-	}
+  &.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+    width: 100%;
+  }
 }
 
 #app {
-	line-height: 1;
-	font-family: 'Inter';
-	height: 100%;
-	box-sizing: border-box;
-	color: #222222;
-	font-size: 14px;
-	background-color: $GRAY_E5;
+  line-height: 1;
+  font-family: 'Satoshi';
+  height: 100%;
+  box-sizing: border-box;
+  color: #222222;
+  font-size: 14px;
+  background-color: #ffffff;
 }
 
 @media (max-width: 800px) {
-	*::-webkit-scrollbar {
-		display: none;
-	}
+  *::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-
 *::-webkit-scrollbar {
-	width: 6px;
-	height: 0;
+  width: 6px;
+  height: 0;
 }
 
 *::-webkit-scrollbar-thumb {
-	background-color: transparent;
-	border-radius: 4px;
+  background-color: transparent;
+  border-radius: 4px;
 }
 
 *:hover {
-	&::-webkit-scrollbar-thumb {
-		background: #bfbfbf;
-	}
+  &::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+  }
 
-	&::-webkit-scrollbar-thumb:hover {
-		background: var(--primary-color);
-	}
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+  }
 }
 
 .ant-drawer-body {
-	padding: 0 !important;
+  padding: 0 !important;
+}
+
+.ant-notification-notice {
+  border-radius: 8px;
+}
+
+.anticon {
+  height: 100%;
+  display: flex;
+  top: 0;
+  align-items: center;
+  justify-content: center;
 }

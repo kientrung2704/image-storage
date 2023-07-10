@@ -1,20 +1,34 @@
 <template>
   <div id="loading-overlay" :style="{ display: show ? 'block' : 'none' }">
     <div class="spinner-container">
-      <div class="lds-default">
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
+      <div class="sk-circle-bounce">
+        <div class="sk-child sk-circle-1"></div>
+        <div class="sk-child sk-circle-2"></div>
+        <div class="sk-child sk-circle-3"></div>
+        <div class="sk-child sk-circle-4"></div>
+        <div class="sk-child sk-circle-5"></div>
+        <div class="sk-child sk-circle-6"></div>
+        <div class="sk-child sk-circle-7"></div>
+        <div class="sk-child sk-circle-8"></div>
+        <div class="sk-child sk-circle-9"></div>
+        <div class="sk-child sk-circle-10"></div>
+        <div class="sk-child sk-circle-11"></div>
+        <div class="sk-child sk-circle-12"></div>
       </div>
+      <!-- <div class="lds-default">
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+      </div> -->
     </div>
   </div>
 </template>

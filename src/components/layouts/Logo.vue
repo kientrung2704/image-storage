@@ -1,9 +1,5 @@
 <template>
-  <h1 class="header mb-0">Photos</h1>
+  <router-link :to="{ name: 'image' }"> <h1 class="f-600 mb-0">Photos</h1></router-link>
 </template>
 
-<style lang="scss" scoped>
-.header {
-  font-weight: 600;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -1,0 +1,14 @@
+export const AUTH = {
+  LOGIN: 'LOGIN',
+  SET_IS_LOGIN: 'SET_IS_LOGIN',
+  REGISTER: 'REGISTER',
+  LOGOUT: 'LOGOUT'
+}
+
+export const USERS = {
+  GET_USER_INFO: 'GET_USER_INFO'
+}
+
+export const PACKAGE = {
+  GET_LIST_PACKAGE: 'GET_LIST_PACKAGE'
+}

@@ -1,0 +1,61 @@
+@use '../abstracts/mixins'as *;
+@use '../abstracts/colors'as *;
+@use '../abstracts/mediaQuery'as *;
+
+.register {
+    margin-top: 70px;
+
+    .container {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 551px;
+        padding: 56px;
+        background-color: #fff;
+
+        .heading {
+            margin-bottom: 48px;
+
+            h1 {
+                text-align: center;
+                font-weight: 600;
+                line-height: 125%;
+            }
+        }
+
+        .password {
+            position: relative;
+        }
+
+        .forgot-password {
+            display: flex;
+            justify-content: flex-end;
+
+            a {
+                color: #E20031;
+            }
+        }
+
+        .btn-login {
+            background-color: #EE0033;
+            width: 100%;
+            padding: 4px;
+            height: 40px;
+            text-align: center;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .register {
+            text-align: center;
+            font-weight: 600;
+            margin-top: 18px;
+            font-size: 16px;
+
+            &-link {
+                color: #E20031;
+            }
+        }
+    }
+}

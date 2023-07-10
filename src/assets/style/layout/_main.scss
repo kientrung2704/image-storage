@@ -1,8 +1,21 @@
 .main {
   overflow-y: auto;
   display: flex;
-  /* height: 100%; */
+  height: calc(100% - 48px);
   flex: 1 1 0%;
   padding: 24px;
+  background-color: #f2f6f8;
   flex-direction: column;
+}
+
+@media (min-width: 600px) and (max-width: 1439.98px) {
+  .main {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 599.98px) {
+  .main {
+    padding: 8px;
+  }
 }
