@@ -161,7 +161,7 @@ export default {
 }
 
 :deep(.ant-card-head-title) {
-  font-family: 'Satoshi Med';
+  // font-family: 'Satoshi Med';
   font-weight: 500;
 }
 </style>

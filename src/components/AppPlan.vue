@@ -53,7 +53,7 @@ export default {
 
   &-name {
     color: #070328;
-    font-family: 'Satoshi Bold';
+    // font-family: 'Satoshi Bold';
     line-height: 1;
     font-weight: 600;
     display: inline-flex;

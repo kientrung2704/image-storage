@@ -86,7 +86,9 @@
             </div>
 
             <div class="button-form">
-              <a-button @click.prevent="onSubmit" type="primary" size="large">Change Data</a-button>
+              <a-button @click.prevent="onSubmit" type="primary" size="large"
+                >Lưu Thông Tin</a-button
+              >
             </div>
           </form>
         </div>
@@ -95,7 +97,7 @@
     <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
       <a-card title="Account infomation">
         <div class="setting">
-          <div class="account-type">
+          <div class="account-type pt-0">
             <div class="text">Account type</div>
             <a-tag color="default">Free account</a-tag>
           </div>
@@ -107,11 +109,11 @@
             <div class="text">Storage</div>
             <div class="usage">
               <div class="left">
-                Used <strong class="cur-usage">0 KB</strong> out of
-                <strong class="limit-storage">10 GB</strong>
+                Used <span class="cur-usage">0 KB</span> out of
+                <span class="limit-storage">10 GB</span>
               </div>
               <div class="right">
-                <strong>{{ storagePercentage }}%</strong>
+                <span>{{ storagePercentage }}%</span>
               </div>
             </div>
             <div class="progress">
@@ -127,11 +129,11 @@
             <div class="text">Share Limit</div>
             <div class="usage">
               <div class="left">
-                Share <strong class="cur-usage">10</strong> out of
-                <strong class="limit-share">10 Peoples</strong>
+                Share <span class="cur-usage">10</span> out of
+                <span class="limit-share">10 Peoples</span>
               </div>
               <div class="right">
-                <strong>{{ sharePercentage }}%</strong>
+                <span>{{ sharePercentage }}%</span>
               </div>
             </div>
             <div class="progress">
@@ -359,7 +361,7 @@ export default {
     :deep(.ant-btn-primary) {
       background-color: #0451f9 !important;
       color: #ffffff !important;
-      font-family: 'Satoshi Med';
+      // font-family: 'Satoshi Med';
       border: none;
     }
 
@@ -381,7 +383,7 @@ export default {
       display: inline-flex;
       flex-direction: column;
       font-size: 14px;
-      font-family: 'Satoshi Med';
+      // font-family: 'Satoshi Med';
       height: auto;
       line-height: 1.35;
       outline: 0;
@@ -398,7 +400,7 @@ export default {
     padding: 12px 0;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #00000026;
+    // border-bottom: 1px solid #00000026;
 
     .text {
       color: #86909a;
@@ -412,13 +414,13 @@ export default {
     margin-top: 24px;
     margin-bottom: 16px;
     .text {
-      font-family: 'Satoshi Med';
+      // font-family: 'Satoshi Med';
       margin-bottom: 8px;
     }
 
     .usage {
       margin-bottom: 12px;
-      font-family: 'Satoshi Med';
+      // font-family: 'Satoshi Med';
       font-size: 12px;
       color: #86909a;
       display: flex;
@@ -435,6 +437,7 @@ export default {
         }
 
         .limit-share {
+          font-weight: 500;
           color: #ff9800;
         }
       }
@@ -460,6 +463,7 @@ export default {
 }
 
 .flag-select {
+  font-size: 14px;
   line-height: 18px;
 }
 
@@ -477,7 +481,7 @@ export default {
 }
 
 :deep(.ant-card-head-title) {
-  font-family: 'Satoshi Med';
+  // font-family: 'Satoshi Med';
   font-weight: 500;
 }
 

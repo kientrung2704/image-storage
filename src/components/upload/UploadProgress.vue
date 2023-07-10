@@ -244,7 +244,7 @@ export default {
     .modal-body {
       .file-group {
         .file-total {
-          font-family: 'Satoshi Med';
+          // font-family: 'Satoshi Med';
           font-size: 14px;
         }
       }
@@ -273,7 +273,7 @@ export default {
           height: 40px;
 
           .file-name {
-            font-family: 'Satoshi Med';
+            // font-family: 'Satoshi Med';
             font-size: 14px;
             // font-weight: 600;
             line-height: 1.25;

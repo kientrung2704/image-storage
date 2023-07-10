@@ -20,6 +20,60 @@
   src: url('@/assets/fonts/FS Magistral/FS Magistral-Medium.ttf');
 }
 
+@font-face {
+  font-family: 'Lexend';
+  src: url('@/assets/fonts/Lexend/Lexend-Thin.ttf') format('truetype');
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Lexend';
+  src: url('@/assets/fonts/Lexend/Lexend-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: 'Lexend';
+  src: url('@/assets/fonts/Lexend/Lexend-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Lexend';
+  src: url('@/assets/fonts/Lexend/Lexend-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Lexend';
+  src: url('@/assets/fonts/Lexend/Lexend-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Lexend';
+  src: url('@/assets/fonts/Lexend/Lexend-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Lexend';
+  src: url('@/assets/fonts/Lexend/Lexend-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Lexend';
+  src: url('@/assets/fonts/Lexend/Lexend-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: 'Lexend';
+  src: url('@/assets/fonts/Lexend/Lexend-Black.ttf') format('truetype');
+  font-weight: 900;
+}
+
 .limit-line {
   overflow: hidden;
   text-overflow: ellipsis;
