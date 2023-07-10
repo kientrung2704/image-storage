@@ -1,8 +1,11 @@
-@use '../abstracts/mediaQuery' as *;
+@use '../abstracts/mediaQuery'as *;
 
 @for $i from 0 through 10 {
-  @each $size, $screen in $breakpoints {
+
+  @each $size,
+  $screen in $breakpoints {
     @include mq($size) {
+
       // margin-right
       .mr-#{$size}-#{$i * 6} {
         margin-right: $i * 6px !important;
@@ -211,6 +214,10 @@ $displays: (block, flex);
   &-end {
     justify-content: flex-end;
   }
+
+  &-start {
+    justify-content: flex-start;
+  }
 }
 
 .align {
@@ -240,7 +247,8 @@ $displays: (block, flex);
 $directions: ('row', 'column');
 $alignItems: ('center', 'start', 'between', 'end');
 
-@each $size, $screen in $breakpoints {
+@each $size,
+$screen in $breakpoints {
   @each $direction in $directions {
     @include mq($size) {
       .r-flex-#{$size}-#{$direction} {
@@ -251,7 +259,7 @@ $alignItems: ('center', 'start', 'between', 'end');
 
   @each $align in $alignItems {
     @include mq($size) {
-      @if $align== 'between' {
+      @if $align=='between' {
         .align-#{$size}-#{$align} {
           align-items: #{'space-' + $align};
         }
@@ -259,7 +267,9 @@ $alignItems: ('center', 'start', 'between', 'end');
         .justify-#{$size}-#{$align} {
           justify-content: #{'space-' + $align};
         }
-      } @else if $align== 'start' {
+      }
+
+      @else if $align=='start' {
         .align-#{$size}-#{$align} {
           align-items: #{'flex-' + $align};
         }
@@ -267,7 +277,9 @@ $alignItems: ('center', 'start', 'between', 'end');
         .justify-#{$size}-#{$align} {
           justify-content: #{'flex-' + $align};
         }
-      } @else if $align== 'end' {
+      }
+
+      @else if $align=='end' {
         .align-#{$size}-#{$align} {
           align-items: #{'flex-' + $align};
         }
@@ -294,4 +306,10 @@ $alignItems: ('center', 'start', 'between', 'end');
 
 .color-dark-gray {
   color: #63647f;
+}
+
+.text-error {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #c10015;
 }

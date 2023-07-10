@@ -15,14 +15,14 @@
       theme="light"
       @select="onSelect"
     >
-      <div class="mt-18 mb-12 pl-15" v-if="!collapsed">
+      <!-- <div class="mt-18 mb-12 pl-15" v-if="!collapsed">
         <a-button @click="openModal" size="large" shape="round" block>
           <template #icon>
             <UploadOutlined />
           </template>
           Upload
         </a-button>
-      </div>
+      </div> -->
       <a-menu-item
         key="image"
         @mouseover="hoverMenu('image')"
@@ -37,7 +37,6 @@
 
       <a-menu-item
         key="explore"
-        class="test"
         @mouseover="hoverMenu('explore')"
         @mouseleave="hoverMenu"
         :class="canHover('explore')"
@@ -91,7 +90,7 @@
       <a-divider class="my-12" />
 
       <a-menu-item
-        key="storage"
+        key="general"
         @mouseover="hoverMenu('storage')"
         @mouseleave="hoverMenu"
         :class="canHover('storage')"
@@ -111,7 +110,6 @@
 <script>
 import {
   PictureOutlined,
-  SettingOutlined,
   UploadOutlined,
   SearchOutlined,
   PieChartOutlined,
@@ -122,7 +120,6 @@ import {
 export default {
   components: {
     PictureOutlined,
-    SettingOutlined,
     UploadOutlined,
     SearchOutlined,
     PieChartOutlined,
@@ -181,7 +178,7 @@ export default {
 }
 
 .cust-sider {
-  border-right: 1px solid rgba(0, 0, 0, 0.06) !important;
+  border-right: 1px solid #00000026 !important;
 }
 
 :deep(.ant-menu) {

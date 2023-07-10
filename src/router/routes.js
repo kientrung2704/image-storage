@@ -8,64 +8,141 @@ const routes = [
     component: () => import('@/layouts/Layout.vue'),
     // component: () => import('@/layouts/DashboardLayout.vue'),
     meta: {
-      name: 'Dashboard',
-      requireAuth: false
+      name: 'Dashboard'
     },
     children: [
       {
-        path: 'test',
+        path: 'image',
         name: 'image',
         component: () => import('@/views/dashboard/index.vue'),
         meta: {
-          title: 'Dashboard',
-          requireAuth: false
+          title: 'Image'
         }
       },
       {
-        path: 'test1',
+        path: 'explore',
         name: 'explore',
-        component: () => import('@/views/index.vue'),
+        component: () => import('@/views/dashboard/explore.vue'),
         meta: {
-          title: 'Dashboard',
-          requireAuth: false
+          title: 'Explore'
         }
       },
       {
-        path: 'test2',
-        name: 'Dashboard2',
-        component: () => import('@/views/index.vue'),
+        path: 'share',
+        name: 'share',
+        component: () => import('@/views/dashboard/explore.vue'),
         meta: {
-          title: 'Dashboard',
-          requireAuth: false
+          title: 'Share'
+        }
+      },
+      {
+        path: 'like',
+        name: 'like',
+        component: () => import('@/views/dashboard/like.vue'),
+        meta: {
+          title: 'Like'
+        }
+      },
+      {
+        path: 'trash',
+        name: 'trash',
+        component: () => import('@/views/dashboard/trash.vue'),
+        meta: {
+          title: 'Trash'
+        }
+      },
+      {
+        path: 'order',
+        name: 'order',
+        component: () => import('@/views/cart/order.vue'),
+        meta: {
+          title: 'Order'
+        }
+      },
+      {
+        path: 'payment',
+        name: 'payment',
+        component: () => import('@/views/cart/payment.vue'),
+        meta: {
+          title: 'Payment'
+        }
+      },
+      {
+        path: 'detail/:id',
+        name: 'detail',
+        component: () => import('@/views/cart/detail.vue'),
+        meta: {
+          title: 'Detail'
         }
       },
       {
         path: 'profile',
-        name: 'Profile',
-        component: () => import('@/views/profile/UserProfile.vue'),
+        name: 'profile',
+        component: () => import('@/views/profile/index.vue'),
         meta: {
-          title: 'Profile',
-          requireAuth: false
-        }
-      },
-      {
-        path: 'child',
-        redirect: '/child/test-child',
-        meta: {
-          title: 'Child',
-          requireAuth: false
+          title: 'Profile'
         },
         children: [
           {
-            path: 'test-child',
-            name: 'Dashboard3',
-            component: () => import('@/views/HomeView.vue'),
+            path: 'general',
+            name: 'general',
+            component: () => import('@/views/profile/General.vue'),
             meta: {
-              title: 'Dashboard3',
-              requireAuth: false
+              title: 'General'
+            }
+          },
+          {
+            path: 'security',
+            name: 'security',
+            component: () => import('@/views/profile/Security.vue'),
+            meta: {
+              title: 'Security'
+            }
+          },
+          {
+            path: 'plan',
+            name: 'plan',
+            component: () => import('@/views/profile/Plan.vue'),
+            meta: {
+              title: 'Plan'
+            }
+          },
+          {
+            path: 'login-history',
+            name: 'login-history',
+            component: () => import('@/views/profile/LoginHistory.vue'),
+            meta: {
+              title: 'LoginHistory'
             }
           }
         ]
+      }
+    ]
+  },
+  {
+    path: '/',
+    name: 'main',
+    component: () => import('@/layouts/MainLayout.vue'),
+    // component: () => import('@/layouts/DashboardLayout.vue'),
+    meta: {
+      name: 'Main'
+    },
+    children: [
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import('@/views/auth/login.vue'),
+        meta: {
+          title: 'Login'
+        }
+      },
+      {
+        path: 'register',
+        name: 'register',
+        component: () => import('@/views/auth/register.vue'),
+        meta: {
+          title: 'Register'
+        }
       }
     ]
   }

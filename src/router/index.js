@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '@/router/routes'
+import store from '@/store'
 import NProgress from 'nprogress'
+import middlewareAuth from '@/middleware/auth'
 NProgress.configure({ showSpinner: false })
 const router = createRouter({
   history: createWebHistory(),
@@ -22,36 +24,54 @@ const router = createRouter({
   }
 })
 
+function globalMiddleware() {
+  return [middlewareAuth]
+}
+
+function nextFactory(context, middleware, index) {
+  const subsequentMiddleware = middleware[index]
+  if (!subsequentMiddleware) return context.next
+
+  return (...parameters) => {
+    context.next(...parameters)
+    const nextMiddleware = nextFactory(context, middleware, index + 1)
+    subsequentMiddleware({
+      ...context,
+      next: nextMiddleware
+    })
+  }
+}
+
 // eslint-disable-next-line
 router.beforeEach(async (to, from, next) => {
   // window.$loadingBar?.start()
   NProgress.start()
   document.title = to.meta?.title ?? import.meta.env.VUE_APP_NAME ?? ''
 
-  // let middleware = null;
-  // let routeMiddleware = null;
+  let middleware = null
+  let routeMiddleware = null
 
-  // if (to.meta.middleware) {
-  //   routeMiddleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meta.middleware];
-  // }
-  // middleware = routeMiddleware ? globalMiddleware().concat(routeMiddleware) : globalMiddleware();
+  if (to.meta.middleware) {
+    routeMiddleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meta.middleware]
+  }
+  middleware = routeMiddleware ? globalMiddleware().concat(routeMiddleware) : globalMiddleware()
 
-  // if (middleware.length > 0) {
-  //   const context = {
-  //     to,
-  //     from,
-  //     next,
-  //     store,
-  //   };
-  //   const nextMiddleware = nextFactory(context, middleware, 1);
+  if (middleware.length > 0) {
+    const context = {
+      to,
+      from,
+      next,
+      store
+    }
+    const nextMiddleware = nextFactory(context, middleware, 1)
 
-  //   return middleware[0]({
-  //     ...context,
-  //     next: nextMiddleware,
-  //   });
-  // }
+    return middleware[0]({
+      ...context,
+      next: nextMiddleware
+    })
+  }
 
-  return next()
+  // return next()
 })
 router.afterEach(() => {
   setTimeout(() => {

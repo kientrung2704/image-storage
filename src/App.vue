@@ -2,6 +2,8 @@
   <a-config-provider :locale="localLanguage">
     <Loading ref="loading" />
     <UploadGlobal ref="upload" />
+    <!-- <DropZone ref="dropzone" /> -->
+
     <RouterView />
   </a-config-provider>
 </template>

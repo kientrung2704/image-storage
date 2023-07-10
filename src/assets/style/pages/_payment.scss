@@ -1,0 +1,56 @@
+@use '../abstracts/mixins'as *;
+@use '../abstracts/colors'as *;
+@use '../abstracts/mediaQuery'as *;
+
+.main {
+    background-color: $WHITE;
+    align-items: center;
+    justify-content: center;
+    //   .title {
+    //     font-family: 'FS Magistral';
+    //     font-size: 20px;
+    //     margin-bottom: 32px;
+    //   }
+
+    .payment {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &-status {
+            text-align: center;
+
+            .detail {
+                font-size: 16px;
+                font-weight: 600;
+            }
+        }
+
+        &-info {
+            .detail {
+                .bold {
+                    font-weight: 600;
+                }
+
+                .bold-red {
+                    font-weight: 600;
+                    color: #E02020;
+                }
+            }
+        }
+
+        .btn-order-info {
+            font-family: 'FS Magistral';
+            background-color: #e03;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $WHITE;
+            padding: 0 35px;
+            height: 54px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+    }
+}

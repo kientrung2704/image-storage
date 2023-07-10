@@ -8,6 +8,12 @@ export default {
   libary: 'Libary',
   like: 'Like',
   trash: 'Trash',
+  infomation: 'Infomation',
+  description_placeholder: 'Add description',
+  detail: 'Detail',
+  profile: 'Profile',
+  vn: 'Vietnamese',
+  en: 'English',
   user: {
     first_name: 'First name',
     last_name: 'Last name',

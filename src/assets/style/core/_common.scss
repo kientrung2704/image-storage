@@ -1,8 +1,8 @@
-@use '../abstracts/colors' as *;
-@use '../abstracts/mediaQuery' as *;
+@use '../abstracts/colors'as *;
+@use '../abstracts/mediaQuery'as *;
 
 body {
-  font-family: 'Inter';
+  font-family: 'Satoshi';
 
   &.no-scroll {
     overflow: hidden;
@@ -13,7 +13,7 @@ body {
 
 #app {
   line-height: 1;
-  font-family: 'Inter';
+  font-family: 'Satoshi';
   height: 100%;
   box-sizing: border-box;
   color: #222222;
@@ -49,4 +49,16 @@ body {
 
 .ant-drawer-body {
   padding: 0 !important;
+}
+
+.ant-notification-notice {
+  border-radius: 8px;
+}
+
+.anticon {
+  height: 100%;
+  display: flex;
+  top: 0;
+  align-items: center;
+  justify-content: center;
 }
