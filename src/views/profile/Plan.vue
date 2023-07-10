@@ -57,47 +57,29 @@
 import AppPlan from '../../components/AppPlan.vue'
 
 export default {
+  components: { AppPlan },
   data() {
     return {
       month: 1,
-      services: [
-        {
-          id: 1,
-          name: 'Basic',
-          isPopular: 0,
-          price: '50000',
-          limit: '2'
-        },
-        {
-          id: 2,
-          name: 'Standard',
-          isPopular: 1,
-          price: '100000',
-          limit: '10'
-        },
-        {
-          id: 3,
-          name: 'Premium',
-          isPopular: 0,
-          price: '150000',
-          limit: '20'
-        },
-        {
-          id: 4,
-          name: 'Enterprise',
-          isPopular: 0,
-          price: '200000',
-          limit: '40'
-        }
-      ]
+      services: []
     }
   },
+
+  created() {
+    this.getListPackage()
+  },
+
   methods: {
     handleChangeMonth(month) {
       this.month = month
+    },
+    async getListPackage() {
+      this.$root.$refs.loading.start()
+      const res = await this.$store.dispatch('package/listPackage')
+      this.services = res
+      this.$root.$refs.loading.finish()
     }
-  },
-  components: { AppPlan }
+  }
 }
 </script>
 

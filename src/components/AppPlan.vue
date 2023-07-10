@@ -2,7 +2,7 @@
   <div class="service">
     <h2 class="service-name">
       {{ $i18n.t(service?.name) }}
-      <span class="popular" v-if="service.isPopular">MOST POPULAR</span>
+      <span class="popular" v-if="service.is_popular">MOST POPULAR</span>
     </h2>
     <div class="price">
       <div class="amount">

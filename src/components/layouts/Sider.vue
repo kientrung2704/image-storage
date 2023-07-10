@@ -90,7 +90,7 @@
       <a-divider class="my-12" />
 
       <a-menu-item
-        key="storage"
+        key="general"
         @mouseover="hoverMenu('storage')"
         @mouseleave="hoverMenu"
         :class="canHover('storage')"

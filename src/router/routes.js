@@ -60,6 +60,22 @@ const routes = [
         }
       },
       {
+        path: 'payment',
+        name: 'payment',
+        component: () => import('@/views/cart/payment.vue'),
+        meta: {
+          title: 'Payment'
+        }
+      },
+      {
+        path: 'detail/:id',
+        name: 'detail',
+        component: () => import('@/views/cart/detail.vue'),
+        meta: {
+          title: 'Detail'
+        }
+      },
+      {
         path: 'profile',
         name: 'profile',
         component: () => import('@/views/profile/index.vue'),

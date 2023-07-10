@@ -88,8 +88,15 @@ export default {
 
   methods: {
     numberWithCommas,
-    submit() {
-      console.log(123)
+    async submit() {
+      this.$root.$refs.loading.start()
+      const params = {
+        id: this.$route.query.id,
+        month: this.$route.query.month
+      }
+      const res = await this.$store.dispatch('order/order', params)
+      window.location.href = res
+      this.$root.$refs.loading.finish()
     }
   }
 }

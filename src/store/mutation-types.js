@@ -8,3 +8,7 @@ export const AUTH = {
 export const USERS = {
   GET_USER_INFO: 'GET_USER_INFO'
 }
+
+export const PACKAGE = {
+  GET_LIST_PACKAGE: 'GET_LIST_PACKAGE'
+}
