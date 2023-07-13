@@ -6,22 +6,22 @@
       </div>
       <form @submit.prevent="handleSubmit">
         <div class="profile-input mb-18">
-          <label for="email" class="form-label color-dark-gray">
+          <label for="username" class="form-label color-dark-gray">
             <!-- {{ $i18n.t('user.first_name') }} -->
-            Email
+            Username
           </label>
           <div class="form-control">
             <input
               type="text"
-              id="email"
+              id="username"
               class="form-input"
-              v-model="email"
-              :class="{ 'error-border': v$.email.$errors.length > 0 }"
-              @blur="handleBlurInput('email')"
+              v-model="username"
+              :class="{ 'error-border': v$.username.$errors.length > 0 }"
+              @blur="handleBlurInput('username')"
             />
 
-            <div class="text-error" v-if="v$.email.$error">
-              {{ v$.email.$errors[0].$params.property }}
+            <div class="text-error" v-if="v$.username.$error">
+              {{ v$.username.$errors[0].$params.property }}
             </div>
           </div>
         </div>
@@ -70,10 +70,10 @@
             </div>
           </div>
         </div>
-        <div class="forgot-password mb-18">
+        <!-- <div class="forgot-password mb-18">
           <router-link :to="{ name: 'login' }">Forgot password?</router-link>
-        </div>
-        <button class="btn-login">Login</button>
+        </div> -->
+        <button class="btn-login mt-12">Login</button>
       </form>
       <div class="register">
         Chưa có tài khoản?
@@ -88,8 +88,10 @@ import { TYPE_SUCCESS, TYPE_ERROR } from '@/constants/common'
 import { IconEye } from '@tabler/icons-vue'
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons-vue'
 import useValidate from '@vuelidate/core'
-import { maxLength, required, isNotFormatPassword, isNotFormatEmail } from '@/plugins/vuelidate'
+import { maxLength, required, isNotFormatPassword } from '@/plugins/vuelidate'
 import { helpers } from '@vuelidate/validators'
+import { getAccessToken } from '@/utils/token'
+
 export default {
   components: {
     IconEye,
@@ -99,28 +101,30 @@ export default {
   data() {
     return {
       v$: useValidate({ $autoDirty: true }),
-      email: '',
+      username: '',
       password: '',
       visible: true
     }
   },
   validations() {
     return {
-      email: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
-        maxLength: helpers.withParams(
-          { property: this.$i18n.t('message.title.email') },
-          maxLength(255)
+      username: {
+        required: helpers.withParams(
+          { property: this.$i18n.t('message.username.required') },
+          required
         ),
-        isNotFormatEmail: helpers.withParams(
-          { property: this.$i18n.t('message.title.email') },
-          isNotFormatEmail
+        maxLength: helpers.withParams(
+          { property: this.$i18n.t('message.username.maxlength') },
+          maxLength(255)
         )
       },
       password: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('message.password.required') },
+          required
+        ),
         isNotFormatPassword: helpers.withParams(
-          { property: this.$i18n.t('message.title.email_format') },
+          { property: this.$i18n.t('message.password.format') },
           isNotFormatPassword
         )
       }
@@ -135,7 +139,7 @@ export default {
 
       if (isValidate) {
         const params = {
-          email: this.email,
+          username: this.username,
           password: this.password
         }
         this.$root.$refs.loading.start()
@@ -147,6 +151,9 @@ export default {
           })
         } else {
           this.$router.push({ name: 'image' })
+
+          // await this.$store.dispatch('user/getUserInfo')
+
           this.$notification[TYPE_SUCCESS]({
             message: this.$i18n.t('message.login.login'),
             description: this.$i18n.t('message.login.success')

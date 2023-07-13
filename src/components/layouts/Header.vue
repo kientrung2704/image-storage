@@ -37,12 +37,12 @@
                 </template>
                 <span class="item-detail"> Profile </span>
               </a-menu-item>
-              <a-menu-item key="login-history">
+              <!-- <a-menu-item key="login-history">
                 <template #icon>
                   <IconLock stroke-width="2.5" :size="18" color="#86909A" />
                 </template>
                 <span class="item-detail"> Login history </span>
-              </a-menu-item>
+              </a-menu-item> -->
               <a-menu-divider />
               <a-menu-item>
                 <template #icon>

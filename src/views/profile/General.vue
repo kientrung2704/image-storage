@@ -9,7 +9,7 @@
       <a-card title="Profile">
         <div class="setting">
           <form>
-            <div class="avatar">
+            <!-- <div class="avatar">
               <a-avatar
                 @click="selectFile"
                 :size="72"
@@ -26,43 +26,25 @@
                 class="d-none"
                 @change="handleUpload"
               />
-            </div>
+            </div> -->
 
             <div class="profile">
               <div class="profile-input">
-                <label for="first_name" class="form-label color-dark-gray">
-                  {{ $i18n.t('user.first_name') }}
-                </label>
+                <label for="first_name" class="form-label color-dark-gray"> Họ và tên </label>
                 <div class="form-control">
                   <input
                     type="text"
                     id="first_name"
                     class="form-input"
-                    v-model="user.first_name"
-                    :class="{ 'error-border': v$.user.first_name.$errors.length > 0 }"
-                    @blur="handleBlurInput('first_name')"
+                    v-model="user.fullName"
+                    disabled
                   />
-                  <div class="text-error" v-if="v$.user.first_name.$error">
-                    {{ v$.user.first_name.$errors[0].$params.property }}
-                  </div>
                 </div>
               </div>
               <div class="profile-input">
-                <label for="last_name" class="form-label color-dark-gray">
-                  {{ $i18n.t('user.first_name') }}
-                </label>
+                <label for="last_name" class="form-label color-dark-gray"> Tên tài khoản </label>
                 <div class="form-control">
-                  <input
-                    type="text"
-                    id="last_name"
-                    class="form-input"
-                    :class="{ 'error-border': v$.user.last_name.$errors.length > 0 }"
-                    v-model="user.last_name"
-                    @blur="handleBlurInput('last_name')"
-                  />
-                  <div class="text-error" v-if="v$.user.last_name.$error">
-                    {{ v$.user.last_name.$errors[0].$params.property }}
-                  </div>
+                  <input type="text" id="last_name" class="form-input" v-model="user.username" />
                 </div>
               </div>
               <div class="profile-input">
@@ -85,14 +67,14 @@
               </div>
             </div>
 
-            <div class="button-form">
+            <!-- <div class="button-form">
               <a-button @click.prevent="onSubmit" type="primary" size="large">Change Data</a-button>
-            </div>
+            </div> -->
           </form>
         </div>
       </a-card>
     </a-col>
-    <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
+    <!-- <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
       <a-card title="Account infomation">
         <div class="setting">
           <div class="account-type">
@@ -148,7 +130,7 @@
           </div>
         </div>
       </a-card>
-    </a-col>
+    </a-col> -->
     <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
       <a-card title="Language">
         <div class="setting">

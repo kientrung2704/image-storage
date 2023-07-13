@@ -25,7 +25,7 @@ axios.interceptors.request.use(
   (request) => {
     const token = getAccessToken()
     request.headers['Access-Control-Allow-Origin'] = '*'
-    request.headers['Access-Control-Allow-Methods'] = 'GET'
+    request.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
     request.headers['Cache-Control'] = 'no-store'
     if (token) {
       request.headers.Authorization = `Bearer ${token}`

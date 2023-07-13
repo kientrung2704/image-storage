@@ -1,42 +1,30 @@
 <template>
   <div class="main">
-    <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
-      <h3>Drop files to upload</h3>
+    <div class="upload-btn">
+      <a-upload
+        v-model:file-list="fileList"
+        name="file"
+        :multiple="true"
+        :action="postAction"
+        :headers="headers"
+        @change="handleChange"
+        :showUploadList="false"
+      >
+        <a-button shape="circle">
+          <PlusOutlined :style="{ color: '', fontSize: '20px' }" />
+        </a-button>
+      </a-upload>
     </div>
 
-    <UploadProgress ref="progress" :files="files" @close="clearFile()" />
-
-    <file-upload
-      class="btn btn-primary dropdown-toggle"
-      :custom-action="customAction"
-      :post-action="postAction"
-      :extensions="extensions"
-      :accept="accept"
-      :multiple="multiple"
-      :directory="directory"
-      :create-directory="createDirectory"
-      :size="size || 0"
-      :thread="thread < 1 ? 1 : thread > 5 ? 5 : thread"
-      :drop="drop"
-      :drop-directory="dropDirectory"
-      :add-index="addIndex"
-      v-model="files"
-      @input-filter="inputFilter"
-      @input-file="inputFile"
-      ref="upload"
-    >
-    </file-upload>
-    <div class="wrapper-content">
-      <div v-for="(months, index) in images" :key="index" class="content">
-        <div class="content-time">{{ index }}</div>
-
-        <div class="content-image">
-          <div class="image" v-for="(image, i) in months" :key="i" @click="clickPhoto(image.id)">
-            <img class="img-responsive" :src="image.src" alt="image" />
-          </div>
+    <div class="content">
+      <div class="content-image">
+        <div class="image" v-for="(image, i) in imagesList" :key="i" @click="clickPhoto(image.id)">
+          <img class="img-responsive" :src="getImageUrl(image.filename)" alt="image" />
         </div>
       </div>
     </div>
+
+    <!-- PREVIEW -->
     <a-modal
       title=""
       width="100%"
@@ -58,8 +46,37 @@
         @close="close()"
         @detele-file="deleteFile"
         @like-file="likeFile"
+        @download-file="download"
       />
     </a-modal>
+
+    <!-- UPLOAD -->
+    <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
+      <h3>Drop files to upload</h3>
+    </div>
+
+    <file-upload
+      class="btn btn-primary dropdown-toggle"
+      :custom-action="customAction"
+      :post-action="postAction"
+      :extensions="extensions"
+      :accept="accept"
+      :multiple="multiple"
+      :directory="directory"
+      :create-directory="createDirectory"
+      :size="size || 0"
+      :thread="thread < 1 ? 1 : thread > 5 ? 5 : thread"
+      :drop="drop"
+      :drop-directory="dropDirectory"
+      :add-index="addIndex"
+      v-model="files"
+      @input-filter="inputFilter"
+      @input-file="inputFile"
+      ref="upload"
+    >
+    </file-upload>
+
+    <UploadProgress ref="progress" :files="fileList" @close="clearFile()" />
   </div>
 </template>
 
@@ -67,13 +84,20 @@
 import { TYPE_SUCCESS, TYPE_ERROR } from '@/constants/common'
 import { message } from 'ant-design-vue'
 import FileUpload from 'vue-upload-component'
+import { getAccessToken } from '@/utils/token'
+import { PlusOutlined } from '@ant-design/icons-vue'
 
 export default {
   components: {
-    FileUpload
+    FileUpload,
+    PlusOutlined
   },
   data() {
     return {
+      fileList: [],
+      headers: {
+        Authorization: `Bearer ${getAccessToken()}`
+      },
       visible: false,
       imageViewerDirection: 0,
       images: {},
@@ -82,7 +106,7 @@ export default {
       prevPhoto: null,
       nextPhoto: null,
       files: [],
-      postAction: 'http://bveats-api.test/upload',
+      postAction: 'http://localhost:8080/api/images/upload',
       accept: 'image/png,image/gif,image/jpeg,image/webp,video/mp4,audio/mp4,application/mp4',
       extensions: 'gif,jpg,jpeg,png,webp,mp4',
       // extensions: ['gif', 'jpg', 'jpeg','png', 'webp'],
@@ -101,29 +125,45 @@ export default {
     }
   },
   computed: {},
-  mounted() {
-    this.$watch(
-      () => {
-        return this.$refs.upload.uploaded
-      },
-      (val) => {
-        if (val) {
-          this.getList()
-        }
-        // alert('App $watch $refs.counter.i: ' + val)
-      }
-    )
-  },
+  // mounted() {
+  //   this.$watch(
+  //     () => {
+  //       return this.$refs.upload.uploaded
+  //     },
+  //     (val) => {
+  //       if (val) {
+  //         this.getList()
+  //       }
+  //       // alert('App $watch $refs.counter.i: ' + val)
+  //     }
+  //   )
+  // },
   async created() {
     await this.getList()
-    await this.formatListImage()
+    // await this.formatListImage()
   },
   methods: {
+    async handleChange(info) {
+      this.$refs.progress.changeVisble()
+
+      if (info.file.status !== 'uploading') {
+        // console.log('uploading', info.file, info.fileList)
+      }
+      if (info.file.status === 'done') {
+        // message.success(`${info.file.name} file uploaded successfully`)
+        await this.getList()
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`)
+      }
+    },
+    getImageUrl(file) {
+      return 'http://localhost:8080/api/images/' + file
+    },
     async getList() {
       this.$root.$refs.loading.start()
       this.images = {}
       const res = await this.$store.dispatch('photo/list')
-      this.images = res
+      this.imagesList = res
       this.$root.$refs.loading.finish()
     },
     formatListImage() {
@@ -139,8 +179,9 @@ export default {
       this.files = []
     },
     customAction(file, component) {
+      console.log(123123)
       this.$refs.progress.changeVisble()
-      return component.uploadHtml5(file)
+      // return component.uploadHtml5(file)
     },
     // add, update, remove File Event
     async inputFile(newFile, oldFile) {
@@ -393,7 +434,7 @@ export default {
         })
       } else {
         await this.getList()
-        await this.formatListImage()
+        // await this.formatListImage()
         await this.clickPhoto(file.id)
       }
       this.$root.$refs.loading.finish()
@@ -404,29 +445,40 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-  .wrapper-content {
-    .content {
-      padding-bottom: 24px;
+  position: relative;
+  .upload-btn {
+    right: 15px;
+    position: absolute;
+    bottom: 20px;
+  }
+  .empty {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-      &-time {
-        font-size: 16px;
-        margin-bottom: 18px;
-      }
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+    }
+  }
+  .content {
+    padding-bottom: 24px;
 
-      &-image {
-        display: flex;
-      }
-      .content-image {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        .image {
+    &-image {
+      display: flex;
+    }
+    .content-image {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      .image {
+        height: 180px;
+
+        .img-responsive {
           height: 180px;
-
-          .img-responsive {
-            height: 180px;
-            width: 100%;
-          }
+          width: 100%;
         }
       }
     }

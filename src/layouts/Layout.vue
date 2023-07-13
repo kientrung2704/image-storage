@@ -55,8 +55,8 @@ export default {
     const authCookie = getAccessToken()
 
     if (authCookie?.length > 0) {
-      await this.$store.commit('auth/SET_IS_LOGIN', true)
       await this.$store.dispatch('user/getUserInfo')
+      await this.$store.commit('auth/SET_IS_LOGIN', true)
     }
   },
   mounted() {

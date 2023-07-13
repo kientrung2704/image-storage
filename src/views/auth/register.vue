@@ -8,7 +8,7 @@
         <div class="profile-input mb-18">
           <label for="first_name" class="form-label color-dark-gray">
             <!-- {{ $i18n.t('user.first_name') }} -->
-            First Name
+            Họ và tên
           </label>
           <div class="form-control">
             <input
@@ -26,22 +26,22 @@
           </div>
         </div>
         <div class="profile-input mb-18">
-          <label for="last_name" class="form-label color-dark-gray">
+          <label for="username" class="form-label color-dark-gray">
             <!-- {{ $i18n.t('user.first_name') }} -->
-            Last Name
+            Tên tài khoản
           </label>
           <div class="form-control">
             <input
               type="text"
-              id="last_name"
+              id="username"
               class="form-input"
-              v-model="last_name"
-              :class="{ 'error-border': v$.last_name.$errors.length > 0 }"
-              @blur="handleBlurInput('last_name')"
+              v-model="username"
+              :class="{ 'error-border': v$.username.$errors.length > 0 }"
+              @blur="handleBlurInput('username')"
             />
 
-            <div class="text-error" v-if="v$.last_name.$error">
-              {{ v$.last_name.$errors[0].$params.property }}
+            <div class="text-error" v-if="v$.username.$error">
+              {{ v$.username.$errors[0].$params.property }}
             </div>
           </div>
         </div>
@@ -182,7 +182,7 @@ export default {
     return {
       v$: useValidate({ $autoDirty: true }),
       first_name: '',
-      last_name: '',
+      username: '',
       email: '',
       password: '',
       repeat_password: '',
@@ -194,32 +194,35 @@ export default {
     return {
       first_name: {
         required: helpers.withParams(
-          { property: this.$i18n.t('message.title.password') },
+          { property: this.$i18n.t('message.fullname.required') },
           required
         ),
         maxLength: helpers.withParams(
-          { property: this.$i18n.t('message.title.email') },
+          { property: this.$i18n.t('message.title.maxlength') },
           maxLength(255)
         )
       },
-      last_name: {
+      username: {
         required: helpers.withParams(
-          { property: this.$i18n.t('message.title.password') },
+          { property: this.$i18n.t('message.username.required') },
           required
         ),
         maxLength: helpers.withParams(
-          { property: this.$i18n.t('message.title.email') },
+          { property: this.$i18n.t('message.username.maxlength') },
           maxLength(255)
         )
       },
       email: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('message.email.required') },
+          required
+        ),
         maxLength: helpers.withParams(
-          { property: this.$i18n.t('message.title.email') },
+          { property: this.$i18n.t('message.email.maxlength') },
           maxLength(255)
         ),
         isNotFormatEmail: helpers.withParams(
-          { property: this.$i18n.t('message.title.email') },
+          { property: this.$i18n.t('message.email.format') },
           isNotFormatEmail
         )
       },
@@ -231,9 +234,12 @@ export default {
         )
       },
       repeat_password: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('message.repeat_password.required') },
+          required
+        ),
         sameAsPassword: helpers.withParams(
-          { property: this.$i18n.t('message.title.111') },
+          { property: this.$i18n.t('message.repeat_password.sameas') },
           sameAs(this.password)
         )
       }
@@ -248,8 +254,8 @@ export default {
 
       if (isValidate) {
         const params = {
-          first_name: this.first_name,
-          last_name: this.last_name,
+          fullName: this.first_name,
+          username: this.username,
           email: this.email,
           password: this.password,
           password_confirmation: this.repeat_password
@@ -259,7 +265,7 @@ export default {
         if (res) {
           this.$notification[TYPE_ERROR]({
             message: this.$i18n.t('message.login.login'),
-            description: res.error?.response.data.message
+            description: res
           })
         } else {
           this.$router.push({ name: 'image' })

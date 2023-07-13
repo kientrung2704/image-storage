@@ -50,7 +50,7 @@
                       <!-- </div> -->
                       <div class="file-size">{{ getFileSize(file.size) }} MB</div>
 
-                      <a-progress size="small" :percent="file.progress" :show-info="false" />
+                      <a-progress size="small" :percent="file.percent" :show-info="false" />
                     </div>
                   </div>
                 </div>
@@ -127,7 +127,7 @@ export default {
       const size = 0
       const total = this.files.reduce(
         (accumulator, currentValue) =>
-          accumulator + (currentValue.size * +currentValue.progress) / 100,
+          accumulator + (currentValue.size * +currentValue.percent) / 100,
         size
       )
 
@@ -137,7 +137,7 @@ export default {
     totalPercentage() {
       const progress = 0
       const totalProgress = this.files.reduce(
-        (accumulator, currentValue) => accumulator + +currentValue.progress,
+        (accumulator, currentValue) => accumulator + +currentValue.percent,
         progress
       )
 

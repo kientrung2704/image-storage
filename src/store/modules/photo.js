@@ -7,7 +7,8 @@ import {
   deletePhoto,
   getListTrash,
   removePhoto,
-  undoPhoto
+  undoPhoto,
+  downloadFile
 } from '@/apis/photo'
 
 const state = {
@@ -137,9 +138,9 @@ const actions = {
 
   async like({ commit }, id) {
     const res = await likePhoto(id)
-    if (res.error) {
-      return res
-    }
+    // if (res.error) {
+    //   return res
+    // }
 
     return false
   },
@@ -153,14 +154,14 @@ const actions = {
   },
   async delete({ commit }, id) {
     const res = await deletePhoto(id)
-    if (res.error) {
-      return res
-    }
-
     return false
   },
   async listTrash({ commit }) {
     const res = await getListTrash()
+    return res
+  },
+  async download({ commit }, id) {
+    const res = await downloadFile(id)
     return res
   },
   async remove({ commit }, id) {

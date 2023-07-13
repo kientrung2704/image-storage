@@ -1,11 +1,11 @@
 import axios from '@/plugins/axios'
 
-const USER_INFO = '/user/me'
+const USER_INFO = '/users/info'
 const UPDATE_USER_INFO = '/user/update'
 
 export async function getUserInfo() {
   try {
-    const { data } = await axios.get(`${USER_INFO}`)
+    const data = await axios.get(`${USER_INFO}`)
 
     return data
   } catch (error) {

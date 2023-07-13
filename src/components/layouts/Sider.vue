@@ -35,29 +35,6 @@
         {{ $i18n.t('image') }}
       </a-menu-item>
 
-      <a-menu-item
-        key="explore"
-        @mouseover="hoverMenu('explore')"
-        @mouseleave="hoverMenu"
-        :class="canHover('explore')"
-      >
-        <template #icon>
-          <SearchOutlined :style="{ fontSize: '20px' }" />
-        </template>
-        {{ $i18n.t('explore') }}
-      </a-menu-item>
-      <a-menu-item
-        key="share"
-        @mouseover="hoverMenu('share')"
-        @mouseleave="hoverMenu"
-        :class="canHover('share')"
-      >
-        <template #icon>
-          <TeamOutlined :style="{ fontSize: '20px' }" />
-        </template>
-        {{ $i18n.t('share') }}
-      </a-menu-item>
-
       <div v-if="!collapsed" class="py-18 pl-15">
         <span class="f-600">{{ $i18n.t('libary') }}</span>
       </div>
@@ -74,35 +51,6 @@
         </template>
         {{ $i18n.t('like') }}
       </a-menu-item>
-
-      <a-menu-item
-        key="trash"
-        @mouseover="hoverMenu('trash')"
-        @mouseleave="hoverMenu"
-        :class="canHover('trash')"
-      >
-        <template #icon>
-          <DeleteOutlined :style="{ fontSize: '20px' }" />
-        </template>
-        {{ $i18n.t('trash') }}
-      </a-menu-item>
-
-      <a-divider class="my-12" />
-
-      <a-menu-item
-        key="storage"
-        @mouseover="hoverMenu('storage')"
-        @mouseleave="hoverMenu"
-        :class="canHover('storage')"
-      >
-        <template #icon>
-          <PieChartOutlined :style="{ fontSize: '20px' }" />
-        </template>
-        {{ $i18n.t('storage') }}
-      </a-menu-item>
-      <div class="pl-24" v-if="!collapsed">
-        <a-progress :percent="30" size="small" />
-      </div>
     </a-menu>
   </a-layout-sider>
 </template>

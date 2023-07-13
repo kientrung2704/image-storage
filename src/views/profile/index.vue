@@ -24,19 +24,19 @@ export default {
         {
           link: 'general',
           name: this.$i18n.t('gerenal')
-        },
-        {
-          link: 'security',
-          name: this.$i18n.t('security')
-        },
-        {
-          link: 'plan',
-          name: this.$i18n.t('plan')
-        },
-        {
-          link: 'login-history',
-          name: this.$i18n.t('login-history')
         }
+        // {
+        //   link: 'security',
+        //   name: this.$i18n.t('security')
+        // },
+        // {
+        //   link: 'plan',
+        //   name: this.$i18n.t('plan')
+        // },
+        // {
+        //   link: 'login-history',
+        //   name: this.$i18n.t('login-history')
+        // }
       ]
     }
   },

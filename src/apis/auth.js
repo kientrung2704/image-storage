@@ -1,14 +1,13 @@
 import axios from '@/plugins/axios'
 
-const LOGIN = '/auth/login'
-const REGISTER = '/auth/register'
+const LOGIN = '/users/login'
+const REGISTER = '/users/register'
 const REFRESH_TOKEN = '/auth/refresh-token'
-const ME = '/user'
+const ME = '/users/info'
 
 export async function login(payload) {
   try {
-    const { data } = await axios.post(`${LOGIN}`, payload)
-
+    const data = await axios.post(`${LOGIN}`, payload)
     return data
   } catch (error) {
     return { error }
@@ -17,7 +16,7 @@ export async function login(payload) {
 
 export async function register(payload) {
   try {
-    const { data } = await axios.post(`${REGISTER}`, payload)
+    const data = await axios.post(`${REGISTER}`, payload)
 
     return data
   } catch (error) {
@@ -37,7 +36,7 @@ export async function refreshToken(payload) {
 
 export async function me() {
   try {
-    const data = await axios.get(`${ME}`)
+    const data = await axios.get('/users/info')
 
     return data
   } catch (error) {

@@ -13,9 +13,9 @@
               </div>
               <div class="right">
                 <a-space :size="!currentPhoto?.photo.deleted_at ? 8 : 12">
-                  <div class="btn-category" v-if="!currentPhoto?.photo.deleted_at">
+                  <!-- <div class="btn-category" v-if="!currentPhoto?.photo.deleted_at">
                     <ShareAltOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
-                  </div>
+                  </div> -->
 
                   <div
                     class="btn-remove"
@@ -33,38 +33,42 @@
                     <UndoOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
                     <span class="text">Khôi phục</span>
                   </div>
-                  <div class="btn-category" @click="viewInfo">
+                  <!-- <div class="btn-category" @click="viewInfo">
                     <InfoCircleOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
-                  </div>
-                  <div
-                    class="btn-category"
-                    v-if="!currentPhoto?.photo.deleted_at"
-                    @click="likeFile(currentPhoto?.photo)"
-                  >
+                  </div> -->
+                  <div class="btn-category" @click="likeFile(currentPhoto?.photo)">
                     <StarFilled
-                      v-if="currentPhoto?.photo.like === 1"
+                      v-if="+currentPhoto?.photo.likes === 1"
                       :style="{ color: '#ffffff', fontSize: '20px' }"
                     />
                     <StarOutlined v-else :style="{ color: '#ffffff', fontSize: '20px' }" />
                   </div>
                   <div
                     class="btn-category"
-                    v-if="!currentPhoto?.photo.deleted_at"
+                    v-if="+currentPhoto?.photo.likes === 0"
                     @click="deteleFile(currentPhoto?.photo.id)"
                   >
                     <DeleteOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
                   </div>
-
-                  <div class="btn-category" v-if="!currentPhoto?.photo.deleted_at">
+                  <!--
+                  <div
+                    class="btn-category"
+                    @click="download(currentPhoto?.photo.filename)"
+                    v-if="!currentPhoto?.photo.deleted_at"
+                  >
                     <MoreOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
-                  </div>
+                  </div> -->
                 </a-space>
               </div>
             </div>
           </div>
           <Transition class="img-slider" :name="transition">
             <div :key="currentPhoto?.photo.id" :id="currentPhoto?.photo.id">
-              <img class="img-display" :src="currentPhoto?.photo.src" v-if="currentPhoto" />
+              <img
+                class="img-display"
+                :src="getImageUrl(currentPhoto?.photo.filename)"
+                v-if="currentPhoto"
+              />
             </div>
           </Transition>
           <div
@@ -322,6 +326,9 @@ export default {
     }
   },
   methods: {
+    getImageUrl(file) {
+      return 'http://localhost:8080/api/images/' + file
+    },
     deteleFile(id) {
       if (id) {
         this.$emit('detele-file', id)
@@ -330,6 +337,11 @@ export default {
     likeFile(photo) {
       if (photo.id) {
         this.$emit('like-file', photo)
+      }
+    },
+    download(filename) {
+      if (filename) {
+        this.$emit('download-file', filename)
       }
     },
     removeFile(id, type) {

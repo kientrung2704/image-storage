@@ -57,6 +57,7 @@
 import AppPlan from '../../components/AppPlan.vue'
 
 export default {
+  components: { AppPlan },
   data() {
     return {
       month: 1,
@@ -96,8 +97,7 @@ export default {
     handleChangeMonth(month) {
       this.month = month
     }
-  },
-  components: { AppPlan }
+  }
 }
 </script>
 

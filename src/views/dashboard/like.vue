@@ -1,20 +1,25 @@
 <template>
   <div class="main">
-    <div class="empty" v-if="isEmpty(images)">
+    <div class="empty" v-if="isEmpty(imagesList)">
       <img src="@/assets/images/empty_favorites.svg" />
       <p class="mt-18 title">Không có ảnh yêu thích nào</p>
       <p>Ảnh và video bạn đánh dấu là yêu thích sẽ hiển thị ở đây</p>
     </div>
     <div class="wrapper-content" v-else>
-      <div v-for="(months, index) in images" :key="index" class="content">
-        <div class="content-time">{{ index }}</div>
-
+      <!-- <div v-for="(months, index) in images" :key="index" class="content"> -->
+      <div class="content">
         <div class="content-image">
-          <div class="image" v-for="(image, i) in months" :key="i" @click="clickPhoto(image.id)">
-            <img class="img-responsive" :src="image.src" alt="image" />
+          <div
+            class="image"
+            v-for="(image, i) in imagesList"
+            :key="i"
+            @click="clickPhoto(image.id)"
+          >
+            <img class="img-responsive" :src="getImageUrl(image.filename)" alt="image" />
           </div>
         </div>
       </div>
+      <!-- </div> -->
     </div>
     <a-modal
       title=""
@@ -62,16 +67,19 @@ export default {
 
   async created() {
     await this.getList()
-    await this.formatListImage()
+    // await this.formatListImage()
   },
 
   methods: {
     isEmpty,
+    getImageUrl(file) {
+      return 'http://localhost:8080/api/images/' + file
+    },
     async getList() {
       this.$root.$refs.loading.start()
       this.images = {}
       const res = await this.$store.dispatch('photo/likeList')
-      this.images = res
+      this.imagesList = res
       this.$root.$refs.loading.finish()
     },
     formatListImage() {
@@ -195,11 +203,6 @@ export default {
   .wrapper-content {
     .content {
       padding-bottom: 24px;
-
-      &-time {
-        font-size: 16px;
-        margin-bottom: 18px;
-      }
 
       &-image {
         display: flex;

@@ -7,22 +7,12 @@
             <img src="@/assets/images/cfind-logo.png" alt="" />
           </router-link>
         </div>
-        <div class="l-header_logo-title">AAAA</div>
+        <div class="l-header_logo-title">
+          <router-link :to="{ name: 'main' }"> PHOTO </router-link>
+        </div>
       </div>
       <div class="l-header_nav">
         <div class="l-header_center">
-          <div class="service">
-            <a href="http://" target="_blank" class="text-menu">Bảng giá</a>
-            <div class="underline"></div>
-          </div>
-          <div class="service">
-            <a href="http://" target="_blank" class="text-menu">Bảng giá</a>
-            <div class="underline"></div>
-          </div>
-          <div class="service">
-            <a href="http://" target="_blank" class="text-menu">Bảng giá</a>
-            <div class="underline"></div>
-          </div>
           <router-link class="service-login" :to="{ name: 'login' }"> Login </router-link>
         </div>
 

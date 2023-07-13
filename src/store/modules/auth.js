@@ -1,6 +1,7 @@
 import { login, register, refreshToken, me } from '@/apis/auth'
 import { AUTH } from '../mutation-types'
-import { setAccessToken, getRememberMe, removeAccessToken } from '@/utils/token'
+import { setAccessToken, getRememberMe, removeAccessToken, setUserId } from '@/utils/token'
+
 const state = {
   accessToken: '',
   isLogin: false
@@ -13,9 +14,9 @@ const getters = {
 const mutations = {
   [AUTH.LOGIN](state, data) {
     if (!data.error) {
-      state.accessToken = data.data.access_token
+      state.accessToken = data.data.token
       state.isLogin = true
-      setAccessToken(data.data.access_token, data.data.refresh_token, null, data.data.user_id)
+      setAccessToken(data.data.token, null, null, null)
     }
   },
 
@@ -37,16 +38,13 @@ export const actions = {
       data: res
     }
 
-    if (res.error) {
-      return res
-    }
     commit(AUTH.LOGIN, data)
     return false
   },
 
   async register({ commit }, payload) {
     const res = await register(payload)
-    if (res.error) {
+    if (!res.token) {
       return res
     }
 

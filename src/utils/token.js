@@ -22,6 +22,17 @@ const removeAccessToken = () => {
   Cookie.remove(USER_ACCOUNT_ID)
 }
 
+const setUserId = (userId) => {
+  const now = new Date()
+  const time = now.getTime()
+  const expireTime = time + 1000 * 36000
+  now.setTime(expireTime)
+  Cookie.set(USER_ACCOUNT_ID, userId, {
+    expires: now,
+    secure: true
+  })
+}
+
 const setAccessToken = (token, refreshToken, checkBox, userId) => {
   const now = new Date()
   const time = now.getTime()
@@ -64,5 +75,6 @@ export {
   setFcmToken,
   getFcmToken,
   getRememberMe,
-  getUserAccountId
+  getUserAccountId,
+  setUserId
 }

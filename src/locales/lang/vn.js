@@ -15,38 +15,37 @@ export default {
   vn: 'Tiếng Việt',
   vi_VN: 'Tiếng Việt',
   en: 'Tiếng Anh',
+  user: {
+    fullname: 'Họ và tên',
+    username: 'Tên đăng nhập',
+    email: 'Email'
+  },
   message: {
     login: {
-      login: 'Login',
-      success: 'Success',
+      login: 'Đăng nhập',
+      success: 'Đăng nhập thành công',
       error: 'Error'
     },
-    update_stamp_image: {
-      update: 'Update',
-      success: 'Update Stamp Image Success',
-      error: 'Update Stamp Image Fail'
+    username: {
+      required: 'Tên đăng nhập không được để trống',
+      maxlength: 'Tên đăng nhập giới hạn 255 ký tự'
     },
-    update_basic_info: {
-      success: '更新しました。',
-      error: '更新に失敗しました。'
+    password: {
+      required: 'Mật khẩu không được để trống',
+      format: 'Mật khẩu không đúng định dạng'
     },
-    error_validate: {
-      required: 'は必須項目です',
-      email: 'は有効なメールアドレスではありません',
-      same: 'が一致しません',
-      text_katakana: 'カタカナで入力してください。',
-      license_date: '終了日は開始日よりも大きくする必要があります',
-      digits: '1つの数字でなければなりません'
+    fullname: {
+      required: 'Họ và tên không được để trống',
+      maxlength: 'Họ và tên giới hạn 255 ký tự'
     },
-    title: {
-      email: 'Email loi',
-      email_format: 'Email khong dung dinh dang',
-      email_confirm: 'メールアドレス(確認用)',
-      license_number: '宅建業免許番号',
-      representative_name: '代表者氏名',
-      representative_name_kana: '代表者氏名（フリガナ・全角カナ）',
-      license_date: '免許有効期限',
-      receive_email_info: 'メルマガ受信設定'
+    email: {
+      required: 'Email không được để trống',
+      maxlength: 'Email giới hạn 255 ký tự',
+      format: 'Email không đúng định dạng'
+    },
+    repeat_password: {
+      required: 'Xác nhận mật khẩu không được để trống',
+      sameas: 'Xác nhận mật khẩu không đúng'
     },
     date: {
       year: 'year',
