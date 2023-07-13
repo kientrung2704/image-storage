@@ -6,9 +6,10 @@
   background-color: $WHITE;
 
   .title {
-    font-family: 'FS Magistral';
+    // font-family: 'FS Magistral';
     font-size: 20px;
     margin-bottom: 32px;
+    font-weight: 600;
   }
 
   .bold {
@@ -20,9 +21,10 @@
     border-left: 2px solid #E4E7EC;
 
     &-title {
-      font-family: 'FS Magistral';
+      // font-family: 'FS Magistral';
       font-size: 18px;
       margin-bottom: 16px;
+      font-weight: 600;
     }
 
     .relative {

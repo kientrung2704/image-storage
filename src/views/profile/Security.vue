@@ -6,7 +6,7 @@
     ]"
   >
     <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
-      <a-card title="Profile">
+      <a-card title="Change password">
         <div class="setting">
           <form>
             <div class="profile-input">
@@ -72,7 +72,7 @@
             <div class="profile-input">
               <label for="new_password" class="form-label color-dark-gray">
                 <!-- {{ $i18n.t('user.first_name') }} -->
-                Repeat Password
+                Confirm Password
               </label>
               <div class="form-control">
                 <div class="password">

@@ -15,6 +15,16 @@ export default {
   vn: 'Tiếng Việt',
   vi_VN: 'Tiếng Việt',
   en: 'Tiếng Anh',
+  user: {
+    first_name: 'First name',
+    last_name: 'Last name',
+    phone_number: 'Phone number',
+    email: 'Email',
+    birth: 'Birth',
+    city: 'City',
+    bio: 'Bio',
+    social_network: 'Social network'
+  },
   message: {
     login: {
       login: 'Login',

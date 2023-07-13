@@ -30,38 +30,38 @@
 
             <div class="profile">
               <div class="profile-input">
-                <label for="first_name" class="form-label color-dark-gray">
-                  {{ $i18n.t('user.first_name') }}
+                <label for="name" class="form-label color-dark-gray">
+                  {{ $i18n.t('user.name') }}
                 </label>
                 <div class="form-control">
                   <input
                     type="text"
-                    id="first_name"
+                    id="name"
                     class="form-input"
-                    v-model="user.first_name"
-                    :class="{ 'error-border': v$.user.first_name.$errors.length > 0 }"
-                    @blur="handleBlurInput('first_name')"
+                    v-model="user.name"
+                    :class="{ 'error-border': v$.user.name.$errors.length > 0 }"
+                    @blur="handleBlurInput('name')"
                   />
-                  <div class="text-error" v-if="v$.user.first_name.$error">
-                    {{ v$.user.first_name.$errors[0].$params.property }}
+                  <div class="text-error" v-if="v$.user.name.$error">
+                    {{ v$.user.name.$errors[0].$params.property }}
                   </div>
                 </div>
               </div>
               <div class="profile-input">
-                <label for="last_name" class="form-label color-dark-gray">
-                  {{ $i18n.t('user.first_name') }}
+                <label for="phone_number" class="form-label color-dark-gray">
+                  {{ $i18n.t('user.phone') }}
                 </label>
                 <div class="form-control">
                   <input
                     type="text"
-                    id="last_name"
+                    id="phone_number"
                     class="form-input"
-                    :class="{ 'error-border': v$.user.last_name.$errors.length > 0 }"
-                    v-model="user.last_name"
-                    @blur="handleBlurInput('last_name')"
+                    :class="{ 'error-border': v$.user.phone_number.$errors.length > 0 }"
+                    v-model="user.phone_number"
+                    @blur="handleBlurInput('phone_number')"
                   />
-                  <div class="text-error" v-if="v$.user.last_name.$error">
-                    {{ v$.user.last_name.$errors[0].$params.property }}
+                  <div class="text-error" v-if="v$.user.phone_number.$error">
+                    {{ v$.user.phone_number.$errors[0].$params.property }}
                   </div>
                 </div>
               </div>
@@ -98,19 +98,19 @@
       <a-card title="Account infomation">
         <div class="setting">
           <div class="account-type pt-0">
-            <div class="text">Account type</div>
-            <a-tag color="default">Free account</a-tag>
+            <div class="text">Gói đang sử dụng</div>
+            <a-tag color="default">{{ user.access_limit?.package.name }}</a-tag>
           </div>
           <div class="account-type mb-24">
-            <div class="text">Remain</div>
-            <div class="text">128 days left</div>
+            <div class="text">Ngày hết hạn</div>
+            <div class="text">{{ formatDate(user.access_limit?.expired_at) }}</div>
           </div>
           <div class="storage">
             <div class="text">Storage</div>
             <div class="usage">
               <div class="left">
-                Used <span class="cur-usage">0 KB</span> out of
-                <span class="limit-storage">10 GB</span>
+                Used <span class="cur-usage">{{ kbToSize(user.access_limit?.used) }}</span> out of
+                <span class="limit-storage">{{ user.access_limit?.size / (1024 * 1024) }} GB</span>
               </div>
               <div class="right">
                 <span>{{ storagePercentage }}%</span>
@@ -129,8 +129,8 @@
             <div class="text">Share Limit</div>
             <div class="usage">
               <div class="left">
-                Share <span class="cur-usage">10</span> out of
-                <span class="limit-share">10 Peoples</span>
+                Shared <span class="cur-usage">{{ user.access_limit?.shared }}</span> out of
+                <span class="limit-share">{{ user.access_limit?.package?.limit }} Peoples</span>
               </div>
               <div class="right">
                 <span>{{ sharePercentage }}%</span>
@@ -185,10 +185,11 @@
 import { TYPE_SUCCESS, TYPE_ERROR } from '@/constants/common'
 import { FILE_IMAGE_TYPE, MAX_SIZE_IMAGE } from '@/constants/dbConstant'
 import useValidate from '@vuelidate/core'
-import { maxLength, required, isNotFormatEmail } from '@/plugins/vuelidate'
+import { maxLength, required, isNotFormatEmail, isNotFormatPhone } from '@/plugins/vuelidate'
 import { helpers } from '@vuelidate/validators'
 import { IconX, IconChevronDown } from '@tabler/icons-vue'
 import { mapGetters } from 'vuex'
+import { formatDate } from '@/utils/common/format'
 
 export default {
   components: {
@@ -198,15 +199,7 @@ export default {
   data() {
     return {
       v$: useValidate({ $autoDirty: true }),
-      avatar: '',
-      // user: {
-      //   avatar: 'https://joesch.moe/api/v1/random',
-      //   first_name: '',
-      //   last_name: '',
-      //   email: ''
-      // },
-      storagePercentage: 10,
-      sharePercentage: 100
+      avatar: ''
     }
   },
 
@@ -224,7 +217,7 @@ export default {
             isNotFormatEmail
           )
         },
-        first_name: {
+        name: {
           required: helpers.withParams(
             { property: this.$i18n.t('message.title.password') },
             required
@@ -234,14 +227,18 @@ export default {
             maxLength(255)
           )
         },
-        last_name: {
+        phone_number: {
           required: helpers.withParams(
             { property: this.$i18n.t('message.title.password') },
             required
           ),
           maxLength: helpers.withParams(
             { property: this.$i18n.t('message.title.email') },
-            maxLength(255)
+            maxLength(11)
+          ),
+          isNotFormatPhone: helpers.withParams(
+            { property: this.$i18n.t('message.title.phone') },
+            isNotFormatPhone
           )
         }
         // avatar: {
@@ -254,10 +251,30 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({ lang: 'setting/lang', user: 'user/userInfo' })
+    ...mapGetters({ lang: 'setting/lang', user: 'user/userInfo' }),
+    sharePercentage() {
+      if (this.user.access_limit?.shared === 0 && this.user.access_limit?.package?.limit === 0) {
+        return 100
+      } else {
+        return Math.round(
+          (this.user.access_limit?.shared / this.user.access_limit?.package?.limit) * 100
+        )
+      }
+    },
+    storagePercentage() {
+      return Math.round((this.user.access_limit?.used / this.user.access_limit?.size) * 100)
+    }
   },
 
   methods: {
+    formatDate,
+    kbToSize(bytes) {
+      var sizes = ['KB', 'MB', 'GB', 'TB']
+      if (bytes == 0) return '0'
+      var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)))
+      if (i == 0) return bytes + ' ' + sizes[i]
+      return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i]
+    },
     getColor(size, type) {
       if (type === 'storage') {
         if (size < 100) {
@@ -310,8 +327,8 @@ export default {
           formData.append('avatar', this.avatar)
         }
 
-        formData.append('first_name', this.user.first_name)
-        formData.append('last_name', this.user.last_name)
+        formData.append('name', this.user.name)
+        formData.append('phone_number', this.user.phone_number)
         formData.append('email', this.user.email)
         const res = await this.$store
           .dispatch('user/update', formData)

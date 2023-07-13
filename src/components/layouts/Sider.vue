@@ -100,8 +100,9 @@
         </template>
         {{ $i18n.t('storage') }}
       </a-menu-item>
+
       <div class="pl-24" v-if="!collapsed">
-        <a-progress :percent="30" size="small" />
+        <Progress />
       </div>
     </a-menu>
   </a-layout-sider>
@@ -127,7 +128,17 @@ export default {
     StarOutlined,
     DeleteOutlined
   },
-  props: ['collapsed'],
+  props: {
+    collapsed: {
+      type: Boolean,
+      default: false
+    },
+    progress: {
+      type: Number,
+      default: 0
+    }
+  },
+
   data() {
     return {
       siderTheme: 'light',

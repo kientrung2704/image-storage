@@ -10,12 +10,33 @@
       </div>
       <div class="detail">/month</div>
     </div>
-    <button class="choose-plan" @click.prevent="byPlan">Mua</button>
+    <a-divider class="mb-18 mt-0" />
+    <div class="access">
+      <div class="benefit">
+        <IconCheck stroke-width="2" :size="24" color="#e03" />
+        <div class="benefit-content">{{ service.size }} GB bộ nhớ</div>
+      </div>
+      <div class="benefit">
+        <IconCheck stroke-width="2" :size="24" color="#e03" />
+        <div class="benefit-content">Chia sẻ tối đa {{ service.limit }} người</div>
+      </div>
+      <div class="benefit">
+        <IconCheck stroke-width="2" :size="24" color="#e03" />
+        <div class="benefit-content">Hỗ trợ 24/7</div>
+      </div>
+    </div>
+    <!-- {{ service }} -->
+    <button class="choose-plan mt-18" @click.prevent="byPlan">Mua</button>
   </div>
 </template>
 
 <script>
+import { IconCheck } from '@tabler/icons-vue'
+import { numberWithCommas } from '@/utils/common/format'
 export default {
+  components: {
+    IconCheck
+  },
   props: {
     service: {
       type: Object,
@@ -28,11 +49,19 @@ export default {
   },
 
   methods: {
-    numberWithCommas(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    },
+    numberWithCommas,
     formatPrice(price) {
-      return this.numberWithCommas(price)
+      let discount
+      if (this.month === 1) {
+        discount = 0
+      } else if (this.month === 3) {
+        discount = 0.05
+      } else if (this.month === 6) {
+        discount = 0.1
+      } else if (this.month === 12) {
+        discount = 0.15
+      }
+      return this.numberWithCommas(price - price * discount)
     },
     byPlan() {
       this.$router.push({
@@ -90,6 +119,14 @@ export default {
 
     .detail {
       line-height: 1.25;
+    }
+  }
+
+  .access {
+    .benefit {
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
   }
 

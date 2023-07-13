@@ -12,7 +12,7 @@
     </a-layout-header>
 
     <a-layout class="unvue-layout-content">
-      <Sider v-if="!isMobile" ref="sider" :collapsed="collapsed" />
+      <Sider v-if="!isMobile" ref="sider" :collapsed="collapsed" :progress="progress" />
       <a-drawer
         v-if="isMobile"
         :width="250"
@@ -36,8 +36,6 @@
 
 <script>
 import { MenuOutlined } from '@ant-design/icons-vue'
-import axios from '@/plugins/axios'
-import { ACCESS_TOKEN } from '@/constants/common'
 import { getAccessToken } from '@/utils/token'
 export default {
   components: {
@@ -71,6 +69,7 @@ export default {
     window.removeEventListener('resize', this.onResize)
   },
   computed: {
+    // ...mapGetters({ user: 'user/userInfo' }),
     showSideDrawder: {
       get: function () {
         return this.isMobile && this.collapsed

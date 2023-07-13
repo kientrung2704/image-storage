@@ -8,11 +8,7 @@
               <div class="title">Uploading files</div>
               <div class="header-right">
                 <div class="total-percentage">{{ totalPercentage }}%</div>
-                <div
-                  class="close"
-                  v-if="totalPercentage === 100 && activeKey === ''"
-                  @click="close"
-                >
+                <div class="close" v-if="totalPercentage === 100" @click="close">
                   <IconX stroke-width="3" :size="16" />
                 </div>
                 <div class="close" v-else @click="collapse">
@@ -242,6 +238,11 @@ export default {
     }
 
     .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 352px;
+      overflow-y: auto;
       .file-group {
         .file-total {
           // font-family: 'Satoshi Med';

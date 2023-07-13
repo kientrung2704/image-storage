@@ -6,6 +6,7 @@ import {
   notSameStation,
   notSameTrainLine,
   password,
+  phone,
   email,
   numericCustom,
   maxValueCustom,
@@ -37,6 +38,7 @@ export const isNotSameAddress = withI18nMessage(notSameAddress)
 export const isNotSameTrainLine = withI18nMessage(notSameTrainLine)
 export const isNotSameStation = withI18nMessage(notSameStation)
 export const isNotFormatPassword = withI18nMessage(password)
+export const isNotFormatPhone = withI18nMessage(phone)
 export const isNotFormatEmail = withI18nMessage(email)
 export const notSamePassword = withI18nMessage(email)
 export const numericCustomText = withI18nMessage(numericCustom)

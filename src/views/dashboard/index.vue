@@ -108,6 +108,7 @@ export default {
       },
       (val) => {
         if (val) {
+          this.$store.dispatch('user/getUserInfo')
           this.getList()
         }
         // alert('App $watch $refs.counter.i: ' + val)
@@ -191,7 +192,8 @@ export default {
       }
 
       if (newFile) {
-        if (newFile.response && newFile.response.id) {
+        if (newFile.response && newFile.response.id && newFile.active) {
+          console.log(newFile)
           const params = {
             id: newFile.response.id,
             modified_at: newFile.file.lastModified,
@@ -331,6 +333,7 @@ export default {
       await this.$store.dispatch('photo/delete', id)
       const assetLength = this.totalPhoto
       const index = this.imagesList.findIndex((e) => e.id === id)
+      console.log(index, this.imagesList)
       this.imagesList.splice(index, 1)
       if (this.imagesList.length > 0) {
         for (const key in this.images) {
@@ -373,6 +376,7 @@ export default {
           this.nextPhoto = this.getNextSectionSegmentAsset(this.currentPhoto, 1)
         }
       } else {
+        this.images = {}
         this.close()
       }
 

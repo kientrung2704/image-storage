@@ -6,28 +6,27 @@
       </div>
       <form @submit.prevent="handleSubmit">
         <div class="profile-input mb-18">
-          <label for="first_name" class="form-label color-dark-gray">
-            <!-- {{ $i18n.t('user.first_name') }} -->
+          <label for="name" class="form-label color-dark-gray">
+            <!-- {{ $i18n.t('user.name') }} -->
             First Name
           </label>
           <div class="form-control">
             <input
               type="text"
-              id="first_name"
+              id="name"
               class="form-input"
-              v-model="first_name"
-              :class="{ 'error-border': v$.first_name.$errors.length > 0 }"
-              @blur="handleBlurInput('first_name')"
+              v-model="name"
+              :class="{ 'error-border': v$.name.$errors.length > 0 }"
+              @blur="handleBlurInput('name')"
             />
 
-            <div class="text-error" v-if="v$.first_name.$error">
-              {{ v$.first_name.$errors[0].$params.property }}
+            <div class="text-error" v-if="v$.name.$error">
+              {{ v$.name.$errors[0].$params.property }}
             </div>
           </div>
         </div>
-        <div class="profile-input mb-18">
+        <!-- <div class="profile-input mb-18">
           <label for="last_name" class="form-label color-dark-gray">
-            <!-- {{ $i18n.t('user.first_name') }} -->
             Last Name
           </label>
           <div class="form-control">
@@ -44,10 +43,30 @@
               {{ v$.last_name.$errors[0].$params.property }}
             </div>
           </div>
+        </div> -->
+        <div class="profile-input mb-18">
+          <label for="phone_number" class="form-label color-dark-gray">
+            <!-- {{ $i18n.t('user.name') }} -->
+            Phone
+          </label>
+          <div class="form-control">
+            <input
+              type="text"
+              id="phone_number"
+              class="form-input"
+              v-model="phone_number"
+              :class="{ 'error-border': v$.phone_number.$errors.length > 0 }"
+              @blur="handleBlurInput('phone_number')"
+            />
+
+            <div class="text-error" v-if="v$.phone_number.$error">
+              {{ v$.phone_number.$errors[0].$params.property }}
+            </div>
+          </div>
         </div>
         <div class="profile-input mb-18">
           <label for="email" class="form-label color-dark-gray">
-            <!-- {{ $i18n.t('user.first_name') }} -->
+            <!-- {{ $i18n.t('user.name') }} -->
             Email
           </label>
           <div class="form-control">
@@ -65,7 +84,7 @@
             </div>
           </div>
         </div>
-        <div class="profile-input">
+        <div class="profile-input mb-18">
           <label for="password" class="form-label color-dark-gray">Password</label>
           <div class="form-control">
             <div class="password">
@@ -110,7 +129,7 @@
             </div>
           </div>
         </div>
-        <div class="profile-input">
+        <div class="profile-input mb-18">
           <label for="repeat_password" class="form-label color-dark-gray">Confirm Password</label>
           <div class="form-control">
             <div class="password">
@@ -170,7 +189,13 @@ import { TYPE_SUCCESS, TYPE_ERROR } from '@/constants/common'
 import { IconEye } from '@tabler/icons-vue'
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons-vue'
 import useValidate from '@vuelidate/core'
-import { maxLength, required, isNotFormatPassword, isNotFormatEmail } from '@/plugins/vuelidate'
+import {
+  maxLength,
+  required,
+  isNotFormatPassword,
+  isNotFormatEmail,
+  isNotFormatPhone
+} from '@/plugins/vuelidate'
 import { helpers, sameAs } from '@vuelidate/validators'
 export default {
   components: {
@@ -181,9 +206,10 @@ export default {
   data() {
     return {
       v$: useValidate({ $autoDirty: true }),
-      first_name: '',
+      name: '',
       last_name: '',
       email: '',
+      phone_number: '',
       password: '',
       repeat_password: '',
       visible: true,
@@ -192,7 +218,7 @@ export default {
   },
   validations() {
     return {
-      first_name: {
+      name: {
         required: helpers.withParams(
           { property: this.$i18n.t('message.title.password') },
           required
@@ -202,14 +228,28 @@ export default {
           maxLength(255)
         )
       },
-      last_name: {
+      // last_name: {
+      //   required: helpers.withParams(
+      //     { property: this.$i18n.t('message.title.password') },
+      //     required
+      //   ),
+      //   maxLength: helpers.withParams(
+      //     { property: this.$i18n.t('message.title.email') },
+      //     maxLength(255)
+      //   )
+      // },
+      phone_number: {
         required: helpers.withParams(
           { property: this.$i18n.t('message.title.password') },
           required
         ),
         maxLength: helpers.withParams(
           { property: this.$i18n.t('message.title.email') },
-          maxLength(255)
+          maxLength(11)
+        ),
+        isNotFormatPhone: helpers.withParams(
+          { property: this.$i18n.t('message.title.phone') },
+          isNotFormatPhone
         )
       },
       email: {
@@ -248,8 +288,9 @@ export default {
 
       if (isValidate) {
         const params = {
-          first_name: this.first_name,
-          last_name: this.last_name,
+          name: this.name,
+          // last_name: this.last_name,
+          phone_number: this.phone_number,
           email: this.email,
           password: this.password,
           password_confirmation: this.repeat_password

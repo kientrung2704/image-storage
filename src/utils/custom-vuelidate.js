@@ -5,6 +5,12 @@ export const japaneseFullWidth = (value) => {
   return jaRegex.test(value)
 }
 
+export const phone = (value) => {
+  if (!value) return true
+  const phRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/
+  return phRegex.test(value)
+}
+
 export const password = (value) => {
   // eslint-disable-next-line no-useless-escape
   const paRegex =

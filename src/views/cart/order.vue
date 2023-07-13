@@ -15,7 +15,7 @@
               Họ và tên
             </label>
             <div class="form-control">
-              <input type="text" id="first_name" class="form-input" disabled />
+              <input type="text" id="first_name" v-model="user.name" class="form-input" disabled />
             </div>
           </div>
         </a-col>
@@ -25,7 +25,13 @@
               Số điện thoại
             </label>
             <div class="form-control">
-              <input type="text" id="first_name" class="form-input" disabled />
+              <input
+                type="text"
+                id="first_name"
+                class="form-input"
+                v-model="user.phone_number"
+                disabled
+              />
             </div>
           </div>
         </a-col>
@@ -35,7 +41,7 @@
               Email cá nhân
             </label>
             <div class="form-control">
-              <input type="text" id="first_name" class="form-input" disabled />
+              <input type="text" id="first_name" class="form-input" v-model="user.email" disabled />
             </div>
           </div>
         </a-col>
@@ -78,12 +84,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { numberWithCommas } from '@/utils/common/format'
 export default {
   data() {
     return {
       checked: true
     }
+  },
+
+  computed: {
+    ...mapGetters({ user: 'user/userInfo' })
   },
 
   methods: {
