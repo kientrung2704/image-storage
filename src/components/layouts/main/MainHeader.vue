@@ -2,27 +2,17 @@
   <div class="header">
     <div class="header_ctn jtf_between">
       <div class="l-header_logo">
-        <div class="l-header_logo-img">
+        <!-- <div class="l-header_logo-img">
           <router-link to="main">
             <img src="@/assets/images/cfind-logo.png" alt="" />
           </router-link>
-        </div>
-        <div class="l-header_logo-title">AAAA</div>
+        </div> -->
+        <router-link :to="{ name: 'main' }">
+          <div class="l-header_logo-title">AAAA</div>
+        </router-link>
       </div>
       <div class="l-header_nav">
         <div class="l-header_center">
-          <div class="service">
-            <a href="http://" target="_blank" class="text-menu">Bảng giá</a>
-            <div class="underline"></div>
-          </div>
-          <div class="service">
-            <a href="http://" target="_blank" class="text-menu">Bảng giá</a>
-            <div class="underline"></div>
-          </div>
-          <div class="service">
-            <a href="http://" target="_blank" class="text-menu">Bảng giá</a>
-            <div class="underline"></div>
-          </div>
           <router-link class="service-login" :to="{ name: 'login' }"> Login </router-link>
         </div>
 

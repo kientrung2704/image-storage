@@ -228,27 +228,17 @@ export default {
           maxLength(255)
         )
       },
-      // last_name: {
-      //   required: helpers.withParams(
-      //     { property: this.$i18n.t('message.title.password') },
-      //     required
-      //   ),
-      //   maxLength: helpers.withParams(
-      //     { property: this.$i18n.t('message.title.email') },
-      //     maxLength(255)
-      //   )
-      // },
       phone_number: {
         required: helpers.withParams(
-          { property: this.$i18n.t('message.title.password') },
+          { property: this.$i18n.t('validate.phone_number.required') },
           required
         ),
         maxLength: helpers.withParams(
-          { property: this.$i18n.t('message.title.email') },
+          { property: this.$i18n.t('validate.phone_number.max_length') },
           maxLength(11)
         ),
         isNotFormatPhone: helpers.withParams(
-          { property: this.$i18n.t('message.title.phone') },
+          { property: this.$i18n.t('validate.phone_number.format') },
           isNotFormatPhone
         )
       },

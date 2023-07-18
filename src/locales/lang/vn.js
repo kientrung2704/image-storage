@@ -16,14 +16,24 @@ export default {
   vi_VN: 'Tiếng Việt',
   en: 'Tiếng Anh',
   user: {
-    first_name: 'First name',
-    last_name: 'Last name',
-    phone_number: 'Phone number',
+    phone_number: 'Số điện thoại',
+    name: 'Họ và tên',
     email: 'Email',
     birth: 'Birth',
     city: 'City',
     bio: 'Bio',
     social_network: 'Social network'
+  },
+  validate: {
+    name: {
+      required: 'Họ và tên không được để trống',
+      max_length: 'Họ và tên không được quá 100 ký tự'
+    },
+    phone_number: {
+      required: 'Số điện thoại không được để trống',
+      max_length: 'Số điện thoại không được quá 10 chữ số',
+      format: 'Số điện thoại không đúng đụng dạng'
+    }
   },
   message: {
     login: {
