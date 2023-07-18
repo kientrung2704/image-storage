@@ -49,7 +49,7 @@
               </div>
               <div class="profile-input">
                 <label for="phone_number" class="form-label color-dark-gray">
-                  {{ $i18n.t('user.phone') }}
+                  {{ $i18n.t('user.phone_number') }}
                 </label>
                 <div class="form-control">
                   <input

@@ -123,7 +123,6 @@ const routes = [
     path: '/',
     name: 'main',
     component: () => import('@/layouts/MainLayout.vue'),
-    // component: () => import('@/layouts/DashboardLayout.vue'),
     meta: {
       name: 'Main'
     },
@@ -142,6 +141,14 @@ const routes = [
         component: () => import('@/views/auth/register.vue'),
         meta: {
           title: 'Register'
+        }
+      },
+      {
+        path: 'forgot-password',
+        name: 'forgot-password',
+        component: () => import('@/views/auth/ForgotPassword.vue'),
+        meta: {
+          title: 'Forgot password'
         }
       }
     ]
