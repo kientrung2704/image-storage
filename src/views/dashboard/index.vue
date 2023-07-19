@@ -25,7 +25,13 @@
       @input-file="inputFile"
       ref="upload"
     >
+      <a-tooltip title="search">
+        <a-button shape="circle" size="large">
+          <template #icon><SearchOutlined /></template>
+        </a-button>
+      </a-tooltip>
     </file-upload>
+
     <div class="wrapper-content">
       <div v-for="(months, index) in images" :key="index" class="content">
         <div class="content-time">{{ index }}</div>
@@ -65,12 +71,14 @@
 
 <script>
 import { TYPE_SUCCESS, TYPE_ERROR } from '@/constants/common'
-import { message } from 'ant-design-vue'
+import { h } from 'vue'
+import { SearchOutlined } from '@ant-design/icons-vue'
 import FileUpload from 'vue-upload-component'
 
 export default {
   components: {
-    FileUpload
+    FileUpload,
+    SearchOutlined
   },
   data() {
     return {
@@ -106,10 +114,11 @@ export default {
       () => {
         return this.$refs.upload.uploaded
       },
-      (val) => {
+      async (val) => {
         if (val) {
           this.$store.dispatch('user/getUserInfo')
-          this.getList()
+          await this.getList()
+          await this.formatListImage()
         }
         // alert('App $watch $refs.counter.i: ' + val)
       }
@@ -122,7 +131,7 @@ export default {
   methods: {
     async getList() {
       this.$root.$refs.loading.start()
-      this.images = {}
+      // this.images = {}
       const res = await this.$store.dispatch('photo/list')
       this.images = res
       this.$root.$refs.loading.finish()
@@ -409,6 +418,9 @@ export default {
 <style lang="scss" scoped>
 .main {
   .wrapper-content {
+    .content:last-child {
+      padding-bottom: 0;
+    }
     .content {
       padding-bottom: 24px;
 
@@ -436,6 +448,11 @@ export default {
     }
   }
 }
+
+:deep(.ant-modal .ant-modal-content) {
+  border-radius: none !important;
+  padding: 0 !important;
+}
 </style>
 
 <style lang="scss">
@@ -451,6 +468,8 @@ export default {
     margin: 0;
   }
   .ant-modal-content {
+    padding: 0 !important;
+    border-radius: 0 !important;
     display: flex;
     flex-direction: column;
     // height: calc(100vh);
@@ -475,8 +494,11 @@ export default {
   margin-bottom: 0;
 }
 
-.example-full .btn-group .dropdown-toggle {
-  margin-right: 0.6rem;
+.dropdown-toggle {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  overflow: initial !important;
 }
 
 .td-image-thumb {
@@ -537,5 +559,10 @@ export default {
   font-size: 40px;
   color: #fff;
   padding: 0;
+}
+
+.file-uploads.file-uploads-html4 input,
+.file-uploads.file-uploads-html5 label {
+  cursor: pointer !important;
 }
 </style>

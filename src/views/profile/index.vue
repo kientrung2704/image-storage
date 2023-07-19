@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="settings-menu">
+    <!-- <div class="settings-menu">
       <router-link
         class="menu-link"
         :class="{ active: menu.link === currentRoute }"
@@ -10,6 +10,18 @@
       >
         {{ menu.name }}
       </router-link>
+    </div> -->
+    <div class="settings-menu">
+      <a-segmented v-model:value="value2" :options="options2" @change="handleChange">
+        <template #label="{ value }">
+          <!-- <div style="padding: 4px 4px">
+          <div>{{ payload.title }}</div>
+          <div>{{ payload.subTitle }}</div>
+        </div> -->
+
+          {{ this.$i18n.t(value) }}
+        </template>
+      </a-segmented>
     </div>
 
     <router-view></router-view>
@@ -37,7 +49,22 @@ export default {
           link: 'login-history',
           name: this.$i18n.t('login-history')
         }
-      ]
+      ],
+      options2: [
+        {
+          value: 'general'
+        },
+        {
+          value: 'security'
+        },
+        {
+          value: 'plan'
+        },
+        {
+          value: 'login-history'
+        }
+      ],
+      value2: 'general'
     }
   },
 
@@ -56,6 +83,10 @@ export default {
   // },
 
   methods: {
+    handleChange(e) {
+      this.$router.push({ name: e })
+      console.log(e)
+    },
     activeRoute(name) {
       console.log(this.$route.name)
       return this.$route.name === name
@@ -79,7 +110,7 @@ export default {
   .menu-link {
     cursor: pointer;
     color: #4e4f53;
-    border-radius: 4px;
+    border-radius: 6px;
     line-height: 22px;
     min-height: 0;
     padding: 5px 16px;

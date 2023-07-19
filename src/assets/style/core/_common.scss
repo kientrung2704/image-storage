@@ -2,7 +2,7 @@
 @use '../abstracts/mediaQuery'as *;
 
 body {
-  font-family: 'Lexend';
+  font-family: 'Lexend' !important;
 
   &.no-scroll {
     overflow: hidden;
@@ -13,7 +13,7 @@ body {
 
 #app {
   line-height: 1;
-  font-family: 'Lexend';
+  font-family: 'Lexend' !important;
   height: 100%;
   box-sizing: border-box;
   color: #222222;
@@ -34,7 +34,7 @@ body {
 
 *::-webkit-scrollbar-thumb {
   background-color: transparent;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 *:hover {

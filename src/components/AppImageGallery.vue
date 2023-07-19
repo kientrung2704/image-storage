@@ -422,10 +422,13 @@ export default {
   width: 100%;
   height: 64px;
   z-index: 1099;
+
   // margin-left: 12px;
   // margin-right: 12px;
 
   &-wrapper {
+    background: #000;
+    z-index: 10;
     display: flex;
     justify-content: space-between;
     align-items: center;

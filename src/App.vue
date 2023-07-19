@@ -1,5 +1,12 @@
 <template>
-  <a-config-provider :locale="localLanguage">
+  <a-config-provider
+    :locale="localLanguage"
+    :theme="{
+      token: {
+        fontFamily: 'Lexend'
+      }
+    }"
+  >
     <Loading ref="loading" />
     <UploadGlobal ref="upload" />
     <!-- <DropZone ref="dropzone" /> -->
