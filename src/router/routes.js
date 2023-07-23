@@ -69,7 +69,7 @@ const routes = [
       },
       {
         path: 'detail/:id',
-        name: 'detail',
+        name: 'order-detail',
         component: () => import('@/views/cart/detail.vue'),
         meta: {
           title: 'Detail'
@@ -108,8 +108,8 @@ const routes = [
             }
           },
           {
-            path: 'login-history',
-            name: 'login-history',
+            path: 'payment-history',
+            name: 'payment-history',
             component: () => import('@/views/profile/LoginHistory.vue'),
             meta: {
               title: 'LoginHistory'
@@ -152,6 +152,14 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/404.vue'),
+    meta: {
+      title: '404'
+    }
   }
 ]
 

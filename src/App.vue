@@ -3,7 +3,7 @@
     :locale="localLanguage"
     :theme="{
       token: {
-        fontFamily: 'Lexend'
+        fontFamily: 'Pretendard'
       }
     }"
   >

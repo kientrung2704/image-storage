@@ -11,19 +11,6 @@
       </div>
       <div class="form-container">
         <div class="form">
-          <v-otp-input
-            ref="otpInput"
-            v-model:value="bindModal"
-            input-classes="otp-input"
-            separator=""
-            :num-inputs="6"
-            :should-auto-focus="true"
-            input-type="letter-numeric"
-            :conditionalClass="['one', 'two', 'three', 'four', 'five', 'six']"
-            :placeholder="['', '', '', '', '', '']"
-            @on-change="handleOnChange"
-            @on-complete="handleOnComplete"
-          />
           <div class="profile-input relative mb-18" v-if="!isPassEmail">
             <label for="email" class="form-label color-dark-gray absolute-label"> Email </label>
             <div class="form-control">
@@ -163,6 +150,30 @@
           </div>
         </div>
       </div>
+      <a-modal v-model:open="modal" title="" centered :footer="null" @ok="modal = false">
+        <div class="otp-header">Xác thực</div>
+        <p class="text-center mb-24">Nhập mã OTP đã được gửi đến email {{ email }}</p>
+        <p class="text-center">Mã OTP</p>
+        <div class="otp-container">
+          <v-otp-input
+            ref="otpInput"
+            v-model:value="otp"
+            input-classes="otp-input"
+            separator=""
+            :num-inputs="6"
+            :should-auto-focus="true"
+            input-type="letter-numeric"
+            :conditionalClass="['one', 'two', 'three', 'four', 'five', 'six']"
+            :placeholder="['', '', '', '', '', '']"
+            @on-change="handleOnChange"
+            @on-complete="handleOnComplete"
+          />
+        </div>
+        <div class="btn-group">
+          <button class="btn-action back" @click.prevent="resend">Gửi lại</button>
+          <button class="btn-action continue" @click.prevent="confirm">Xác nhận</button>
+        </div>
+      </a-modal>
     </div>
   </div>
 </template>
@@ -193,7 +204,8 @@ export default {
       visible: true,
       visibleRepeat: true,
       isPassEmail: false,
-      bindModal: ''
+      otp: '',
+      modal: false
     }
   },
   validations() {
@@ -276,8 +288,8 @@ export default {
           const params = {
             email: this.email
           }
-
-          this.isPassEmail = true
+          this.modal = true
+          // this.isPassEmail = true
           // const res = await this.$store.dispatch('auth/login', params)
           // if (res) {
           //   this.$notification[TYPE_ERROR]({

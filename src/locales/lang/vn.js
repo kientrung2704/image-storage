@@ -15,6 +15,7 @@ export default {
   vn: 'Tiếng Việt',
   vi_VN: 'Tiếng Việt',
   en: 'Tiếng Anh',
+  'order-detail': 'Chi tiết đơn hàng',
   user: {
     phone_number: 'Số điện thoại',
     name: 'Họ và tên',

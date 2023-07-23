@@ -98,7 +98,7 @@
       <a-card :bordered="false" title="Account infomation">
         <div class="setting">
           <div class="account-type pt-0">
-            <div class="text">Gói đang sử dụng</div>
+            <div class="text">Dịch vụ đang sử dụng</div>
             <a-tag color="default">{{ user.access_limit?.package.name }}</a-tag>
           </div>
           <div class="account-type mb-24">
@@ -146,7 +146,16 @@
             </div>
           </div>
           <div class="button-form">
-            <router-link class="btn-upgrade" :to="{ name: 'plan' }"> Upgrade Account </router-link>
+            <button class="btn-action continue" v-if="user?.access_limit?.package?.type === 'FREE'">
+              Mua dịch vụ
+            </button>
+            <button class="btn-action back" v-if="user?.access_limit?.package?.type === 'PAY'">
+              Thay đổi dịch vụ
+            </button>
+            <button class="btn-action continue" v-if="user?.access_limit?.package?.type === 'PAY'">
+              Gia hạn dịch vụ
+            </button>
+            <!-- <router-link class="btn-upgrade" :to="{ name: 'plan' }"> Upgrade Account </router-link> -->
           </div>
         </div>
       </a-card>
@@ -369,8 +378,26 @@ export default {
 
   .button-form {
     display: flex;
+    gap: 12px;
     justify-content: flex-end;
 
+    .btn-action {
+      height: 36px;
+      min-width: 64px;
+      padding: 0 16px;
+      width: 49%;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .back {
+      background-color: #f5f5f5;
+    }
+
+    .continue {
+      background-color: #ee0033;
+      color: #ffffff;
+    }
     :deep(.ant-btn) {
       border-radius: 6px;
     }

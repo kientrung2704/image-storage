@@ -12,7 +12,7 @@
       </router-link>
     </div> -->
     <div class="settings-menu">
-      <a-segmented v-model:value="value2" :options="options2" @change="handleChange">
+      <a-segmented v-model:value="currentRoute" :options="options2" @change="handleChange">
         <template #label="{ value }">
           <!-- <div style="padding: 4px 4px">
           <div>{{ payload.title }}</div>
@@ -46,8 +46,8 @@ export default {
           name: this.$i18n.t('plan')
         },
         {
-          link: 'login-history',
-          name: this.$i18n.t('login-history')
+          link: 'payment-history',
+          name: this.$i18n.t('payment-history')
         }
       ],
       options2: [
@@ -61,7 +61,7 @@ export default {
           value: 'plan'
         },
         {
-          value: 'login-history'
+          value: 'payment-history'
         }
       ],
       value2: 'general'

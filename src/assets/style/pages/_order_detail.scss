@@ -1,0 +1,125 @@
+@use '../abstracts/mixins'as *;
+@use '../abstracts/colors'as *;
+@use '../abstracts/mediaQuery'as *;
+
+.main {
+    background-color: $WHITE;
+
+    .title {
+        // font-family: 'FS Magistral';
+        font-size: 20px;
+        margin-bottom: 18px;
+        font-weight: 500;
+    }
+
+    .create_date {
+        padding: 16px 24px;
+        background-color: #FBD7D7;
+        margin-bottom: 21px;
+    }
+
+    .order-info {
+        height: 100%;
+
+        .info-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 21px;
+
+            .header-title {
+                font-size: 16px;
+                width: 70%;
+
+            }
+
+            .label-dot {
+                flex: 1;
+                overflow: hidden !important;
+                width: 30%;
+            }
+
+            .label-dot::after {
+                content: ".........................................................................";
+                color: #9d9d9d;
+                letter-spacing: 4px;
+            }
+        }
+
+        .info-detail {
+            height: calc(100% - 37px);
+            border-radius: 20px;
+            border: 1px solid #EBEBEB;
+            background-color: #FDFDFF;
+            padding: 24px;
+
+            .user-info {
+
+
+                &_detail {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+
+        .user {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+    }
+
+    .service {
+        .info-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 21px;
+
+            .header-title {
+                font-size: 16px;
+                width: 40%;
+
+            }
+
+            .label-dot {
+                flex: 1;
+                overflow: hidden !important;
+                width: 60%;
+            }
+
+            .label-dot::after {
+                content: "....................................................................................................................................................................................";
+                color: #9d9d9d;
+                letter-spacing: 4px;
+            }
+        }
+
+        .order {
+            float: right;
+            width: 465px;
+
+            @include mq('sm') {
+                width: 100%;
+            }
+
+            .right {
+                font-weight: 600;
+                color: #e03;
+            }
+        }
+    }
+
+    .btn-payment {
+        background-color: #e03;
+        color: $WHITE;
+        padding: 0 72px;
+        height: 54px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 8px;
+    }
+}
