@@ -112,7 +112,7 @@ const routes = [
             name: 'payment-history',
             component: () => import('@/views/profile/LoginHistory.vue'),
             meta: {
-              title: 'LoginHistory'
+              title: 'Payment History'
             }
           }
         ]

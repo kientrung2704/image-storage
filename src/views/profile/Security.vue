@@ -146,7 +146,7 @@
 import { IconEye } from '@tabler/icons-vue'
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons-vue'
 import useValidate from '@vuelidate/core'
-import { required, isNotFormatPassword, notSamePassword } from '@/plugins/vuelidate'
+import { required, isNotFormatPassword, notSamePassword, maxLength } from '@/plugins/vuelidate'
 import { helpers, sameAs } from '@vuelidate/validators'
 export default {
   components: {
@@ -171,23 +171,36 @@ export default {
   validations() {
     return {
       current_password: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('validate.password.required') },
+          required
+        ),
         isNotFormatPassword: helpers.withParams(
-          { property: this.$i18n.t('message.title.email_format') },
+          { property: this.$i18n.t('validate.password.format') },
           isNotFormatPassword
         )
       },
       new_password: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('validate.password.required') },
+          required
+        ),
         isNotFormatPassword: helpers.withParams(
-          { property: this.$i18n.t('message.title.email_format') },
+          { property: this.$i18n.t('validate.password.format') },
           isNotFormatPassword
+        ),
+        maxLength: helpers.withParams(
+          { property: this.$i18n.t('validate.password.max_length') },
+          maxLength(255)
         )
       },
       repeat_password: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('validate.confirm_password.required') },
+          required
+        ),
         sameAsPassword: helpers.withParams(
-          { property: this.$i18n.t('message.title.111') },
+          { property: this.$i18n.t('validate.confirm_password.same_as') },
           sameAs(this.new_password)
         )
       }

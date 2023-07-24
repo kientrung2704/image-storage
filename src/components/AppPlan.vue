@@ -26,7 +26,7 @@
       </div>
     </div>
     <!-- {{ service }} -->
-    <button class="choose-plan mt-18" @click.prevent="byPlan">Mua</button>
+    <button class="choose-plan mt-30" @click.prevent="byPlan">Mua</button>
   </div>
 </template>
 

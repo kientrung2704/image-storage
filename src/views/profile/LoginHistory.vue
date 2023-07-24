@@ -105,6 +105,7 @@
 <script>
 import { numberWithCommas, formatDate } from '@/utils/common/format'
 import { MoreOutlined } from '@ant-design/icons-vue'
+import { isUndef } from '@/utils/common/is'
 export default {
   components: {
     MoreOutlined
@@ -173,12 +174,15 @@ export default {
     this.getListOrder()
   },
   methods: {
+    isUndef,
     numberWithCommas,
     formatDate,
     handleTableChange(pagination, filters, sorter) {
-      this.sort.field = sorter.field
-      this.sort.order = sorter.order.replace('end', '')
-      this.getListOrder()
+      if (!this.isUndef(sorter.order)) {
+        this.sort.field = sorter.field
+        this.sort.order = sorter.order.replace('end', '')
+        this.getListOrder()
+      }
     },
     async getListOrder() {
       // this.$root.$refs.loading.start()
@@ -260,7 +264,7 @@ export default {
   }
   .table-content {
     background: #fff;
-    height: calc(100% - 42px);
+    height: calc(100% - 124px);
     border-radius: 6px;
     .tb-action {
       display: flex;
