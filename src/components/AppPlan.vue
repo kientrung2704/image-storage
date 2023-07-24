@@ -76,9 +76,11 @@ export default {
 
 <style lang="scss" scoped>
 .service {
-  border: 1px solid #e3e9f0;
+  transition: box-shadow 0.4s ease 0s, transform 0.4s ease 0s;
+  /* border: 1px solid #e3e9f0; */
   border-radius: 16px;
   padding: 24px 12px;
+  box-shadow: rgba(0, 44, 155, 0.15) 3px 0px 20px -2px;
 
   &-name {
     color: #070328;
@@ -140,5 +142,9 @@ export default {
     font-weight: 600;
     border-radius: 6px;
   }
+}
+
+.service:hover {
+  transform: translateY(-6px);
 }
 </style>
