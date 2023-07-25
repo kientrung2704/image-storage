@@ -165,7 +165,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="content-box">
+                  <div class="content-box" v-if="JSON.parse(currentPhoto?.photo?.exif)?.Make">
                     <div class="icon">
                       <IconCameraCog stroke-width="1.25" :size="24" />
                       <!-- <CameraOutlined :style="{ fontSize: '24px' }" /> -->

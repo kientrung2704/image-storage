@@ -126,7 +126,12 @@
           </div>
           <div class="btn-group">
             <button class="btn-action back" @click="back">Quay lại</button>
-            <button class="btn-action continue" @click="isPassEmail ? changePassword() : handleSubmit()">Tiếp tục</button>
+            <button
+              class="btn-action continue"
+              @click="isPassEmail ? changePassword() : handleSubmit()"
+            >
+              Tiếp tục
+            </button>
           </div>
 
           <div class="pass-list mt-36" v-if="isPassEmail">
@@ -264,12 +269,7 @@ export default {
     handleBlurInput(key) {
       this.v$[key].$touch()
     },
-    handleOnComplete() {
-      console.log(123)
-    },
-    handleOnChange() {
-      console.log(123123)
-    },
+
     back() {
       if (!this.isPassEmail) {
         this.$router.push({
@@ -284,38 +284,41 @@ export default {
     },
     async confirm() {
       const params = {
-        'email': this.email,
-        'token': this.otp
+        email: this.email,
+        token: this.otp
       }
       const res = await this.$store.dispatch('auth/verifyToken', params)
       if (res && res?.status_code == 0) {
-        this.isPassEmail = true;
-        this.modal = false;
+        this.isPassEmail = true
+        this.modal = false
       } else {
         this.$notification[TYPE_ERROR]({
-              message: 'Verify',
-              description: res.error?.response.data.message
+          message: 'Verify',
+          description: res.error?.response.data.message
         })
       }
     },
     async changePassword() {
+      this.$root.$refs.loading.start()
       const params = {
-        'email': this.email,
-        'password': this.password,
-        'token': this.otp
+        email: this.email,
+        password: this.password,
+        token: this.otp
       }
       const res = await this.$store.dispatch('auth/changePassword', params)
-       if (res && res?.status_code == 0) {
+      if (res && res?.status_code == 0) {
         this.$notification[TYPE_SUCCESS]({
-              message: 'Change password',
-              description: ''
+          message: 'Change password',
+          description: ''
         })
       } else {
         this.$notification[TYPE_ERROR]({
-              message: 'Change password',
-              description: res.error?.response.data.message
+          message: 'Change password',
+          description: res.error?.response.data.message
         })
       }
+      this.$root.$refs.loading.finish()
+      this.$router.push({ name: 'login' })
     },
     async handleSubmit() {
       if (!this.isPassEmail) {
@@ -327,9 +330,9 @@ export default {
             email: this.email
           }
           const res = await this.$store.dispatch('auth/forgotPassword', params)
-          console.log(res.status_code);
+          console.log(res.status_code)
           if (res && res?.status_code == 0) {
-              this.modal = true
+            this.modal = true
           } else {
             this.$notification[TYPE_ERROR]({
               message: 'Forgot password',
