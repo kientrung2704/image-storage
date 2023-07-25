@@ -126,7 +126,7 @@
           </div>
           <div class="btn-group">
             <button class="btn-action back" @click="back">Quay lại</button>
-            <button class="btn-action continue" @click="handleSubmit">Tiếp tục</button>
+            <button class="btn-action continue" @click="isPassEmail ? changePassword() : handleSubmit()">Tiếp tục</button>
           </div>
 
           <div class="pass-list mt-36" v-if="isPassEmail">
@@ -170,8 +170,8 @@
           />
         </div>
         <div class="btn-group">
-          <button class="btn-action back" @click.prevent="resend">Gửi lại</button>
-          <button class="btn-action continue" @click.prevent="confirm">Xác nhận</button>
+          <button class="btn-action back" @click.prevent="resend()">Gửi lại</button>
+          <button class="btn-action continue" @click.prevent="confirm()">Xác nhận</button>
         </div>
       </a-modal>
     </div>
@@ -279,6 +279,44 @@ export default {
         this.isPassEmail = false
       }
     },
+    resend() {
+      this.handleSubmit()
+    },
+    async confirm() {
+      const params = {
+        'email': this.email,
+        'token': this.otp
+      }
+      const res = await this.$store.dispatch('auth/verifyToken', params)
+      if (res && res?.status_code == 0) {
+        this.isPassEmail = true;
+        this.modal = false;
+      } else {
+        this.$notification[TYPE_ERROR]({
+              message: 'Verify',
+              description: res.error?.response.data.message
+        })
+      }
+    },
+    async changePassword() {
+      const params = {
+        'email': this.email,
+        'password': this.password,
+        'token': this.otp
+      }
+      const res = await this.$store.dispatch('auth/changePassword', params)
+       if (res && res?.status_code == 0) {
+        this.$notification[TYPE_SUCCESS]({
+              message: 'Change password',
+              description: ''
+        })
+      } else {
+        this.$notification[TYPE_ERROR]({
+              message: 'Change password',
+              description: res.error?.response.data.message
+        })
+      }
+    },
     async handleSubmit() {
       if (!this.isPassEmail) {
         const isValidateEmail = await this.v$.$validate()
@@ -288,23 +326,17 @@ export default {
           const params = {
             email: this.email
           }
-          this.modal = true
-          // this.isPassEmail = true
-          // const res = await this.$store.dispatch('auth/login', params)
-          // if (res) {
-          //   this.$notification[TYPE_ERROR]({
-          //     message: this.$i18n.t('message.login.login'),
-          //     description: res.error?.response.data.message
-          //   })
-          // } else {
-          //   this.$router.push({ name: 'image' })
-          //   this.$notification[TYPE_SUCCESS]({
-          //     message: this.$i18n.t('message.login.login'),
-          //     description: this.$i18n.t('message.login.success')
-          //   })
-          // }
-          // const resp = await this.$store.dispatch('auth/me')
-          // console.log(resp)
+          const res = await this.$store.dispatch('auth/forgotPassword', params)
+          console.log(res.status_code);
+          if (res && res?.status_code == 0) {
+              this.modal = true
+          } else {
+            this.$notification[TYPE_ERROR]({
+              message: 'Forgot password',
+              description: res.error?.response.data.message
+            })
+          }
+
           this.$root.$refs.loading.finish()
         }
       } else {

@@ -1,4 +1,4 @@
-import { login, register, refreshToken, me } from '@/apis/auth'
+import { login, register, refreshToken, me , forgotPassword, verifyToken, changePassword} from '@/apis/auth'
 import { AUTH } from '../mutation-types'
 import { setAccessToken, getRememberMe, removeAccessToken } from '@/utils/token'
 const state = {
@@ -71,6 +71,21 @@ export const actions = {
 
   async me({ commit }) {
     const res = await me()
+    return res
+  },
+
+  async forgotPassword({ commit }, payload) {
+    const res = await forgotPassword(payload)
+    return res
+  },
+
+  async verifyToken({commit}, payload) {
+    const res = await verifyToken(payload)
+    return res
+  },
+
+  async changePassword({commit}, payload) {
+    const res = await changePassword(payload)
     return res
   }
 }
