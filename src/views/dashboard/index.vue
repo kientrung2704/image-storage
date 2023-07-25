@@ -116,9 +116,9 @@ export default {
       },
       async (val) => {
         if (val) {
-          this.$store.dispatch('user/getUserInfo')
           await this.getList()
           await this.formatListImage()
+          await this.$store.dispatch('user/getUserInfo')
         }
         // alert('App $watch $refs.counter.i: ' + val)
       }

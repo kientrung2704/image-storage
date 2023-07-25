@@ -203,6 +203,35 @@
                     </div>
                   </div>
                   <div
+                    class="content-box"
+                    v-if="currentPhoto?.photo?.attributes || currentPhoto?.photo?.categories"
+                  >
+                    <div class="icon">
+                      <IconPhotoExclamation stroke-width="1.25" :size="24" />
+                    </div>
+                    <div class="content-detail">
+                      <div class="file-name">Scene</div>
+                      <div class="file-detail">
+                        <p>Attributes</p>
+                        <a-space size="small" class="wrap">
+                          <a-tag
+                            v-for="(item, index) in JSON.parse(currentPhoto?.photo?.attributes)"
+                            color="blue"
+                            >{{ item }}</a-tag
+                          >
+                        </a-space>
+                        <p>Categories</p>
+                        <a-space size="small" class="wrap">
+                          <a-tag
+                            v-for="(item, index) in JSON.parse(currentPhoto?.photo?.categories)"
+                            color="green"
+                            >{{ item }}</a-tag
+                          >
+                        </a-space>
+                      </div>
+                    </div>
+                  </div>
+                  <div
                     class="map"
                     v-if="
                       currentPhoto.photo.exif &&
