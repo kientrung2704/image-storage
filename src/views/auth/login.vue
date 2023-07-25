@@ -7,8 +7,7 @@
       <form @submit.prevent="handleSubmit">
         <div class="profile-input mb-18">
           <label for="email" class="form-label color-dark-gray">
-            <!-- {{ $i18n.t('user.first_name') }} -->
-            Email
+            {{ $i18n.t('user.email') }}
           </label>
           <div class="form-control">
             <input
@@ -26,7 +25,9 @@
           </div>
         </div>
         <div class="profile-input">
-          <label for="password" class="form-label color-dark-gray">Password</label>
+          <label for="password" class="form-label color-dark-gray">
+            {{ $i18n.t('user.password') }}
+          </label>
           <div class="form-control">
             <div class="password">
               <input
@@ -71,13 +72,17 @@
           </div>
         </div>
         <div class="forgot-password mb-18">
-          <router-link :to="{ name: 'login' }">Forgot password?</router-link>
+          <router-link :to="{ name: 'forgot-password' }">
+            {{ $i18n.t('forgot_password') }}?
+          </router-link>
         </div>
-        <button class="btn-login">Login</button>
+        <button class="btn-login">{{ $i18n.t('login') }}</button>
       </form>
       <div class="register">
-        Chưa có tài khoản?
-        <router-link :to="{ name: 'register' }" class="register-link">Đăng ký ngay</router-link>
+        {{ $i18n.t('no_account') }}
+        <router-link :to="{ name: 'register' }" class="register-link">
+          {{ $i18n.t('register_now') }}
+        </router-link>
       </div>
     </div>
   </div>

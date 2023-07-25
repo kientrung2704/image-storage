@@ -6,7 +6,7 @@
     ]"
   >
     <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
-      <a-card title="Profile">
+      <a-card :bordered="false" title="Profile">
         <div class="setting">
           <form>
             <div class="avatar">
@@ -49,7 +49,7 @@
               </div>
               <div class="profile-input">
                 <label for="phone_number" class="form-label color-dark-gray">
-                  {{ $i18n.t('user.phone') }}
+                  {{ $i18n.t('user.phone_number') }}
                 </label>
                 <div class="form-control">
                   <input
@@ -95,10 +95,10 @@
       </a-card>
     </a-col>
     <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
-      <a-card title="Account infomation">
+      <a-card :bordered="false" title="Account infomation">
         <div class="setting">
           <div class="account-type pt-0">
-            <div class="text">Gói đang sử dụng</div>
+            <div class="text">Dịch vụ đang sử dụng</div>
             <a-tag color="default">{{ user.access_limit?.package.name }}</a-tag>
           </div>
           <div class="account-type mb-24">
@@ -146,13 +146,22 @@
             </div>
           </div>
           <div class="button-form">
-            <router-link class="btn-upgrade" :to="{ name: 'plan' }"> Upgrade Account </router-link>
+            <button class="btn-action continue" v-if="user?.access_limit?.package?.type === 'FREE'">
+              Mua dịch vụ
+            </button>
+            <button class="btn-action back" v-if="user?.access_limit?.package?.type === 'PAY'">
+              Thay đổi dịch vụ
+            </button>
+            <button class="btn-action continue" v-if="user?.access_limit?.package?.type === 'PAY'">
+              Gia hạn dịch vụ
+            </button>
+            <!-- <router-link class="btn-upgrade" :to="{ name: 'plan' }"> Upgrade Account </router-link> -->
           </div>
         </div>
       </a-card>
     </a-col>
     <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
-      <a-card title="Language">
+      <a-card :bordered="false" title="Language">
         <div class="setting">
           <a-select
             size="large"
@@ -369,10 +378,28 @@ export default {
 
   .button-form {
     display: flex;
+    gap: 12px;
     justify-content: flex-end;
 
+    .btn-action {
+      height: 36px;
+      min-width: 64px;
+      padding: 0 16px;
+      width: 49%;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .back {
+      background-color: #f5f5f5;
+    }
+
+    .continue {
+      background-color: #ee0033;
+      color: #ffffff;
+    }
     :deep(.ant-btn) {
-      border-radius: 4px;
+      border-radius: 6px;
     }
 
     :deep(.ant-btn-primary) {
@@ -393,7 +420,7 @@ export default {
     .btn-upgrade {
       height: 35px;
       border: 2px solid #dde3e8;
-      border-radius: 4px;
+      border-radius: 6px;
       align-items: stretch;
       background: #0000;
       cursor: pointer;
@@ -486,16 +513,16 @@ export default {
 
 :deep(.ant-card) {
   height: 100%;
-  border-radius: 8px !important;
+  // border-radius: 8px !important;
 }
 
-:deep(.ant-card-bordered) {
-  border: 1px solid #00000026;
-}
+// :deep(.ant-card-bordered) {
+//   border: 1px solid #00000026;
+// }
 
-:deep(.ant-card-head) {
-  border-bottom: 1px solid #00000026;
-}
+// :deep(.ant-card-head) {
+//   border-bottom: 1px solid #00000026;
+// }
 
 :deep(.ant-card-head-title) {
   // font-family: 'Satoshi Med';

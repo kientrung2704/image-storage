@@ -1,6 +1,6 @@
 <template>
   <div class="plan">
-    <a-card title="Upgrade account">
+    <a-card :bordered="false" title="Upgrade account">
       <div class="setting">
         <div class="container">
           <div class="plan-title">
@@ -119,7 +119,7 @@ export default {
           line-height: 1;
           font-size: 11px;
           padding: 1px 2px;
-          border-radius: 4px;
+          border-radius: 6px;
           width: 55px;
           position: absolute;
           background-color: #f50;
@@ -149,16 +149,16 @@ export default {
 // Card
 :deep(.ant-card) {
   height: 100%;
-  border-radius: 8px !important;
+  // border-radius: 8px !important;
 }
 
-:deep(.ant-card-bordered) {
-  border: 1px solid #00000026 !important;
-}
+// :deep(.ant-card-bordered) {
+//   border: 1px solid #00000026 !important;
+// }
 
-:deep(.ant-card-head) {
-  border-bottom: 1px solid #00000026;
-}
+// :deep(.ant-card-head) {
+//   border-bottom: 1px solid #00000026;
+// }
 
 :deep(.ant-card-head-title) {
   // font-family: 'Satoshi Med';

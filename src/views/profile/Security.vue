@@ -6,7 +6,7 @@
     ]"
   >
     <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
-      <a-card title="Change password">
+      <a-card :bordered="false" title="Change password">
         <div class="setting">
           <form>
             <div class="profile-input">
@@ -113,30 +113,29 @@
               </div>
             </div>
             <div class="button-form">
-              <a-button @click.prevent="onSubmit" type="primary" size="large">
-                Change Password
-              </a-button>
+              <a-button @click.prevent="onSubmit" type="primary"> Change Password </a-button>
             </div>
           </form>
         </div>
       </a-card>
     </a-col>
     <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
-      <a-card title="Two-factor authentication">
+      <a-card bordered="false" title="Two-factor authentication">
         <div class="setting">
           <img src="@/assets/images/two-factor.svg" alt="" />
           <p class="my-18">
             Turn on two-factor authentication to increase your account's security. You will use both
             your password and security code sent to your email to log in.
           </p>
-          <div class="two-factor">
+          <!-- <div class="two-factor">
             <div class="btn-two_factor" :class="{ active: isEnabled }" @click="handleTwoFactor">
               Enabled
             </div>
             <div class="btn-two_factor" :class="{ active: !isEnabled }" @click="handleTwoFactor">
               Disabled
             </div>
-          </div>
+          </div> -->
+          <a-segmented v-model:value="value" :options="options" size="large" />
         </div>
       </a-card>
     </a-col>
@@ -147,7 +146,7 @@
 import { IconEye } from '@tabler/icons-vue'
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons-vue'
 import useValidate from '@vuelidate/core'
-import { required, isNotFormatPassword, notSamePassword } from '@/plugins/vuelidate'
+import { required, isNotFormatPassword, notSamePassword, maxLength } from '@/plugins/vuelidate'
 import { helpers, sameAs } from '@vuelidate/validators'
 export default {
   components: {
@@ -163,30 +162,45 @@ export default {
       repeat_password: '',
       visible: true,
       visibleRepeat: true,
-      isEnabled: false
+      isEnabled: false,
+      value: 'Enabled',
+      options: ['Enabled', 'Disabled']
     }
   },
 
   validations() {
     return {
       current_password: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('validate.password.required') },
+          required
+        ),
         isNotFormatPassword: helpers.withParams(
-          { property: this.$i18n.t('message.title.email_format') },
+          { property: this.$i18n.t('validate.password.format') },
           isNotFormatPassword
         )
       },
       new_password: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('validate.password.required') },
+          required
+        ),
         isNotFormatPassword: helpers.withParams(
-          { property: this.$i18n.t('message.title.email_format') },
+          { property: this.$i18n.t('validate.password.format') },
           isNotFormatPassword
+        ),
+        maxLength: helpers.withParams(
+          { property: this.$i18n.t('validate.password.max_length') },
+          maxLength(255)
         )
       },
       repeat_password: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('validate.confirm_password.required') },
+          required
+        ),
         sameAsPassword: helpers.withParams(
-          { property: this.$i18n.t('message.title.111') },
+          { property: this.$i18n.t('validate.confirm_password.same_as') },
           sameAs(this.new_password)
         )
       }
@@ -220,7 +234,7 @@ export default {
   // border: 1px solid rgba(0, 0, 0, 0.1490196078);
   // display: flex;
   // height: 40px;
-  // border-radius: 4px;
+  // border-radius: 6px;
   // padding-right: 12px;
 
   // .form-input {
@@ -242,9 +256,9 @@ export default {
   display: flex;
   justify-content: flex-end;
 
-  :deep(.ant-btn) {
-    border-radius: 4px;
-  }
+  // :deep(.ant-btn) {
+  //   border-radius: 6px;
+  // }
 
   :deep(.ant-btn-primary) {
     background-color: #0451f9 !important;
@@ -290,16 +304,16 @@ export default {
 // Card
 :deep(.ant-card) {
   height: 100%;
-  border-radius: 8px !important;
+  // border-radius: 8px !important;
 }
 
-:deep(.ant-card-bordered) {
-  border: 1px solid #00000026;
-}
+// :deep(.ant-card-bordered) {
+//   border: 1px solid #00000026;
+// }
 
-:deep(.ant-card-head) {
-  border-bottom: 1px solid #00000026;
-}
+// :deep(.ant-card-head) {
+//   border-bottom: 1px solid #00000026;
+// }
 
 :deep(.ant-card-head-title) {
   // font-family: 'Satoshi Med';

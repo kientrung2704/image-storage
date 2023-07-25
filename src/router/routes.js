@@ -69,7 +69,7 @@ const routes = [
       },
       {
         path: 'detail/:id',
-        name: 'detail',
+        name: 'order-detail',
         component: () => import('@/views/cart/detail.vue'),
         meta: {
           title: 'Detail'
@@ -108,11 +108,11 @@ const routes = [
             }
           },
           {
-            path: 'login-history',
-            name: 'login-history',
+            path: 'payment-history',
+            name: 'payment-history',
             component: () => import('@/views/profile/LoginHistory.vue'),
             meta: {
-              title: 'LoginHistory'
+              title: 'Payment History'
             }
           }
         ]
@@ -123,7 +123,6 @@ const routes = [
     path: '/',
     name: 'main',
     component: () => import('@/layouts/MainLayout.vue'),
-    // component: () => import('@/layouts/DashboardLayout.vue'),
     meta: {
       name: 'Main'
     },
@@ -143,8 +142,24 @@ const routes = [
         meta: {
           title: 'Register'
         }
+      },
+      {
+        path: 'forgot-password',
+        name: 'forgot-password',
+        component: () => import('@/views/auth/ForgotPassword.vue'),
+        meta: {
+          title: 'Forgot password'
+        }
       }
     ]
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/404.vue'),
+    meta: {
+      title: '404'
+    }
   }
 ]
 

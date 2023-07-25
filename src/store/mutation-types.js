@@ -12,3 +12,7 @@ export const USERS = {
 export const PACKAGE = {
   GET_LIST_PACKAGE: 'GET_LIST_PACKAGE'
 }
+
+export const ORDER = {
+  GET_LIST_ORDER: 'GET_LIST_ORDER'
+}

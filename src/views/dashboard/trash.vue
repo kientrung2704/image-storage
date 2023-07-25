@@ -140,6 +140,7 @@ export default {
         await this.$store.dispatch('photo/undo', id)
       } else {
         await this.$store.dispatch('photo/remove', id)
+        await this.$store.dispatch('user/getUserInfo')
       }
 
       const assetLength = this.totalPhoto

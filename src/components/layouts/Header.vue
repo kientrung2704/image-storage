@@ -37,7 +37,7 @@
                 </template>
                 <span class="item-detail"> Profile </span>
               </a-menu-item>
-              <a-menu-item key="login-history">
+              <a-menu-item key="payment-history">
                 <template #icon>
                   <IconLock stroke-width="2.5" :size="18" color="#86909A" />
                 </template>

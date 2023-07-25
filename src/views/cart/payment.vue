@@ -21,7 +21,7 @@
       </div>
       <router-link
         class="btn-order-info"
-        :to="{ name: 'detail', params: { id: payment.order_id } }"
+        :to="{ name: 'order-detail', params: { id: payment.order_id } }"
       >
         XEM TRẠNG THÁI ĐƠN HÀNG
       </router-link>

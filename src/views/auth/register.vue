@@ -7,8 +7,7 @@
       <form @submit.prevent="handleSubmit">
         <div class="profile-input mb-18">
           <label for="name" class="form-label color-dark-gray">
-            <!-- {{ $i18n.t('user.name') }} -->
-            First Name
+            {{ $i18n.t('user.name') }}
           </label>
           <div class="form-control">
             <input
@@ -46,8 +45,7 @@
         </div> -->
         <div class="profile-input mb-18">
           <label for="phone_number" class="form-label color-dark-gray">
-            <!-- {{ $i18n.t('user.name') }} -->
-            Phone
+            {{ $i18n.t('user.phone_number') }}
           </label>
           <div class="form-control">
             <input
@@ -66,8 +64,7 @@
         </div>
         <div class="profile-input mb-18">
           <label for="email" class="form-label color-dark-gray">
-            <!-- {{ $i18n.t('user.name') }} -->
-            Email
+            {{ $i18n.t('user.email') }}
           </label>
           <div class="form-control">
             <input
@@ -85,7 +82,9 @@
           </div>
         </div>
         <div class="profile-input mb-18">
-          <label for="password" class="form-label color-dark-gray">Password</label>
+          <label for="password" class="form-label color-dark-gray">{{
+            $i18n.t('user.password')
+          }}</label>
           <div class="form-control">
             <div class="password">
               <input
@@ -130,7 +129,9 @@
           </div>
         </div>
         <div class="profile-input mb-18">
-          <label for="repeat_password" class="form-label color-dark-gray">Confirm Password</label>
+          <label for="repeat_password" class="form-label color-dark-gray">
+            {{ $i18n.t('user.confirm_password') }}
+          </label>
           <div class="form-control">
             <div class="password">
               <input
@@ -174,11 +175,13 @@
             </div>
           </div>
         </div>
-        <button class="btn-login">Register</button>
+        <button class="btn-login">{{ $i18n.t('register') }}</button>
       </form>
       <div class="register">
-        Đã có tài khoản?
-        <router-link :to="{ name: 'login' }" class="register-link">Đăng nhập ngay</router-link>
+        {{ $i18n.t('have_account') }}
+        <router-link :to="{ name: 'login' }" class="register-link">
+          {{ $i18n.t('login_now') }}
+        </router-link>
       </div>
     </div>
   </div>
@@ -220,11 +223,11 @@ export default {
     return {
       name: {
         required: helpers.withParams(
-          { property: this.$i18n.t('message.title.password') },
+          { property: this.$i18n.t('validate.name.required') },
           required
         ),
         maxLength: helpers.withParams(
-          { property: this.$i18n.t('message.title.email') },
+          { property: this.$i18n.t('validate.name.max_length') },
           maxLength(255)
         )
       },
@@ -243,27 +246,40 @@ export default {
         )
       },
       email: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('validate.email.required') },
+          required
+        ),
         maxLength: helpers.withParams(
-          { property: this.$i18n.t('message.title.email') },
+          { property: this.$i18n.t('validate.email.max_length') },
           maxLength(255)
         ),
         isNotFormatEmail: helpers.withParams(
-          { property: this.$i18n.t('message.title.email') },
+          { property: this.$i18n.t('validate.email.format') },
           isNotFormatEmail
         )
       },
       password: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('validate.password.required') },
+          required
+        ),
+        maxLength: helpers.withParams(
+          { property: this.$i18n.t('validate.password.max_length') },
+          maxLength(255)
+        ),
         isNotFormatPassword: helpers.withParams(
-          { property: this.$i18n.t('message.title.email_format') },
+          { property: this.$i18n.t('validate.password.format') },
           isNotFormatPassword
         )
       },
       repeat_password: {
-        required: helpers.withParams({ property: this.$i18n.t('message.title.email') }, required),
+        required: helpers.withParams(
+          { property: this.$i18n.t('validate.confirm_password.required') },
+          required
+        ),
         sameAsPassword: helpers.withParams(
-          { property: this.$i18n.t('message.title.111') },
+          { property: this.$i18n.t('validate.confirm_password.same_as') },
           sameAs(this.password)
         )
       }

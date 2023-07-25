@@ -7,3 +7,7 @@ export function numberWithCommas(x) {
 export function formatDate(x) {
   return dayjs(x).format('DD/MM/YYYY')
 }
+
+export function formatDateTime(x) {
+  return dayjs(x).format('hh:s DD/MM/YYYY')
+}

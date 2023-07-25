@@ -15,15 +15,21 @@ export default {
   vn: 'Tiếng Việt',
   vi_VN: 'Tiếng Việt',
   en: 'Tiếng Anh',
+  'order-detail': 'Chi tiết đơn hàng',
   user: {
     phone_number: 'Số điện thoại',
     name: 'Họ và tên',
     email: 'Email',
-    birth: 'Birth',
-    city: 'City',
-    bio: 'Bio',
-    social_network: 'Social network'
+    password: 'Mật khẩu',
+    confirm_password: 'Xác nhận mật khẩu'
   },
+  have_account: 'Đã có tài khoản?',
+  no_account: 'Chưa có tài khoản?',
+  register_now: 'Đăng ký ngay',
+  login_now: 'Đăng nhập ngay',
+  register: 'Đăng ký',
+  login: 'Đăng nhập',
+  forgot_password: 'Quên mật khẩu',
   validate: {
     name: {
       required: 'Họ và tên không được để trống',
@@ -33,6 +39,21 @@ export default {
       required: 'Số điện thoại không được để trống',
       max_length: 'Số điện thoại không được quá 10 chữ số',
       format: 'Số điện thoại không đúng đụng dạng'
+    },
+    email: {
+      required: 'Email không được để trống',
+      max_length: 'Email không được quá 10 chữ số',
+      format: 'Email không đúng đụng dạng'
+    },
+    password: {
+      required: 'Mật khẩu không được để trống',
+      max_length: 'Mật khẩu không được quá 100 ký tự',
+      format:
+        'Mật khẩu gồm ít nhất 8 ký tự, tối đa 100 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt'
+    },
+    confirm_password: {
+      required: 'Xác nhận mật khẩu không được để trống',
+      same_as: 'Xác nhận mật khẩu khác với mật khẩu'
     }
   },
   message: {

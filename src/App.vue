@@ -1,5 +1,12 @@
 <template>
-  <a-config-provider :locale="localLanguage">
+  <a-config-provider
+    :locale="localLanguage"
+    :theme="{
+      token: {
+        fontFamily: 'Pretendard'
+      }
+    }"
+  >
     <Loading ref="loading" />
     <UploadGlobal ref="upload" />
     <!-- <DropZone ref="dropzone" /> -->
