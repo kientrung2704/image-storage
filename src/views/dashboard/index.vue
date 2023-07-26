@@ -1,4 +1,5 @@
 <template>
+  <AppBreadcrumb />
   <div class="main">
     <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
       <h3>Drop files to upload</h3>
@@ -48,7 +49,7 @@
       width="100%"
       :footer="null"
       :closable="false"
-      v-model:visible="visible"
+      v-model:open="visible"
       wrap-class-name="full-modal"
       @keydown="keyboardActionDialog($event)"
     >

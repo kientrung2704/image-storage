@@ -8,7 +8,7 @@
       <span class="seperator">/</span>
       {{ breadcrumbList }}
     </div>
-    <div class="breadcrumb-content">
+    <div class="breadcrumb-content" id="breadcrumb-content">
       <slot name="content"></slot>
     </div>
   </div>

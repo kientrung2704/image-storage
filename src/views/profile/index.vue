@@ -1,4 +1,5 @@
 <template>
+  <AppBreadcrumb />
   <div class="main">
     <!-- <div class="settings-menu">
       <router-link

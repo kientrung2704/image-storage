@@ -26,7 +26,6 @@
       </a-drawer>
       <a-layout-content>
         <div class="unvue-content">
-          <AppBreadcrumb />
           <RouterView />
         </div>
       </a-layout-content>

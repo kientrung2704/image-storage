@@ -97,3 +97,7 @@ $lineNum in $lines {
     line-clamp: $lineNum;
   }
 }
+
+.word-break {
+  word-break: break-all;
+}

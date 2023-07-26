@@ -8,7 +8,7 @@
     }"
   >
     <Loading ref="loading" />
-    <UploadGlobal ref="upload" />
+    <!-- <UploadGlobal ref="upload" /> -->
     <!-- <DropZone ref="dropzone" /> -->
 
     <RouterView />

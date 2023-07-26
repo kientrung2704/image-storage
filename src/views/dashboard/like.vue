@@ -1,4 +1,5 @@
 <template>
+  <AppBreadcrumb />
   <div class="main">
     <div class="empty" v-if="isEmpty(images)">
       <img src="@/assets/images/empty_favorites.svg" />
