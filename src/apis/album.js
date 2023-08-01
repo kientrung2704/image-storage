@@ -21,3 +21,23 @@ export async function list(payload) {
     return { error }
   }
 }
+
+export async function detail(id) {
+  try {
+    const { data } = await axios.get(`${ALBUM}/${id}`)
+
+    return data
+  } catch (error) {
+    return { error }
+  }
+}
+
+export async function update(payload) {
+  try {
+    const { data } = await axios.put(`${ALBUM}/${payload.id}`, payload)
+
+    return data
+  } catch (error) {
+    return { error }
+  }
+}

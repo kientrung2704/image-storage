@@ -28,6 +28,14 @@ const routes = [
         }
       },
       {
+        path: 'explore/:id',
+        name: 'explore-detail',
+        component: () => import('@/views/dashboard/explore-detail.vue'),
+        meta: {
+          title: 'Explore Detail'
+        }
+      },
+      {
         path: 'share',
         name: 'share',
         component: () => import('@/views/dashboard/explore.vue'),

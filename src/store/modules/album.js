@@ -1,4 +1,4 @@
-import { create, list } from '@/apis/album'
+import { create, list, detail, update } from '@/apis/album'
 // import { ORDER } from '../mutation-types'
 
 const state = {
@@ -25,6 +25,16 @@ export const actions = {
   },
   async list({ commit }, payload) {
     const res = await list(payload)
+
+    return res
+  },
+  async detail({ commit }, id) {
+    const res = await detail(id)
+
+    return res
+  },
+  async update({ commit }, payload) {
+    const res = await update(payload)
 
     return res
   }

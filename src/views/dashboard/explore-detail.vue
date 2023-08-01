@@ -1,21 +1,20 @@
 <template>
   <AppBreadcrumb>
     <template #content>
-      <button @click="create">Tạo album</button>
+      <button @click="addFile" class="add-file">Edit</button>
     </template>
   </AppBreadcrumb>
   <div class="main">
+    <div class="name">{{album.name}}</div>
     <div class="album">
-      <div class="album-item" v-for="(album, index) in albums" :key="index">
-        <router-link :to="{name: 'explore-detail', params: {id: album.id} }">
-          <img :src="'http://bveats-api.test/storage/' + album.files[0]?.file" alt="" />
-          <div class="album-info">
-            <div class="album-name two-line word-break" v-if="album.name">
-              {{ album.name }}
-            </div>
-            <div class="album-total">{{ album.files.length }} mục</div>
+      <div class="album-item" v-for="(file, index) in files" :key="index">
+        <img :src="'http://bveats-api.test/storage/' + file.file" alt="" />
+        <div class="album-info">
+          <div class="album-name two-line word-break" v-if="file.name">
+            {{ file.name }}
           </div>
-        </router-link>
+          <div class="album-total">{{ file.description }}</div>
+        </div>
       </div>
     </div>
 
@@ -70,16 +69,19 @@
           <div class="category">
             <div class="category-wrapper">
               <div class="left">
-                <div class="btn-category" @click="isChooseImage = false">
+                <div class="btn-category" @click="close">
                   <ArrowLeftOutlined :style="{ fontSize: '20px' }" />
                 </div>
               </div>
               <div class="right">
                 <a-space :size="8">
-                  <div class="btn-category" @click="continueCreate">Xong</div>
+                  <div class="btn-category" @click="update">Update</div>
                 </a-space>
               </div>
             </div>
+          </div>
+          <div class="wrap-name">
+            <input type="text" name="" id="" class="name" v-model="albumName">
           </div>
           <div class="image">
             <div class="wrapper-content">
@@ -157,11 +159,13 @@ export default {
   data() {
     return {
       name: '',
-      albums: {},
+      album: {},
       images: {},
       selected: [],
+      files: [],
       visible: false,
-      isChooseImage: false
+      isChooseImage: false,
+      albumName: ''
     }
   },
   watch: {
@@ -185,16 +189,28 @@ export default {
     }
   },
   created() {
-    this.getAlbums()
+    this.getAlbum()
   },
   methods: {
-    async getAlbums() {
+    async getAlbum() {
       this.$root.$refs.loading.start()
-      const res = await this.$store.dispatch('album/list')
-      this.albums = res
+      const res = await this.$store.dispatch('album/detail', this.$route.params.id);
+      this.album = res
+      this.files = res.files ?? []
+      this.albumName = res.name
       this.$root.$refs.loading.finish()
+      res.files.map(item => {
+        this.selected.push(item)
+      })
     },
+    
     create() {
+      this.visible = true
+    },
+    addFile() {
+      this.getList()
+      this.getAlbum()
+      this.isChooseImage = true
       this.visible = true
     },
     close() {
@@ -256,12 +272,43 @@ export default {
       await this.getAlbums()
       this.close()
       this.$root.$refs.loading.finish()
+    },
+    async update() {
+      if (this.selected.length === 0) {
+        this.$notification[TYPE_ERROR]({
+          message: 'Error',
+          description: 'Cần lựa chọn ảnh'
+        })
+        return false
+      }
+      if (!this.albumName) {
+        this.$notification[TYPE_ERROR]({
+          message: 'Error',
+          description: 'Cần đặt tên album'
+        })
+        return false
+      }
+      const params = {
+        'id': this.album.id,
+        'name': this.albumName,
+        'selected': this.selected
+      }
+      const res = await this.$store.dispatch('album/update', params)
+        this.$notification[TYPE_SUCCESS]({
+          message: 'Success',
+          description: 'Update successfully'
+        })
+        await this.getAlbum()
+       this.close()
     }
   }
 }
 </script>
 
 <style lang="scss">
+.name {
+  margin-bottom: 50px;
+}
 .cus-modal {
   .ant-modal-wrap {
     overflow: hidden !important;
@@ -450,6 +497,21 @@ export default {
       height: 180px;
       width: 100%;
     }
+  }
+}
+
+.create-album {
+  margin-right: 12px;
+}
+.add-file {
+
+}
+
+.wrap-name {
+  padding-left: 24px;
+  padding: 0 24px 24px;
+  .name {
+    border-bottom: 1px solid black;
   }
 }
 </style>
