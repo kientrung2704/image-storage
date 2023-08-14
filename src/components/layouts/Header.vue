@@ -1,12 +1,11 @@
 <template>
   <div class="header-item-container" :class="$route.name !== 'image' ? 'fl-end' : ''">
-    <div class="search">
+    <div class="search" v-if="$route.name === 'image'">
       <input
         type="text"
         v-model="search"
         class="form-input"
         placeholder="Basic usage"
-        v-if="$route.name === 'image'"
       />
       <SearchOutlined type="user" class="search-icon" />
     </div>

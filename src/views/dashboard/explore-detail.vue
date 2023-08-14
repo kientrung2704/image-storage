@@ -13,7 +13,7 @@
           :size="40"
           :src="
             album.user.avatar
-              ? 'http://bveats-api.test/storage/upload/' + album.user.avatar
+              ? 'http://image-storage-be.test/storage/upload/' + album.user.avatar
               : 'https://avataaars.io/?avatarStyle=Transparent&topType=Hat&accessoriesType=Blank&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light'
           "
           :style="{
@@ -30,7 +30,7 @@
           :size="40"
           :src="
             share.to.avatar
-              ? 'http://bveats-api.test/storage/upload/' + share.to.avatar
+              ? 'http://image-storage-be.test/storage/upload/' + share.to.avatar
               : 'https://avataaars.io/?avatarStyle=Transparent&topType=Hat&accessoriesType=Blank&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light'
           "
           :style="{
@@ -55,7 +55,7 @@
         :key="index"
         @click="clickPhoto(file.id)"
       >
-        <img :src="'http://bveats-api.test/storage/' + file.file" alt="" />
+        <img :src="'http://image-storage-be.test/storage/' + file.file" alt="" />
         <!-- <div class="album-info">
           <div class="album-name two-line word-break" v-if="file.name">
             {{ file.name }}

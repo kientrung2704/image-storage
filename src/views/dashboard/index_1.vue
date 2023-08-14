@@ -83,7 +83,7 @@ export default {
       prevPhoto: null,
       nextPhoto: null,
       files: [],
-      postAction: 'http://bveats-api.test/upload',
+      postAction: 'http://image-storage-be.test/upload',
       accept: 'image/png,image/gif,image/jpeg,image/webp,video/mp4,audio/mp4,application/mp4',
       extensions: 'gif,jpg,jpeg,png,webp,mp4',
       // extensions: ['gif', 'jpg', 'jpeg','png', 'webp'],

@@ -11,7 +11,7 @@
             <div class="image" v-for="(image, i) in shared?.files" :key="i">
               <img
                 class="img-responsive"
-                :src="'http://bveats-api.test/storage/' + image.file.file"
+                :src="'http://image-storage-be.test/storage/' + image.file.file"
                 alt="image"
               />
             </div>
@@ -43,7 +43,10 @@
           </a-popover> -->
               </a-dropdown>
               <router-link :to="{ name: 'explore-detail', params: { id: album.album.id } }">
-                <img :src="'http://bveats-api.test/storage/' + album.album.files[0]?.file" alt="" />
+                <img
+                  :src="'http://image-storage-be.test/storage/' + album.album.files[0]?.file"
+                  alt=""
+                />
                 <div class="album-info">
                   <div class="album-name two-line word-break" v-if="album.album.name">
                     {{ album.album.name }}

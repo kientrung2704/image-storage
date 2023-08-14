@@ -77,7 +77,7 @@
                 :src="
                   currentPhoto?.photo.src
                     ? currentPhoto?.photo.src
-                    : 'http://bveats-api.test/storage/' + currentPhoto?.photo.file
+                    : 'http://image-storage-be.test/storage/' + currentPhoto?.photo.file
                 "
                 v-if="currentPhoto"
               />
@@ -155,7 +155,7 @@
                       >
                         <div class="detail-info">
                           <img
-                            :src="'http://bveats-api.test/storage/' + album.files[0]?.file"
+                            :src="'http://image-storage-be.test/storage/' + album.files[0]?.file"
                             alt=""
                           />
                           <div class="album-info">
