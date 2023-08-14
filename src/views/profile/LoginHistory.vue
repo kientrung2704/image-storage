@@ -11,34 +11,56 @@
                   >Mã đơn hàng</label
                 >
                 <div class="form-control">
-                  <input type="text" id="email" class="form-input" />
+                  <input
+                    type="text"
+                    id="email"
+                    class="form-input"
+                    v-model="id"
+                    @keyup="getListOrder"
+                  />
                 </div>
               </div>
             </a-col>
             <a-col class="gutter-row" :xs="24" :sm="8" :md="8" :lg="8" :xl="8" :xxl="8">
               <div class="profile-input relative">
                 <label for="email" class="form-label color-dark-gray absolute-label"
-                  >Mã đơn hàng</label
+                  >Trạng thái</label
                 >
                 <div class="form-control">
-                  <input type="text" id="email" class="form-input" />
+                  <a-select
+                    class="cus-select"
+                    v-model:value="status"
+                    size="large"
+                    style="width: 100%"
+                    :options="options"
+                    @change="getListOrder"
+                  ></a-select>
+                  <!-- <input type="text" id="email" class="form-input" /> -->
                 </div>
               </div>
             </a-col>
             <a-col class="gutter-row" :xs="24" :sm="8" :md="8" :lg="8" :xl="8" :xxl="8">
               <div class="profile-input relative">
                 <label for="email" class="form-label color-dark-gray absolute-label"
-                  >Mã đơn hàng</label
+                  >Thời gian tạo</label
                 >
                 <div class="form-control">
-                  <input type="text" id="email" class="form-input" />
+                  <!-- <input type="text" id="email" class="form-input" /> -->
+                  <a-range-picker
+                    v-model:value="time"
+                    :format="dateFormat"
+                    :presets="presets"
+                    @change="getListOrder"
+                  />
                 </div>
               </div>
             </a-col>
           </a-row>
         </a-col>
         <a-col class="gutter-row" :xs="4" :sm="2" :md="2" :lg="2" :xl="8" :xxl="12">
-          <div class="icon-row">1</div>
+          <div class="icon-row" @click="clear">
+            <undo-outlined :style="{ fontSize: '24px', color: '#d9d9d9' }" />
+          </div>
         </a-col>
       </a-row>
     </a-card>
@@ -67,7 +89,8 @@
           </template>
           <template v-if="column.key === 'action'">
             <div class="tb-action">
-              <span>Thanh toán</span>
+              <span v-if="text.response_code !== '00'">Thanh toán</span>
+              <span v-else></span>
               <div class="more">
                 <a-popover placement="leftTop">
                   <template #content>
@@ -103,12 +126,16 @@
 </template>
 
 <script>
+import dayjs from '@/plugins/dayjs'
 import { numberWithCommas, formatDate } from '@/utils/common/format'
-import { MoreOutlined } from '@ant-design/icons-vue'
+import { MoreOutlined, UndoOutlined } from '@ant-design/icons-vue'
 import { isUndef } from '@/utils/common/is'
+import { debounce } from 'lodash-es'
+
 export default {
   components: {
-    MoreOutlined
+    MoreOutlined,
+    UndoOutlined
   },
   data() {
     return {
@@ -163,7 +190,31 @@ export default {
       current: 1,
       limit: 10,
       pageSizeOptions: ['1', '5', '10', '20', '50'],
-      sort: {}
+      sort: {},
+      id: null,
+      status: 0,
+      time: [dayjs(new Date()).subtract(1, 'month'), dayjs(new Date())],
+      dateFormat: 'DD/MM/YYYY',
+      presets: [
+        { label: 'Last 7 Days', value: [dayjs().add(-7, 'd'), dayjs()] },
+        { label: 'Last 14 Days', value: [dayjs().add(-14, 'd'), dayjs()] },
+        { label: 'Last 30 Days', value: [dayjs().add(-30, 'd'), dayjs()] },
+        { label: 'Last 90 Days', value: [dayjs().add(-90, 'd'), dayjs()] }
+      ],
+      options: [
+        {
+          value: 0,
+          label: 'Tất cả'
+        },
+        {
+          value: '00',
+          label: 'Thành công'
+        },
+        {
+          value: '02',
+          label: 'Thất bại'
+        }
+      ]
     }
   },
   // mounted() {
@@ -171,12 +222,21 @@ export default {
   //   main[0].style.backgroundColor = '#fff'
   // },
   created() {
+    // this.time[0] = this.$dayjs(new Date())
     this.getListOrder()
   },
   methods: {
     isUndef,
     numberWithCommas,
     formatDate,
+    onChangeDate(dates, dateStrings) {
+      if (dates) {
+        console.log('From: ', dates[0], ', to: ', dates[1])
+        console.log('From: ', dateStrings[0], ', to: ', dateStrings[1])
+      } else {
+        console.log('Clear')
+      }
+    },
     handleTableChange(pagination, filters, sorter) {
       if (!this.isUndef(sorter.order)) {
         this.sort.field = sorter.field
@@ -184,20 +244,30 @@ export default {
         this.getListOrder()
       }
     },
-    async getListOrder() {
+    clear() {
+      this.id = null
+      this.status = 0
+      this.time = [dayjs(new Date()).subtract(1, 'month'), dayjs(new Date())]
+      this.getListOrder()
+    },
+    getListOrder: debounce(async function (e) {
+      // async getListOrder() {
       // this.$root.$refs.loading.start()
       this.loading = true
       const payload = {
         limit: this.limit,
         page: this.current,
-        sort: this.sort
+        sort: this.sort,
+        id: this.id,
+        status: this.status,
+        time: this.time
       }
       const res = await this.$store.dispatch('order/list', payload)
       this.orders = res
       this.total = this.orders.total
       this.loading = false
       // this.$root.$refs.loading.finish()
-    },
+    }, 300),
     generateSerial(index) {
       let temp = '0'
       const value = index + 1
@@ -224,6 +294,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.ant-picker-range) {
+  height: 40px !important;
+}
+:deep(.cus-select) {
+  .ant-select-selection-item {
+    font-size: 14px;
+  }
+}
 .payment-history {
   // background-color: #fff;
   height: 100%;
@@ -240,6 +318,7 @@ export default {
       height: 100%;
       display: flex;
       align-items: center;
+      cursor: pointer;
     }
     .profile-input {
       margin-bottom: 0 !important;

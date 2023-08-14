@@ -1,20 +1,67 @@
 <template>
   <AppBreadcrumb>
-    <template #content>
+    <template #content v-if="album.user_id === user.id">
       <button @click="addFile" class="add-file">Edit</button>
     </template>
   </AppBreadcrumb>
   <div class="main">
-    <div class="name">{{album.name}}</div>
+    <div class="name">{{ album.name }}</div>
+    <div class="user-list" v-if="album.shares?.length > 0">
+      <a-tooltip>
+        <template #title>{{ album.user.name }} (Chủ sở hữu)</template>
+        <a-avatar
+          :size="40"
+          :src="
+            album.user.avatar
+              ? 'http://bveats-api.test/storage/upload/' + album.user.avatar
+              : 'https://avataaars.io/?avatarStyle=Transparent&topType=Hat&accessoriesType=Blank&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light'
+          "
+          :style="{
+            verticalAlign: 'middle',
+            cursor: 'pointer'
+          }"
+        >
+        </a-avatar>
+      </a-tooltip>
+
+      <a-tooltip v-for="(share, i) in album.shares" :key="i">
+        <template #title>{{ share.to.name }}</template>
+        <a-avatar
+          :size="40"
+          :src="
+            share.to.avatar
+              ? 'http://bveats-api.test/storage/upload/' + share.to.avatar
+              : 'https://avataaars.io/?avatarStyle=Transparent&topType=Hat&accessoriesType=Blank&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light'
+          "
+          :style="{
+            verticalAlign: 'middle',
+            cursor: 'pointer'
+          }"
+        >
+        </a-avatar>
+      </a-tooltip>
+
+      <button @click="shareAlbum">
+        <PlusOutlined />
+      </button>
+      <!-- <div class="list" v-for="(share, i) in album.shares" :key="i">
+        {{ share.user.name }}
+      </div> -->
+    </div>
     <div class="album">
-      <div class="album-item" v-for="(file, index) in files" :key="index">
+      <div
+        class="album-item"
+        v-for="(file, index) in files"
+        :key="index"
+        @click="clickPhoto(file.id)"
+      >
         <img :src="'http://bveats-api.test/storage/' + file.file" alt="" />
-        <div class="album-info">
+        <!-- <div class="album-info">
           <div class="album-name two-line word-break" v-if="file.name">
             {{ file.name }}
           </div>
           <div class="album-total">{{ file.description }}</div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -27,10 +74,9 @@
       wrap-class-name="cus-modal"
     >
       <div v-if="!isChooseImage">
-        <!-- <transition-group tag="div" class="img-slider" :name="transition"> -->
         <div class="img-cont">
-          <div class="category">
-            <div class="category-wrapper">
+          <div class="header-category">
+            <div class="header-category-wrapper">
               <div class="left">
                 <div class="btn-category" @click="close">
                   <ArrowLeftOutlined :style="{ fontSize: '20px' }" />
@@ -62,12 +108,11 @@
             </div>
           </div>
         </div>
-        <!-- </transition-group> -->
       </div>
       <div v-else>
         <div class="img-cont">
-          <div class="category">
-            <div class="category-wrapper">
+          <div class="header-category-category">
+            <div class="header-category-wrapper">
               <div class="left">
                 <div class="btn-category" @click="close">
                   <ArrowLeftOutlined :style="{ fontSize: '20px' }" />
@@ -81,7 +126,7 @@
             </div>
           </div>
           <div class="wrap-name">
-            <input type="text" name="" id="" class="name" v-model="albumName">
+            <input type="text" name="" id="" class="name" v-model="albumName" />
           </div>
           <div class="image">
             <div class="wrapper-content">
@@ -102,6 +147,54 @@
         </div>
       </div>
     </a-modal>
+
+    <a-modal
+      title=""
+      width="100%"
+      :footer="null"
+      :closable="false"
+      v-model:open="view"
+      wrap-class-name="full-modal"
+      @keydown="keyboardActionDialog($event)"
+    >
+      <AppImageGallery
+        ref="viewer"
+        @left="navigate(-1)"
+        @right="navigate(1)"
+        :nextPhoto="nextPhoto"
+        :prevPhoto="prevPhoto"
+        :current-photo="currentPhoto"
+        :direction="imageViewerDirection"
+        @close="closeView()"
+        @like-file="likeFile"
+      />
+    </a-modal>
+
+    <a-modal
+      title="Thêm người thân"
+      :footer="null"
+      v-model:open="display"
+      wrap-class-name="share-modal"
+    >
+      <div class="content">
+        <a-select
+          v-model:value="value"
+          mode="multiple"
+          placeholder="Select users"
+          style="width: 100%"
+          :filter-option="false"
+          :not-found-content="fetching ? undefined : null"
+          :options="data"
+          @search="fetchUserData"
+        >
+          <template v-if="fetching" #notFoundContent>
+            <a-spin size="small" />
+          </template>
+        </a-select>
+
+        <button class="mt-12" @click="share">Xác nhận</button>
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -117,7 +210,8 @@ import {
   StarOutlined,
   StarFilled,
   ShareAltOutlined,
-  UndoOutlined
+  UndoOutlined,
+  PlusOutlined
   // CloseOutlined,
   // CalendarOutlined,
   // PictureOutlined,
@@ -131,8 +225,11 @@ import {
   IconX,
   IconFileDescription
 } from '@tabler/icons-vue'
+import { debounce } from 'lodash-es'
+import { mapGetters } from 'vuex'
 export default {
   components: {
+    PlusOutlined,
     LeftOutlined,
     RightOutlined,
     InfoCircleOutlined,
@@ -164,8 +261,19 @@ export default {
       selected: [],
       files: [],
       visible: false,
+      view: false,
       isChooseImage: false,
-      albumName: ''
+      albumName: '',
+      currentPhoto: null,
+      prevPhoto: null,
+      nextPhoto: null,
+      imageViewerDirection: 0,
+      totalPhoto: 0,
+      value: [],
+      data: [],
+      fetching: false,
+      id: '',
+      display: false
     }
   },
   watch: {
@@ -178,6 +286,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({ user: 'user/userInfo' }),
     formatListImage() {
       let imagesList = []
 
@@ -194,16 +303,51 @@ export default {
   methods: {
     async getAlbum() {
       this.$root.$refs.loading.start()
-      const res = await this.$store.dispatch('album/detail', this.$route.params.id);
+      const res = await this.$store.dispatch('album/detail', this.$route.params.id)
       this.album = res
       this.files = res.files ?? []
+      this.totalPhoto = this.files.length
       this.albumName = res.name
       this.$root.$refs.loading.finish()
-      res.files.map(item => {
+      res.files.map((item) => {
         this.selected.push(item)
       })
     },
-    
+    shareAlbum() {
+      this.display = true
+    },
+    fetchUserData: debounce(async function (e) {
+      if (e === '') {
+        this.data = []
+      } else {
+        const params = {
+          keyword: e
+        }
+        const res = await this.$store.dispatch('share/findUser', params)
+        const map = res.map((user) => ({
+          label: `${user.email}`,
+          value: user.id
+        }))
+        this.data = map
+        console.log(this.data)
+        this.fetching = false
+      }
+    }, 300),
+    async share() {
+      if (this.value.length === 0) return
+      this.$root.$refs.loading.start()
+      const params = {
+        type: 'album',
+        user: this.value,
+        album_id: this.$route.params.id
+      }
+
+      await this.$store.dispatch('share/share', params)
+      this.display = false
+      await this.getAlbum()
+      this.$root.$refs.loading.finish()
+    },
+
     create() {
       this.visible = true
     },
@@ -289,17 +433,82 @@ export default {
         return false
       }
       const params = {
-        'id': this.album.id,
-        'name': this.albumName,
-        'selected': this.selected
+        id: this.album.id,
+        name: this.albumName,
+        selected: this.selected
       }
       const res = await this.$store.dispatch('album/update', params)
-        this.$notification[TYPE_SUCCESS]({
-          message: 'Success',
-          description: 'Update successfully'
-        })
-        await this.getAlbum()
-       this.close()
+      this.$notification[TYPE_SUCCESS]({
+        message: 'Success',
+        description: 'Update successfully'
+      })
+      await this.getAlbum()
+      this.close()
+    },
+    clickPhoto(id) {
+      const index = this.files.findIndex((e) => e.id === id)
+      if (index >= 0) {
+        this.view = true
+        this.imageViewerDirection = 0
+        this.currentPhoto = {
+          index: index,
+          photo: this.files[index]
+        }
+        console.log(this.currentPhoto)
+        this.prevPhoto = this.getNextSectionSegmentAsset(this.currentPhoto, -1)
+        this.nextPhoto = this.getNextSectionSegmentAsset(this.currentPhoto, 1)
+      }
+    },
+    getNextSectionSegmentAsset(currentAsset, dir) {
+      const assetLength = this.totalPhoto
+      let nextIndex = currentAsset.index + dir
+      let nextPhoto = this.files[nextIndex]
+      if (nextIndex < 0) {
+        nextIndex = 0
+        nextPhoto = currentAsset.photo
+      }
+      if (nextIndex > assetLength - 1) {
+        nextIndex = currentAsset.index
+        nextPhoto = currentAsset.photo
+      }
+      return {
+        index: nextIndex,
+        photo: nextPhoto
+      }
+    },
+    navigate(dir) {
+      this.imageViewerDirection = dir
+      if (dir === 1) {
+        this.prevPhoto = this.currentPhoto
+        this.currentPhoto = this.nextPhoto
+        this.nextPhoto = this.getNextSectionSegmentAsset(this.currentPhoto, 1)
+      } else {
+        this.nextPhoto = this.currentPhoto
+        this.currentPhoto = this.prevPhoto
+        this.prevPhoto = this.getNextSectionSegmentAsset(this.currentPhoto, -1)
+      }
+      // this.$refs.viewer.handleDescription()
+    },
+    keyboardActionDialog(event) {
+      if (event.code == 'ArrowLeft') {
+        if (this.currentPhoto.index === 0) return
+        this.navigate(-1)
+      } else if (event.code == 'ArrowRight') {
+        this.navigate(1)
+      } else if (event.code == 'Escape') {
+        this.clearNav()
+      }
+    },
+    clearNav() {
+      this.currentPhoto = null
+      this.prevPhoto = null
+      this.nextPhoto = null
+    },
+    closeView() {
+      this.view = false
+      this.$nextTick(() => {
+        this.clearNav()
+      })
     }
   }
 }
@@ -307,7 +516,7 @@ export default {
 
 <style lang="scss">
 .name {
-  margin-bottom: 50px;
+  margin-bottom: 12px;
 }
 .cus-modal {
   .ant-modal-wrap {
@@ -315,28 +524,52 @@ export default {
   }
 
   .ant-modal {
-    padding: 0 !important;
+    padding: 0;
     max-width: 100%;
-    top: 0 !important;
+    top: 0;
     // padding-bottom: 0;
     margin: 0;
     background-color: #fff !important;
   }
   .ant-modal-content {
-    padding: 0 !important;
-    border-radius: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    height: calc(100vh) !important;
+    padding: 0;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
   }
   .ant-modal-body {
     padding: 0 !important;
     flex: 1 !important;
   }
 }
+.ant-modal-wrap {
+  overflow: hidden !important;
+}
+.full-modal {
+  .ant-modal {
+    padding: 0 !important;
+    max-width: 100%;
+    top: 0;
+    // padding-bottom: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    // height: calc(100vh);
+    background-color: #000;
+    border-radius: 0;
+  }
+  .ant-modal-body {
+    padding: 0;
+    flex: 1;
+  }
+}
 </style>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .album {
   gap: 24px;
   display: flex;
@@ -411,7 +644,7 @@ export default {
     }
   }
 
-  .category {
+  .header-category {
     // position: absolute;
 
     width: 100%;
@@ -503,9 +736,6 @@ export default {
 .create-album {
   margin-right: 12px;
 }
-.add-file {
-
-}
 
 .wrap-name {
   padding-left: 24px;
@@ -513,5 +743,11 @@ export default {
   .name {
     border-bottom: 1px solid black;
   }
+}
+
+.user-list {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 </style>

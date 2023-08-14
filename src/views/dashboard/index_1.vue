@@ -1,12 +1,9 @@
 <template>
-  <!-- <AppBreadcrumb /> -->
   <div class="main">
     <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
       <h3>Drop files to upload</h3>
     </div>
-
     <UploadProgress ref="progress" :files="files" @close="clearFile()" />
-
     <file-upload
       class="btn btn-primary dropdown-toggle"
       :custom-action="customAction"
@@ -26,11 +23,6 @@
       @input-file="inputFile"
       ref="upload"
     >
-      <a-tooltip title="search">
-        <a-button shape="circle" size="large">
-          <template #icon><SearchOutlined /></template>
-        </a-button>
-      </a-tooltip>
     </file-upload>
 
     <div class="wrapper-content">
@@ -71,16 +63,16 @@
 </template>
 
 <script>
-import { TYPE_SUCCESS, TYPE_ERROR } from '@/constants/common'
-import { h } from 'vue'
-import { SearchOutlined } from '@ant-design/icons-vue'
+// import Cropper from 'cropperjs'
+// import ImageCompressor from '@xkeshi/image-compressor'
+import { debounce } from 'lodash-es'
 import FileUpload from 'vue-upload-component'
-
+import { mapGetters, mapState } from 'vuex'
 export default {
   components: {
-    FileUpload,
-    SearchOutlined
+    FileUpload
   },
+
   data() {
     return {
       visible: false,
@@ -109,7 +101,50 @@ export default {
       uploadAuto: true
     }
   },
-  computed: {},
+  // computed: mapState('photo', ['search']),
+  computed: {
+    ...mapGetters({ search: 'photo/search' })
+  },
+  watch: {
+    'editFile.show'(newValue, oldValue) {
+      // 关闭了 自动删除 error
+      if (!newValue && oldValue) {
+        this.$refs.upload.update(this.editFile.id, { error: this.editFile.error || '' })
+      }
+
+      if (newValue) {
+        this.$nextTick(() => {
+          if (!this.$refs.editImage) {
+            return
+          }
+          let cropper = new Cropper(this.$refs.editImage, {
+            autoCrop: false
+          })
+          this.editFile = {
+            ...this.editFile,
+            cropper
+          }
+        })
+      }
+    },
+
+    'addData.show'(show) {
+      if (show) {
+        this.addData.name = ''
+        this.addData.type = ''
+        this.addData.content = ''
+      }
+    },
+    async search(newVal, oldVa) {
+      await this.getList()
+      await this.formatListImage()
+    }
+  },
+  async created() {
+    // console.log(this.$store.getters.)
+    await this.getList()
+    await this.formatListImage()
+  },
   mounted() {
     this.$watch(
       () => {
@@ -125,15 +160,17 @@ export default {
       }
     )
   },
-  async created() {
-    await this.getList()
-    await this.formatListImage()
-  },
   methods: {
+    // fetchUser: debounce(async function (newVal, oldVa) {
+    //   console.log(newVal, oldVa)
+    // }, 300),
     async getList() {
       this.$root.$refs.loading.start()
       // this.images = {}
-      const res = await this.$store.dispatch('photo/list')
+      const payload = {
+        search: this.search
+      }
+      const res = await this.$store.dispatch('photo/list', payload)
       this.images = res
       this.$root.$refs.loading.finish()
     },
@@ -153,6 +190,98 @@ export default {
       this.$refs.progress.changeVisble()
       return component.uploadHtml5(file)
     },
+    inputFilter(newFile, oldFile, prevent) {
+      console.log(123123)
+      if (newFile && !oldFile) {
+        // Before adding a file
+        // 添加文件前
+
+        // Filter system files or hide files
+        // 过滤系统文件 和隐藏文件
+        if (/(\/|^)(Thumbs\.db|desktop\.ini|\..+)$/.test(newFile.name)) {
+          return prevent()
+        }
+
+        // Filter php html js file
+        // 过滤 php html js 文件
+        if (/\.(php5?|html?|jsx?)$/i.test(newFile.name) && newFile.type !== 'text/directory') {
+          return prevent()
+        }
+
+        // Automatic compression
+        // 自动压缩
+        if (
+          newFile.file &&
+          newFile.error === '' &&
+          newFile.type.substr(0, 6) === 'image/' &&
+          this.autoCompress > 0 &&
+          this.autoCompress < newFile.size
+        ) {
+          newFile.error = 'compressing'
+          const imageCompressor = new ImageCompressor(null, {
+            convertSize: 1024 * 1024,
+            maxWidth: 512,
+            maxHeight: 512
+          })
+          imageCompressor
+            .compress(newFile.file)
+            .then((file) => {
+              this.$refs.upload.update(newFile, {
+                error: '',
+                file,
+                size: file.size,
+                type: file.type
+              })
+            })
+            .catch((err) => {
+              this.$refs.upload.update(newFile, { error: err.message || 'compress' })
+            })
+        }
+      }
+
+      if (
+        newFile &&
+        newFile.error === '' &&
+        newFile.file &&
+        (!oldFile || newFile.file !== oldFile.file)
+      ) {
+        // Create a blob field
+        // 创建 blob 字段
+        newFile.blob = ''
+        let URL = window.URL || window.webkitURL
+        if (URL) {
+          newFile.blob = URL.createObjectURL(newFile.file)
+        }
+
+        // Thumbnails
+        // 缩略图
+        newFile.thumb = ''
+        if (newFile.blob && newFile.type.substr(0, 6) === 'image/') {
+          newFile.thumb = newFile.blob
+        }
+      }
+
+      // image size
+      // image 尺寸
+      if (
+        newFile &&
+        newFile.error === '' &&
+        newFile.type.substr(0, 6) === 'image/' &&
+        newFile.blob &&
+        (!oldFile || newFile.blob !== oldFile.blob)
+      ) {
+        newFile.error = 'image parsing'
+        let img = new Image()
+        img.onload = () => {
+          this.$refs.upload.update(newFile, { error: '', height: img.height, width: img.width })
+        }
+        img.οnerrοr = (e) => {
+          this.$refs.upload.update(newFile, { error: 'parsing image size' })
+        }
+        img.src = newFile.blob
+      }
+    },
+
     // add, update, remove File Event
     async inputFile(newFile, oldFile) {
       if (newFile && oldFile) {
@@ -160,6 +289,7 @@ export default {
 
         if (newFile.active && !oldFile.active) {
           // beforeSend
+
           // min size
           if (
             newFile.size >= 0 &&
@@ -203,7 +333,6 @@ export default {
 
       if (newFile) {
         if (newFile.response && newFile.response.id && newFile.active) {
-          console.log(newFile)
           const params = {
             id: newFile.response.id,
             modified_at: newFile.file.lastModified,
@@ -214,64 +343,77 @@ export default {
         }
       }
     },
-    inputFilter(newFile, oldFile, prevent) {
-      if (newFile && !oldFile) {
-        // Before adding a file
-        // 添加文件前
 
-        // Filter system files or hide files
-        if (/(\/|^)(Thumbs\.db|desktop\.ini|\..+)$/.test(newFile.name)) {
-          return prevent()
-        }
+    alert(message) {
+      alert(message)
+    },
 
-        // Filter php html js file
-        // 过滤 php html js 文件
-        if (/\.(php5?|html?|jsx?)$/i.test(newFile.name) && newFile.type !== 'text/directory') {
-          return prevent()
-        }
+    onEditFileShow(file) {
+      this.editFile = { ...file, show: true }
+      this.$refs.upload.update(file, { error: 'edit' })
+    },
 
-        if (
-          newFile &&
-          newFile.error === '' &&
-          newFile.file &&
-          (!oldFile || newFile.file !== oldFile.file)
-        ) {
-          // Create a blob field
-          // 创建 blob 字段
-          newFile.blob = ''
-          let URL = window.URL || window.webkitURL
-          if (URL) {
-            newFile.blob = URL.createObjectURL(newFile.file)
-          }
-
-          // Thumbnails
-          // 缩略图
-          newFile.thumb = ''
-          if (newFile.blob && newFile.type.substr(0, 6) === 'image/') {
-            newFile.thumb = newFile.blob
-          }
-        }
-
-        // image size
-        // image 尺寸
-        if (
-          newFile &&
-          newFile.error === '' &&
-          newFile.type.substr(0, 6) === 'image/' &&
-          newFile.blob &&
-          (!oldFile || newFile.blob !== oldFile.blob)
-        ) {
-          newFile.error = 'image parsing'
-          let img = new Image()
-          img.onload = () => {
-            this.$refs.upload.update(newFile, { error: '', height: img.height, width: img.width })
-          }
-          img.οnerrοr = (e) => {
-            this.$refs.upload.update(newFile, { error: 'parsing image size' })
-          }
-          img.src = newFile.blob
-        }
+    onEditorFile() {
+      if (!this.$refs.upload.features.html5) {
+        this.alert('Your browser does not support')
+        this.editFile.show = false
+        return
       }
+
+      let data = {
+        name: this.editFile.name,
+        error: ''
+      }
+      if (this.editFile.cropper) {
+        let binStr = atob(
+          this.editFile.cropper.getCroppedCanvas().toDataURL(this.editFile.type).split(',')[1]
+        )
+        let arr = new Uint8Array(binStr.length)
+        for (let i = 0; i < binStr.length; i++) {
+          arr[i] = binStr.charCodeAt(i)
+        }
+        data.file = new File([arr], data.name, { type: this.editFile.type })
+        data.size = data.file.size
+      }
+      this.$refs.upload.update(this.editFile.id, data)
+      this.editFile.error = ''
+      this.editFile.show = false
+    },
+
+    // add folder
+    onAddFolder() {
+      if (!this.$refs.upload.features.directory) {
+        this.alert('Your browser does not support')
+        return
+      }
+      let input = document.createElement('input')
+      input.style =
+        'background: rgba(255, 255, 255, 0);overflow: hidden;position: fixed;width: 1px;height: 1px;z-index: -1;opacity: 0;'
+      input.type = 'file'
+      input.setAttribute('allowdirs', true)
+      input.setAttribute('directory', true)
+      input.setAttribute('webkitdirectory', true)
+      input.multiple = true
+      document.querySelector('body').appendChild(input)
+      input.click()
+      input.onchange = (e) => {
+        this.$refs.upload.addInputFile(input).then(function () {
+          document.querySelector('body').removeChild(input)
+        })
+      }
+    },
+
+    onAddData() {
+      this.addData.show = false
+      if (!this.$refs.upload.features.html5) {
+        this.alert('Your browser does not support')
+        return
+      }
+
+      let file = new window.File([this.addData.content], this.addData.name, {
+        type: this.addData.type
+      })
+      this.$refs.upload.add(file)
     },
     clickPhoto(id) {
       const index = this.imagesList.findIndex((e) => e.id === id)
@@ -415,7 +557,83 @@ export default {
   }
 }
 </script>
+<!-- <style>
+.example-full .btn-group .dropdown-menu {
+  display: block;
+  visibility: hidden;
+  transition: all 0.2s;
+}
+.example-full .btn-group:hover > .dropdown-menu {
+  visibility: visible;
+}
 
+.example-full label.dropdown-item {
+  margin-bottom: 0;
+}
+
+/* .example-full .btn-group .dropdown-toggle {
+  margin-right: 0.6rem;
+} */
+
+.td-image-thumb {
+  max-width: 4em;
+  max-height: 4em;
+}
+
+.example-full .filename {
+  margin-bottom: 0.3rem;
+}
+
+.example-full .btn-is-option {
+  margin-top: 0.25rem;
+}
+.example-full .example-foorer {
+  padding: 0.5rem 0;
+  border-top: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.example-full .edit-image img {
+  max-width: 100%;
+}
+
+.example-full .edit-image-tool {
+  margin-top: 0.6rem;
+}
+
+.example-full .edit-image-tool .btn-group {
+  margin-right: 0.6rem;
+}
+
+.example-full .footer-status {
+  padding-top: 0.4rem;
+}
+
+.drop-active {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  position: fixed;
+  z-index: 9999;
+  opacity: 0.6;
+  text-align: center;
+  background: #000;
+}
+.drop-active h3 {
+  margin: -0.5em 0 0;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: #fff;
+  padding: 0;
+}
+</style> -->
 <style lang="scss" scoped>
 .main {
   .wrapper-content {

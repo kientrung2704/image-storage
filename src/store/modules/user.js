@@ -1,4 +1,4 @@
-import { getUserInfo, updateUserInfo } from '@/apis/user'
+import { getUserInfo, updateUserInfo, changePassword } from '@/apis/user'
 import { USERS } from '../mutation-types'
 
 export const state = {
@@ -32,6 +32,16 @@ export const actions = {
 
   async update({ commit }, payload) {
     const res = await updateUserInfo(payload)
+    if (res.error) {
+      return res
+    }
+    commit(USERS.GET_USER_INFO, res)
+
+    return false
+  },
+
+  async changePassword({ commit }, payload) {
+    const res = await changePassword(payload)
     if (res.error) {
       return res
     }

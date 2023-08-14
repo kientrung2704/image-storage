@@ -14,7 +14,7 @@ const routes = [
       {
         path: 'image',
         name: 'image',
-        component: () => import('@/views/dashboard/index.vue'),
+        component: () => import('@/views/dashboard/index_1.vue'),
         meta: {
           title: 'Image'
         }
@@ -38,9 +38,41 @@ const routes = [
       {
         path: 'share',
         name: 'share',
-        component: () => import('@/views/dashboard/explore.vue'),
+        component: () => import('@/views/dashboard/share.vue'),
         meta: {
           title: 'Share'
+        }
+      },
+      {
+        path: 'public',
+        name: 'public',
+        component: () => import('@/views/dashboard/share.vue'),
+        meta: {
+          title: 'Public'
+        }
+      },
+      {
+        path: 'tome',
+        name: 'tome',
+        component: () => import('@/views/dashboard/tome.vue'),
+        meta: {
+          title: 'Tome'
+        }
+      },
+      {
+        path: 'shared',
+        name: 'shared',
+        component: () => import('@/views/dashboard/shared.vue'),
+        meta: {
+          title: 'Shared'
+        }
+      },
+      {
+        path: 'partner/:id',
+        name: 'partner',
+        component: () => import('@/views/dashboard/partner.vue'),
+        meta: {
+          title: 'Partner'
         }
       },
       {
@@ -135,6 +167,14 @@ const routes = [
       name: 'Main'
     },
     children: [
+      {
+        path: '/',
+        name: 'front',
+        component: () => import('@/views/index.vue'),
+        meta: {
+          title: 'Login'
+        }
+      },
       {
         path: 'login',
         name: 'login',

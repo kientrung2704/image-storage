@@ -26,6 +26,7 @@
       </a-drawer>
       <a-layout-content>
         <div class="unvue-content">
+          <AppBreadcrumb v-if="$route.name === 'image'" />
           <RouterView />
         </div>
       </a-layout-content>
@@ -130,21 +131,26 @@ export default {
     .unvue-header-left {
       display: flex;
       align-items: center;
-      justify-content: center;
+      // justify-content: center;
+      width: 240px;
       gap: 15px;
       height: 48px;
     }
     .unvue-header-right {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: flex-end;
       min-width: 48px;
       height: 48px;
       .header-item-container {
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
         display: flex;
         align-items: center;
         height: 100%;
-        padding: 0 8px;
+        // padding: 0 8px;
         .header-item {
           cursor: pointer;
           a {
@@ -188,22 +194,22 @@ export default {
   }
 }
 
-:deep(.ant-menu-item) {
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
-  height: 45px !important;
-}
+// :deep(.ant-menu-item) {
+//   border-top-right-radius: 25px;
+//   border-bottom-right-radius: 25px;
+//   height: 45px !important;
+// }
 
-:deep(.ant-menu) {
-  padding-right: 15px;
-  height: 45px !important;
-}
+// :deep(.ant-menu) {
+//   padding-right: 15px;
+//   height: 45px !important;
+// }
 
-:deep(.ant-menu-item::after, .ant-menu-item::after) {
-  border-right: none !important;
-}
+// :deep(.ant-menu-item::after, .ant-menu-item::after) {
+//   border-right: none !important;
+// }
 
-:deep(.ant-menu-title-content) {
-  margin-left: 24px !important;
-}
+// :deep(.ant-menu-title-content) {
+//   margin-left: 24px !important;
+// }
 </style>

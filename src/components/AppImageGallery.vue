@@ -13,13 +13,17 @@
               </div>
               <div class="right">
                 <a-space :size="!currentPhoto?.photo.deleted_at ? 8 : 12">
-                  <div class="btn-category" v-if="!currentPhoto?.photo.deleted_at">
+                  <div
+                    @click="shareFile(currentPhoto?.photo.id)"
+                    class="btn-category"
+                    v-if="!currentPhoto?.photo.deleted_at && $route.name !== 'partner'"
+                  >
                     <ShareAltOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
                   </div>
 
                   <div
                     class="btn-remove"
-                    v-if="currentPhoto?.photo.deleted_at"
+                    v-if="currentPhoto?.photo.deleted_at && $route.name !== 'partner'"
                     @click="removeFile(currentPhoto?.photo.id, 'delete')"
                   >
                     <DeleteOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
@@ -27,7 +31,7 @@
                   </div>
                   <div
                     class="btn-remove"
-                    v-if="currentPhoto?.photo.deleted_at"
+                    v-if="currentPhoto?.photo.deleted_at && $route.name !== 'partner'"
                     @click="removeFile(currentPhoto?.photo.id, 'undo')"
                   >
                     <UndoOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
@@ -38,7 +42,7 @@
                   </div>
                   <div
                     class="btn-category"
-                    v-if="!currentPhoto?.photo.deleted_at"
+                    v-if="!currentPhoto?.photo.deleted_at && $route.name !== 'partner'"
                     @click="likeFile(currentPhoto?.photo)"
                   >
                     <StarFilled
@@ -49,7 +53,11 @@
                   </div>
                   <div
                     class="btn-category"
-                    v-if="!currentPhoto?.photo.deleted_at"
+                    v-if="
+                      !currentPhoto?.photo.deleted_at &&
+                      currentPhoto?.photo?.albums?.length === 0 &&
+                      $route.name !== 'partner'
+                    "
                     @click="deteleFile(currentPhoto?.photo.id)"
                   >
                     <DeleteOutlined :style="{ color: '#ffffff', fontSize: '20px' }" />
@@ -64,7 +72,15 @@
           </div>
           <Transition class="img-slider" :name="transition">
             <div :key="currentPhoto?.photo.id" :id="currentPhoto?.photo.id">
-              <img class="img-display" :src="currentPhoto?.photo.src" v-if="currentPhoto" />
+              <img
+                class="img-display"
+                :src="
+                  currentPhoto?.photo.src
+                    ? currentPhoto?.photo.src
+                    : 'http://bveats-api.test/storage/' + currentPhoto?.photo.file
+                "
+                v-if="currentPhoto"
+              />
             </div>
           </Transition>
           <div
@@ -120,6 +136,41 @@
                       />
                     </div>
                   </div>
+                  <div v-if="currentPhoto?.photo?.albums?.length > 0" class="album-list">
+                    <div class="album-header">Album</div>
+                    <div
+                      v-for="(album, index) in currentPhoto?.photo.albums"
+                      class="list-detail"
+                      :key="index"
+                    >
+                      <router-link
+                        @click.native="
+                          $router
+                            .push({ name: 'explore-detail', params: { id: album.id } })
+                            .then(() => {
+                              this.$router.go()
+                            })
+                        "
+                        :to="{ name: 'explore-detail', params: { id: album.id } }"
+                      >
+                        <div class="detail-info">
+                          <img
+                            :src="'http://bveats-api.test/storage/' + album.files[0]?.file"
+                            alt=""
+                          />
+                          <div class="album-info">
+                            <div class="album-name one-line word-break" v-if="album.name">
+                              {{ album.name }}
+                            </div>
+                            <div class="album-total">
+                              {{ album.files.length }} mục - {{ formatDate(album.created_at) }}
+                            </div>
+                          </div>
+                        </div>
+                      </router-link>
+                    </div>
+                  </div>
+
                   <div class="content-box">
                     <div class="icon">
                       <IconCalendarTime stroke-width="1.25" :size="24" />
@@ -165,6 +216,7 @@
                       </div>
                     </div>
                   </div>
+
                   <div class="content-box" v-if="JSON.parse(currentPhoto?.photo?.exif)?.Make">
                     <div class="icon">
                       <IconCameraCog stroke-width="1.25" :size="24" />
@@ -250,9 +302,35 @@
       </Transition>
     </div>
   </a-card>
+  <a-modal
+    title="Chia sẻ người thân"
+    :footer="null"
+    v-model:open="visible"
+    wrap-class-name="share-modal"
+  >
+    <div class="content">
+      <a-select
+        v-model:value="value"
+        mode="multiple"
+        placeholder="Select users"
+        style="width: 100%"
+        :filter-option="false"
+        :not-found-content="fetching ? undefined : null"
+        :options="data"
+        @search="fetchUser"
+      >
+        <template v-if="fetching" #notFoundContent>
+          <a-spin size="small" />
+        </template>
+      </a-select>
+
+      <button @click="share">Xác nhận</button>
+    </div>
+  </a-modal>
 </template>
 
 <script>
+import { debounce } from 'lodash-es'
 import {
   LeftOutlined,
   RightOutlined,
@@ -278,6 +356,7 @@ import {
   IconFileDescription
 } from '@tabler/icons-vue'
 // import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl'
+import { formatDate } from '@/utils/common/format'
 import 'mapbox-gl/dist/mapbox-gl.css'
 export default {
   components: {
@@ -329,7 +408,12 @@ export default {
       center: { lat: 40.689247, lng: -74.044502 },
       mapCenter: [105.7842749, 21.0268378],
       pos: [105.7842749, 21.0268378],
-      defaultDateTime: this.$dayjs('00:00:00', 'HH:mm:ss')
+      defaultDateTime: this.$dayjs('00:00:00', 'HH:mm:ss'),
+      visible: false,
+      value: [],
+      data: [],
+      fetching: false,
+      id: ''
     }
   },
   computed: {
@@ -351,6 +435,38 @@ export default {
     }
   },
   methods: {
+    formatDate,
+    shareFile(id) {
+      this.id = id
+      this.visible = true
+    },
+    fetchUser: debounce(async function (e) {
+      if (e === '') {
+        this.data = []
+      } else {
+        this.fetching = true
+        const params = {
+          keyword: e
+        }
+        const res = await this.$store.dispatch('share/findUser', params)
+        const map = res.map((user) => ({
+          label: `${user.email}`,
+          value: user.id
+        }))
+        this.data = map
+        console.log(this.data)
+        this.fetching = false
+      }
+    }, 300),
+    async share() {
+      if (this.value.length === 0) return
+      const params = {
+        type: 'file',
+        user: this.value,
+        file_id: this.id
+      }
+      await this.$store.dispatch('share/share', params)
+    },
     deteleFile(id) {
       if (id) {
         this.$emit('detele-file', id)
@@ -456,12 +572,12 @@ export default {
   // margin-right: 12px;
 
   &-wrapper {
-    background: #000;
+    background: rgba(0, 0, 0, 0.5);
     z-index: 10;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 12px;
+    padding: 0 12px;
     height: 100%;
 
     .left {
@@ -531,6 +647,32 @@ export default {
         }
         .content-box:hover {
           background-color: rgb(241, 243, 244);
+        }
+
+        .album-list {
+          .album-header {
+            padding: 0 16px;
+            margin-bottom: 12px;
+          }
+          .list-detail {
+            padding: 12px 16px;
+
+            .detail-info {
+              display: flex;
+              gap: 12px;
+              align-items: flex-start;
+              img {
+                width: 36px;
+                height: 36px;
+                object-fit: cover;
+                border-radius: 4px;
+              }
+              .album-name {
+                line-height: 1;
+                margin-bottom: 4px;
+              }
+            }
+          }
         }
       }
     }

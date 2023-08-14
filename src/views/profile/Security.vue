@@ -119,7 +119,7 @@
         </div>
       </a-card>
     </a-col>
-    <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
+    <!-- <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8" :xxl="6">
       <a-card bordered="false" title="Two-factor authentication">
         <div class="setting">
           <img src="@/assets/images/two-factor.svg" alt="" />
@@ -127,22 +127,16 @@
             Turn on two-factor authentication to increase your account's security. You will use both
             your password and security code sent to your email to log in.
           </p>
-          <!-- <div class="two-factor">
-            <div class="btn-two_factor" :class="{ active: isEnabled }" @click="handleTwoFactor">
-              Enabled
-            </div>
-            <div class="btn-two_factor" :class="{ active: !isEnabled }" @click="handleTwoFactor">
-              Disabled
-            </div>
-          </div> -->
+
           <a-segmented v-model:value="value" :options="options" size="large" />
         </div>
       </a-card>
-    </a-col>
+    </a-col> -->
   </a-row>
 </template>
 
 <script>
+import { TYPE_SUCCESS, TYPE_ERROR } from '@/constants/common'
 import { IconEye } from '@tabler/icons-vue'
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons-vue'
 import useValidate from '@vuelidate/core'
@@ -207,16 +201,46 @@ export default {
     }
   },
 
-  created() {
-    this.$root.$refs.loading.start()
-    setTimeout(() => {
-      this.$root.$refs.loading.finish()
-    }, 500)
-  },
+  // created() {
+  //   this.$root.$refs.loading.start()
+  //   setTimeout(() => {
+  //     this.$root.$refs.loading.finish()
+  //   }, 500)
+  // },
 
   methods: {
     handleBlurInput(key) {
       this.v$[key].$touch()
+    },
+
+    async onSubmit() {
+      const isValidate = await this.v$.$validate()
+
+      if (isValidate) {
+        const params = {
+          current_password: this.current_password,
+          password: this.new_password
+        }
+        this.$root.$refs.loading.start()
+        const res = await this.$store.dispatch('user/changePassword', params)
+        if (res) {
+          this.$notification[TYPE_ERROR]({
+            message: 'Error',
+            description: 'Thông tin không chính xác'
+          })
+        } else {
+          this.current_password = ''
+          this.new_password = ''
+          this.repeat_password = ''
+          this.$notification[TYPE_SUCCESS]({
+            message: 'Success',
+            description: 'Đổi mật khẩu thành công'
+          })
+        }
+        // const resp = await this.$store.dispatch('auth/me')
+        // console.log(resp)
+        this.$root.$refs.loading.finish()
+      }
     },
 
     handleTwoFactor() {

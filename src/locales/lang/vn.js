@@ -1,7 +1,7 @@
 export default {
   support: 'Trợ giúp và phản hồi',
   image: 'Ảnh',
-  explore: 'Khám phá',
+  explore: 'Album',
   search: 'Tìm kiếm',
   storage: 'Bộ nhớ',
   share: 'Chia sẻ',
@@ -16,6 +16,13 @@ export default {
   vi_VN: 'Tiếng Việt',
   en: 'Tiếng Anh',
   'order-detail': 'Chi tiết đơn hàng',
+  'payment-history': 'Lịch sử thanh toán',
+  plan: 'Gói cước',
+  security: 'Bảo mật',
+  general: 'Chung',
+  public: 'Chia sẻ',
+  shared: 'Đã chia sẻ',
+  tome: 'Chia sẻ với bạn',
   user: {
     phone_number: 'Số điện thoại',
     name: 'Họ và tên',

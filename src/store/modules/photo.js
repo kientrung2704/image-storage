@@ -7,9 +7,10 @@ import {
   deletePhoto,
   getListTrash,
   removePhoto,
-  undoPhoto
+  undoPhoto,
+  getPartnerPhoto
 } from '@/apis/photo'
-
+import { SET_SEARCH } from '@/constants/common'
 const state = {
   selectedPhotos: [],
   selectionAllowed: true,
@@ -25,10 +26,18 @@ const state = {
     section: -1,
     segment: -1,
     index: -1
-  }
+  },
+  search: ''
+}
+
+const getters = {
+  search: (state) => state.search
 }
 
 const mutations = {
+  [SET_SEARCH](state, search) {
+    state.search = search
+  },
   setSelectedAlbum(state, album) {
     state.selectedAlbum = album
   },
@@ -125,13 +134,18 @@ const actions = {
     return false
   },
 
-  async list({ commit }) {
-    const res = await getListPhoto()
+  async list({ commit }, payload) {
+    const res = await getListPhoto(payload)
     return res
   },
 
   async likeList({ commit }) {
     const res = await getLikeListPhoto()
+    return res
+  },
+
+  async partnerList({ commit }, id) {
+    const res = await getPartnerPhoto(id)
     return res
   },
 
@@ -310,7 +324,7 @@ function setUpperBounds(state, section, segment, index) {
   state.upperSelectionBound.index = index
 }
 export default {
-  // getters,
+  getters,
   state,
   mutations,
   actions

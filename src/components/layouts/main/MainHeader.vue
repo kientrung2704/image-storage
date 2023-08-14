@@ -8,12 +8,15 @@
           </router-link>
         </div> -->
         <router-link :to="{ name: 'main' }">
-          <div class="l-header_logo-title">AAAA</div>
+          <div class="l-header_logo-title">CopyCase</div>
         </router-link>
       </div>
       <div class="l-header_nav">
         <div class="l-header_center">
-          <router-link class="service-login" :to="{ name: 'login' }"> Login </router-link>
+          <router-link v-if="!isEmpty(user)" class="service-login" :to="{ name: 'image' }">
+            Dashboard
+          </router-link>
+          <router-link v-else class="service-login" :to="{ name: 'login' }"> Login </router-link>
         </div>
 
         <!-- <div class="l-header_btn-icon">
@@ -29,14 +32,19 @@
 </template>
 
 <script>
+import { isEmpty } from '@/utils/common/is'
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
       showSideMenu: false
     }
   },
-
+  computed: {
+    ...mapGetters({ user: 'user/userInfo' })
+  },
   methods: {
+    isEmpty,
     onOpen() {
       this.showSideMenu = true
     },

@@ -146,7 +146,7 @@
             </div>
           </div>
           <div class="button-form">
-            <button class="btn-action continue" v-if="user?.access_limit?.package?.type === 'FREE'">
+            <!-- <button class="btn-action continue" v-if="user?.access_limit?.package?.type === 'FREE'">
               Mua dịch vụ
             </button>
             <button class="btn-action back" v-if="user?.access_limit?.package?.type === 'PAY'">
@@ -154,8 +154,10 @@
             </button>
             <button class="btn-action continue" v-if="user?.access_limit?.package?.type === 'PAY'">
               Gia hạn dịch vụ
-            </button>
-            <!-- <router-link class="btn-upgrade" :to="{ name: 'plan' }"> Upgrade Account </router-link> -->
+            </button> -->
+            <router-link class="btn-action continue" :to="{ name: 'plan' }">
+              Upgrade Account
+            </router-link>
           </div>
         </div>
       </a-card>
@@ -395,6 +397,10 @@ export default {
     }
 
     .continue {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background-color: #ee0033;
       color: #ffffff;
     }

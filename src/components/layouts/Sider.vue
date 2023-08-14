@@ -46,7 +46,36 @@
         </template>
         {{ $i18n.t('explore') }}
       </a-menu-item>
-      <a-menu-item
+      <a-sub-menu
+        key="share"
+        @mouseover="hoverMenu('share')"
+        @mouseleave="hoverMenu"
+        :class="canHover('share')"
+      >
+        <template #icon>
+          <TeamOutlined :style="{ fontSize: '20px' }" />
+        </template>
+        <template #title>{{ $i18n.t('share') }}</template>
+        <a-menu-item key="public">
+          <template #icon>
+            <TeamOutlined :style="{ fontSize: '20px' }" />
+          </template>
+          Ảnh công khai
+        </a-menu-item>
+        <a-menu-item key="shared">
+          <template #icon>
+            <TeamOutlined :style="{ fontSize: '20px' }" />
+          </template>
+          Bạn đã chia sẻ
+        </a-menu-item>
+        <a-menu-item key="tome">
+          <template #icon>
+            <TeamOutlined :style="{ fontSize: '20px' }" />
+          </template>
+          Chia sẻ với bạn
+        </a-menu-item>
+      </a-sub-menu>
+      <!-- <a-menu-item
         key="share"
         @mouseover="hoverMenu('share')"
         @mouseleave="hoverMenu"
@@ -56,7 +85,7 @@
           <TeamOutlined :style="{ fontSize: '20px' }" />
         </template>
         {{ $i18n.t('share') }}
-      </a-menu-item>
+      </a-menu-item> -->
 
       <div v-if="!collapsed" class="py-18 pl-15">
         <span class="f-600">{{ $i18n.t('libary') }}</span>
@@ -101,7 +130,7 @@
         {{ $i18n.t('storage') }}
       </a-menu-item>
 
-      <div class="pl-24" v-if="!collapsed">
+      <div class="pl-24 pr-24" v-if="!collapsed">
         <Progress />
       </div>
     </a-menu>
@@ -148,6 +177,10 @@ export default {
     }
   },
 
+  created() {
+    this.selectedKeys = [this.$route.name]
+  },
+
   methods: {
     // toggleCollapsed() {
     //   this.collapsed = !this.collapsed
@@ -176,17 +209,17 @@ export default {
   margin: 19px 24px 20px;
 }
 
-:deep(.menu-item-hover) {
-  background-color: rgb(241, 243, 244) !important;
+// :deep(.menu-item-hover) {
+//   background-color: rgb(241, 243, 244) !important;
 
-  .ant-menu-title-content {
-    color: #000000d9 !important;
-  }
+//   .ant-menu-title-content {
+//     color: #000000d9 !important;
+//   }
 
-  svg {
-    fill: #000000d9 !important;
-  }
-}
+//   svg {
+//     fill: #000000d9 !important;
+//   }
+// }
 
 .cust-sider {
   border-right: 1px solid #00000026 !important;
@@ -196,9 +229,9 @@ export default {
   border: none !important;
 }
 
-:deep(.ant-menu-item:first-child) {
-  margin-top: 15px !important;
-}
+// :deep(.ant-menu-item:first-child) {
+//   margin-top: 15px !important;
+// }
 
 :deep(.ant-menu-light) {
   border: none !important;

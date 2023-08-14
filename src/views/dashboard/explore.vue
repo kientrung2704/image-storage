@@ -7,7 +7,27 @@
   <div class="main">
     <div class="album">
       <div class="album-item" v-for="(album, index) in albums" :key="index">
-        <router-link :to="{name: 'explore-detail', params: {id: album.id} }">
+        <a-dropdown class="more">
+          <a @click.prevent>
+            <more-outlined :style="{ fontSize: '24px', color: '#fff' }" />
+          </a>
+          <template #overlay>
+            <a-menu>
+              <a-menu-item>
+                <span @click="shareAlbum(album.id)">Chia sẻ album</span>
+              </a-menu-item>
+              <a-menu-item>
+                <span @click="removeAlbum(album.id)">Xoá album</span>
+              </a-menu-item>
+            </a-menu>
+          </template>
+
+          <!-- <a-popover placement="bottomRight">
+            <template #content> 11 </template>
+            <more-outlined :style="{ fontSize: '24px', color: '#fff' }" />
+          </a-popover> -->
+        </a-dropdown>
+        <router-link :to="{ name: 'explore-detail', params: { id: album.id } }">
           <img :src="'http://bveats-api.test/storage/' + album.files[0]?.file" alt="" />
           <div class="album-info">
             <div class="album-name two-line word-break" v-if="album.name">
@@ -100,11 +120,38 @@
         </div>
       </div>
     </a-modal>
+
+    <a-modal
+      title="Chia sẻ album"
+      :footer="null"
+      v-model:open="display"
+      wrap-class-name="share-modal"
+    >
+      <div class="content">
+        <a-select
+          v-model:value="value"
+          mode="multiple"
+          placeholder="Select users"
+          style="width: 100%"
+          :filter-option="false"
+          :not-found-content="fetching ? undefined : null"
+          :options="data"
+          @search="fetchUserData"
+        >
+          <template v-if="fetching" #notFoundContent>
+            <a-spin size="small" />
+          </template>
+        </a-select>
+
+        <button @click="share">Xác nhận</button>
+      </div>
+    </a-modal>
   </div>
 </template>
 
 <script>
 import { TYPE_SUCCESS, TYPE_ERROR } from '@/constants/common'
+import { debounce } from 'lodash-es'
 import {
   LeftOutlined,
   RightOutlined,
@@ -161,7 +208,13 @@ export default {
       images: {},
       selected: [],
       visible: false,
-      isChooseImage: false
+      isChooseImage: false,
+      more: false,
+      display: false,
+      value: [],
+      data: [],
+      fetching: false,
+      id: ''
     }
   },
   watch: {
@@ -193,6 +246,43 @@ export default {
       const res = await this.$store.dispatch('album/list')
       this.albums = res
       this.$root.$refs.loading.finish()
+    },
+    async removeAlbum(id) {
+      this.$root.$refs.loading.start()
+      await this.$store.dispatch('album/remove', id)
+      await this.getAlbums()
+      this.$root.$refs.loading.finish()
+    },
+    shareAlbum(id) {
+      this.id = id
+      this.display = true
+    },
+    fetchUserData: debounce(async function (e) {
+      if (e === '') {
+        this.data = []
+      } else {
+        const params = {
+          keyword: e
+        }
+        const res = await this.$store.dispatch('share/findUser', params)
+        const map = res.map((user) => ({
+          label: `${user.email}`,
+          value: user.id
+        }))
+        this.data = map
+        console.log(this.data)
+        this.fetching = false
+      }
+    }, 300),
+    async share() {
+      if (this.value.length === 0) return
+      const params = {
+        type: 'album',
+        user: this.value,
+        album_id: this.id
+      }
+      console.log(params)
+      await this.$store.dispatch('share/share', params)
     },
     create() {
       this.visible = true
@@ -289,16 +379,30 @@ export default {
 }
 </style>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .album {
   gap: 24px;
   display: flex;
   flex-wrap: wrap;
 
+  &-item:hover {
+    .more {
+      display: block;
+    }
+  }
+
   &-item {
+    position: relative;
     width: 219px;
     height: 283px;
     cursor: pointer;
+
+    .more {
+      display: none;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
 
     img {
       object-fit: cover;

@@ -9,10 +9,11 @@ const DELETE = '/file/delete'
 const TRASH = '/file/trash'
 const UNDO = '/file/undo'
 const REMOVE = '/file/remove'
+const PARTNER = '/file/partner'
 
-export async function getListPhoto() {
+export async function getListPhoto(payload) {
   try {
-    const { data } = await axios.get(`${LIST}`)
+    const { data } = await axios.get(`${LIST}`, { params: payload })
 
     return data
   } catch (error) {
@@ -93,6 +94,16 @@ export async function removePhoto(id) {
 export async function undoPhoto(id) {
   try {
     const { data } = await axios.post(`${UNDO}/${id}`)
+
+    return data
+  } catch (error) {
+    return { error }
+  }
+}
+
+export async function getPartnerPhoto(id) {
+  try {
+    const { data } = await axios.get(`${PARTNER}/${id}`)
 
     return data
   } catch (error) {
